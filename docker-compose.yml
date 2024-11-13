@@ -1,0 +1,135 @@
+services:
+  watchtower:
+    image: containrrr/watchtower
+    command:
+      - "--label-enable"
+      - "--interval"
+      - "30"
+      - "--rolling-restart"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+  reverse-proxy:
+    image: traefik:v3.1
+    command:
+      - "--log.level=ERROR"
+      - "--accesslog=true"
+      - "--providers.docker"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entryPoints.websecure.address=:443"
+      - "--certificatesresolvers.myresolver.acme.tlschallenge=true"
+      - "--certificatesresolvers.myresolver.acme.email=elliott@zenful.cloud"
+      - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.web.http.redirections.entrypoint.to=websecure"
+      - "--entrypoints.web.http.redirections.entrypoint.scheme=https"
+      - "--entryPoints.web.forwardedHeaders.insecure"
+      - "--entryPoints.websecure.forwardedHeaders.insecure"
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - letsencrypt:/letsencrypt
+      - /var/run/docker.sock:/var/run/docker.sock
+  frontend:
+    build:
+      context: frontend
+      target: development
+    container_name: stoX-frontend
+    ports:
+      - 3000:3000
+    environment:
+      - REACT_APP_API_URL=http://localhost:8000
+    volumes:
+      - ./frontend/src:/code/src
+      - ./frontend/node_modules:/code/node_modules
+    networks:
+      - public
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.middlewares.guestbook-ratelimit.ratelimit.average=20"
+      - "traefik.http.routers.guestbook.rule=Host(`zenful.cloud`) && !Method(`POST`)"
+      - "traefik.http.routers.guestbook.entrypoints=websecure"
+      - "traefik.http.routers.guestbook.tls.certresolver=myresolver"
+      - "traefik.http.routers.guestbook.middlewares=guestbook-ratelimit"
+      # Define separate router for POST methods
+      - "traefik.http.middlewares.guestbook-ratelimit-post.ratelimit.average=1"
+      - "traefik.http.middlewares.guestbook-ratelimit-post.ratelimit.period=1m"
+      - "traefik.http.routers.guestbook-post.rule=Host(`zenful.cloud`) && Method(`POST`)"
+      - "traefik.http.routers.guestbook-post.middlewares=guestbook-ratelimit-post"
+      - "traefik.http.routers.guestbook-post.entrypoints=websecure"
+      - "traefik.http.routers.guestbook-post.tls.certresolver=myresolver"
+      # Proxy
+      - "traefik.http.routers.proxy.rule=Host(`proxy.dreamsofcode.io`)"
+      - "traefik.http.routers.proxy.entrypoints=websecure"
+      - "traefik.http.routers.proxy.tls.certresolver=myresolver"
+        # Enable watchtower
+      - "com.centurylinklabs.watchtower.enable=true"
+    depends_on:
+      - backend
+  backend:
+    build:
+      context: backend
+    container_name: stoX-backend-api # Optional name for the container
+    ports:
+      - 8000:8000
+    environment:
+      - POSTGRES_SERVER=db
+      - POSTGRES_PORT=5432
+      - POSTGRES_USER=dbadmin
+      - POSTGRES_DB=stox
+      - POSTGRES_PASSWORD_FILE=/run/secrets/db-password
+    networks:
+      - public
+      - private # Assigns this service to the shared network
+    secrets:
+      - db-password
+    depends_on:
+      db:
+        condition: service_healthy
+  db:
+    image: postgres:13-alpine
+    restart: always
+    container_name: stoX-database
+    secrets:
+      - db-password
+    environment:
+      - POSTGRES_SERVER=db
+      - POSTGRES_PORT=5432
+      - POSTGRES_DB=stox # Specifies the default database name
+      - POSTGRES_USER=dbadmin # Sets the PostgreSQL username
+      - POSTGRES_PASSWORD_FILE=/run/secrets/db-password
+      - POSTGRES_LOGGING_COLLECTOR=on # Enable logging collector
+      - POSTGRES_LOG_DIRECTORY=/var/log/postgresql/logs # Set the log directory
+      - POSTGRES_LOG_FILENAME=postgresql-%Y-%m-%d_%H%M%S.log # Log filename format
+      - POSTGRES_LOG_CONNECTIONS=on # Log connection attempts
+      - POSTGRES_LOG_DISCONNECTIONS=on # Log disconnection events
+    expose:
+      - 5432
+    healthcheck:
+      test: [
+          "CMD-SHELL",
+          "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB} -h localhost -p $${POSTGRES_PORT}",
+        ] # Specify user and db otherwise might got error that it attempts to use non-existing root user
+      start_period: 60s
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    volumes:
+      - postgres_data:/var/lib/postgresql/data # Mounts volume for data persistence
+      - postgres_logs:/var/log/postgresql/logs # Mount a volume for logs
+    networks:
+      - private # Assigns this service to the shared network
+secrets:
+  db-password:
+    file: secrets/db_password.txt
+
+volumes: # Defines named volumes to persist data
+  letsencrypt: # Name of the volume for Let's Encrypt certificates
+  postgres_data: # Name of the volume for PostgreSQL data
+  postgres_logs: # Name of the volume for PostgreSQL logs
+
+networks: # Defines the Docker network for communication
+  public:
+    driver: bridge # Uses the default bridge network driver
+  private: # Name of the custom network for the services
+    driver: bridge # Uses the default bridge network driver

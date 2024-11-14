@@ -34,7 +34,7 @@ services:
     build:
       context: frontend
       target: development
-    container_name: stoX-frontend
+    container_name: StoX_Frontend
     ports:
       - 3000:3000
     environment:
@@ -43,32 +43,35 @@ services:
       - ./frontend/src:/code/src
     networks:
       - public
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.middlewares.guestbook-ratelimit.ratelimit.average=20"
-      - "traefik.http.routers.guestbook.rule=Host(`zenful.cloud`) && !Method(`POST`)"
-      - "traefik.http.routers.guestbook.entrypoints=websecure"
-      - "traefik.http.routers.guestbook.tls.certresolver=myresolver"
-      - "traefik.http.routers.guestbook.middlewares=guestbook-ratelimit"
-      # Define separate router for POST methods
-      - "traefik.http.middlewares.guestbook-ratelimit-post.ratelimit.average=1"
-      - "traefik.http.middlewares.guestbook-ratelimit-post.ratelimit.period=1m"
-      - "traefik.http.routers.guestbook-post.rule=Host(`zenful.cloud`) && Method(`POST`)"
-      - "traefik.http.routers.guestbook-post.middlewares=guestbook-ratelimit-post"
-      - "traefik.http.routers.guestbook-post.entrypoints=websecure"
-      - "traefik.http.routers.guestbook-post.tls.certresolver=myresolver"
-      # Proxy
-      - "traefik.http.routers.proxy.rule=Host(`proxy.dreamsofcode.io`)"
-      - "traefik.http.routers.proxy.entrypoints=websecure"
-      - "traefik.http.routers.proxy.tls.certresolver=myresolver"
-        # Enable watchtower
-      - "com.centurylinklabs.watchtower.enable=true"
+    # labels:
+    #   - "traefik.enable=true"
+    #   - "traefik.http.middlewares.guestbook-ratelimit.ratelimit.average=20"
+    #   - "traefik.http.routers.guestbook.rule=Host(`zenful.cloud`) && !Method(`POST`)"
+    #   - "traefik.http.routers.guestbook.entrypoints=websecure"
+    #   - "traefik.http.routers.guestbook.tls.certresolver=myresolver"
+    #   - "traefik.http.routers.guestbook.middlewares=guestbook-ratelimit"
+    #   # Define separate router for POST methods
+    #   - "traefik.http.middlewares.guestbook-ratelimit-post.ratelimit.average=1"
+    #   - "traefik.http.middlewares.guestbook-ratelimit-post.ratelimit.period=1m"
+    #   - "traefik.http.routers.guestbook-post.rule=Host(`zenful.cloud`) && Method(`POST`)"
+    #   - "traefik.http.routers.guestbook-post.middlewares=guestbook-ratelimit-post"
+    #   - "traefik.http.routers.guestbook-post.entrypoints=websecure"
+    #   - "traefik.http.routers.guestbook-post.tls.certresolver=myresolver"
+    #   # Proxy
+    #   - "traefik.http.routers.proxy.rule=Host(`proxy.dreamsofcode.io`)"
+    #   - "traefik.http.routers.proxy.entrypoints=websecure"
+    #   - "traefik.http.routers.proxy.tls.certresolver=myresolver"
+    #     # Enable watchtower
+    #   - "com.centurylinklabs.watchtower.enable=true"
+    # deploy:
+    #   mode: replicated
+    #   replicas: 3
     depends_on:
       - backend
   backend:
     build:
       context: backend
-    container_name: stoX-backend-api # Optional name for the container
+    container_name: StoX_Backend # Optional name for the container
     ports:
       - 8000:8000
     environment:
@@ -88,7 +91,7 @@ services:
   db:
     image: postgres:13-alpine
     restart: always
-    container_name: stoX-database
+    container_name: StoX_Database
     secrets:
       - db-password
     environment:

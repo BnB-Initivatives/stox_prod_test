@@ -16,7 +16,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      # - name: Set short git commit SHA
+      # - name: Set short git commit SHA bc it's too long for Docker tags
       #   id: vars
       #   run: |
       #     calculatedSha=$(git rev-parse --short ${{ github.sha }})

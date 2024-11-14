@@ -16,7 +16,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      # - name: Set short git commit SHA bc it's too long for Docker tags
+      # - name: Set short git commit SHA
       #   id: vars
       #   run: |
       #     calculatedSha=$(git rev-parse --short ${{ github.sha }})
@@ -33,7 +33,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: ./frontend
-          file: Dockerfile
+          dockerfile: Dockerfile
           push: true
           tags: ghcr.io/mbjethwa/frontend:latest #${{ env.COMMIT_SHORT_SHA }}
 
@@ -41,7 +41,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: ./backend
-          file: Dockerfile
+          dockerfile: Dockerfile
           push: true
           tags: ghcr.io/mbjethwa/backend:latest #${{ env.COMMIT_SHORT_SHA }}
 

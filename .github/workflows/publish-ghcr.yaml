@@ -35,7 +35,7 @@ jobs:
           context: ./frontend
           dockerfile: Dockerfile
           push: true
-          tags: ghcr.io/bnb-initiatives/stox_prod_test/frontend:latest #${{ env.COMMIT_SHORT_SHA }}
+          tags: ghcr.io/BnB-Initiatives/stox_prod_test/frontend:latest #${{ env.COMMIT_SHORT_SHA }}
 
       - name: Build and push backend Docker image
         uses: docker/build-push-action@v2
@@ -43,7 +43,7 @@ jobs:
           context: ./backend
           dockerfile: Dockerfile
           push: true
-          tags: ghcr.io/bnb-initiatives/stox_prod_test/backend:latest #${{ env.COMMIT_SHORT_SHA }}
+          tags: ghcr.io/BnB-Initiatives/stox_prod_test/backend:latest #${{ env.COMMIT_SHORT_SHA }}
 
 
       # - name: Build and push db Docker image

@@ -48,8 +48,6 @@ docs for more detail on building and pushing.
 - [ ] Design all API routes
 - [ ] Write unit tests for endpoints
 - [x] Set up database connection
-- [ ] Test
-- [ ] delete later
 
 ### Deployment
 

@@ -13,6 +13,7 @@ COPY package.json /code/package.json
 COPY package-lock.json /code/package-lock.json
 # Install dependencies
 RUN npm ci
+
 # Copy the rest of the application source code
 COPY . .
 # Start the React development server

@@ -8,29 +8,29 @@ services:
   #     - "--rolling-restart"
   #   volumes:
   #     - /var/run/docker.sock:/var/run/docker.sock
-   reverse-proxy:
-     image: traefik:v3.2
-     command:
-       - "--api.insecure=true" # Enable insecure API
-       - "--providers.docker=true" # Enable Docker provider
-       - "--log.level=ERROR"
-       - "--accesslog=true"
-       - "--entrypoints.web.address=:80"
-       - "--entrypoints.websecure.address=:443"
-       - "--certificatesresolvers.myresolver.acme.tlschallenge=true"
-       - "--certificatesresolvers.myresolver.acme.email=mjmax36@gmail.com"
-       - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
-       - "--entrypoints.web.http.redirections.entrypoint.to=websecure"
-       - "--entrypoints.web.http.redirections.entrypoint.scheme=https"
-       - "--entryPoints.web.forwardedHeaders.insecure"
-       - "--entryPoints.websecure.forwardedHeaders.insecure"
-     ports:
-       - "80:80"
-       - "443:443"
-       - "8080:8080"
-     volumes:
-       - letsencrypt:/letsencrypt
-       - /var/run/docker.sock:/var/run/docker.sock
+  reverse-proxy:
+    image: traefik:v3.2
+    command:
+      - "--api.insecure=true" # Enable insecure API
+      - "--providers.docker=true" # Enable Docker provider
+      - "--log.level=ERROR"
+      - "--accesslog=true"
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.websecure.address=:443"
+      - "--certificatesresolvers.myresolver.acme.tlschallenge=true"
+      - "--certificatesresolvers.myresolver.acme.email=mjmax36@gmail.com"
+      - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
+      - "--entrypoints.web.http.redirections.entrypoint.to=websecure"
+      - "--entrypoints.web.http.redirections.entrypoint.scheme=https"
+      - "--entryPoints.web.forwardedHeaders.insecure"
+      - "--entryPoints.websecure.forwardedHeaders.insecure"
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8080:8080"
+    volumes:
+      - letsencrypt:/letsencrypt
+      - /var/run/docker.sock:/var/run/docker.sock
   frontend:
     build:
       context: frontend

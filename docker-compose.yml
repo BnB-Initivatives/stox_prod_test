@@ -17,9 +17,9 @@ services:
       - "--accesslog=true"
       - "--entrypoints.web.address=:80"
       - "--entrypoints.websecure.address=:443"
-      # - "--certificatesresolvers.myresolver.acme.tlschallenge=true"
-      # - "--certificatesresolvers.myresolver.acme.email=mjmax36@gmail.com"
-      # - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
+      - "--certificatesresolvers.myresolver.acme.tlschallenge=true"
+      - "--certificatesresolvers.myresolver.acme.email=mjmax36@gmail.com"
+      - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
       - "--entrypoints.web.http.redirections.entrypoint.to=websecure"
       - "--entrypoints.web.http.redirections.entrypoint.scheme=https"
       - "--entryPoints.web.forwardedHeaders.insecure"
@@ -55,8 +55,8 @@ services:
     build:
       context: backend
     container_name: StoX_Backend # Optional name for the container
-    ports:
-      - 8000:8000
+    # ports:
+    #   - 8000:8000
     environment:
       - POSTGRES_SERVER=db
       - POSTGRES_PORT=5432

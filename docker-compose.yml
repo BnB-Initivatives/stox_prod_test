@@ -114,6 +114,6 @@ volumes: # Defines named volumes to persist data
   postgres_logs: # Name of the volume for PostgreSQL logs
 networks: # Defines the Docker network for communication
   public:
-    driver: NAT # Uses the default bridge network driver
+    driver: bridge # Uses the default bridge network driver
   private: # Name of the custom network for the services
     driver: bridge # Uses the default bridge network driver

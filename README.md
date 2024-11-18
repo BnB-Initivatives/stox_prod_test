@@ -53,11 +53,11 @@ docs for more detail on building and pushing.
 
 - [x] Set up repository structure
 - [x] Set up Docker files and connection between 3 containers (backend, frontend, database)
-- [ ] Set up VPS
-- [ ] Set up HTTPS
-- [ ] Set up SSH hardning
+- [x] Set up VPS
+- [x] Set up HTTPS
+- [x] Set up SSH hardning
 - [ ] Set up traefick
-- [ ] Set up CI/CD
+- [x] Set up CI/CD
 - [ ] Set up watchtower
 - [ ] Configure production environment
 - [ ] Test deployment process

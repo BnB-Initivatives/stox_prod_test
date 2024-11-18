@@ -17,20 +17,19 @@ services:
       - "--accesslog=true"
       - "--entrypoints.web.address=:80"
       - "--entrypoints.websecure.address=:443"
-      # - "--certificatesresolvers.myresolver.acme.tlschallenge=true"
-      # - "--certificatesresolvers.myresolver.acme.email=mjmax36@gmail.com"
-      # - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
-      # - "--entrypoints.web.http.redirections.entrypoint.to=websecure"
-      # - "--entrypoints.web.http.redirections.entrypoint.scheme=https"
-      # - "--entryPoints.web.forwardedHeaders.insecure"
-      # - "--entryPoints.websecure.forwardedHeaders.insecure"
+      - "--certificatesresolvers.myresolver.acme.tlschallenge=true"
+      - "--certificatesresolvers.myresolver.acme.email=mjmax36@gmail.com"
+      - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
+      - "--entrypoints.web.http.redirections.entrypoint.to=websecure"
+      - "--entrypoints.web.http.redirections.entrypoint.scheme=https"
+      - "--entryPoints.web.forwardedHeaders.insecure"
+      - "--entryPoints.websecure.forwardedHeaders.insecure"
     ports:
       - "80:80"
       - "443:443"
       - "8080:8080"
-      - "8000:8000"
-      - "3000:3000"
-
+      # - "8000:8000"
+      # - "3000:3000"
     volumes:
       - letsencrypt:/letsencrypt
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
@@ -52,10 +51,10 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.frontend.rule=Host(`stox.systems`) && !Method(`POST`)"
       - "traefik.http.services.frontend.loadbalancer.server.port=80"
-      # - "traefik.http.routers.frontend.entrypoints=websecure"
-      # - "traefik.http.routers.frontend.tls.certresolver=myresolver"
-      # - "traefik.http.middlewares.frontend-ratelimit.ratelimit.average=20"
-      # - "traefik.http.routers.frontend.middlewares=frontend-ratelimit"
+      - "traefik.http.routers.frontend.entrypoints=websecure"
+      - "traefik.http.routers.frontend.tls.certresolver=myresolver"
+      - "traefik.http.middlewares.frontend-ratelimit.ratelimit.average=20"
+      - "traefik.http.routers.frontend.middlewares=frontend-ratelimit"
     depends_on:
       - backend
     networks:
@@ -85,6 +84,7 @@ services:
     depends_on:
       db:
         condition: service_healthy
+
   db:
     image: postgres:13-alpine
     restart: always
@@ -118,6 +118,7 @@ services:
       - postgres_logs:/var/log/postgresql/logs # Mount a volume for logs
     networks:
       - private # Assigns this service to the shared network
+
 secrets:
   db-password:
     file: secrets/db_password.txt

@@ -63,7 +63,7 @@ services:
       context: backend
     container_name: StoX_Backend # Optional name for the container
     ports:
-      - 8000:8000
+      - 3000:3000
     environment:
       - POSTGRES_SERVER=db
       - POSTGRES_PORT=5432
@@ -73,7 +73,7 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.backend.rule=Host(`stox.systems`) && PathPrefix(`/api`)"
-      - "traefik.http.services.backend.loadbalancer.server.port=8000"
+      - "traefik.http.services.backend.loadbalancer.server.port=3000"
     networks:
       - public
       - private # Assigns this service to the shared network

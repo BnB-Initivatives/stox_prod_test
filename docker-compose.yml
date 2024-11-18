@@ -77,7 +77,6 @@ services:
     networks:
       - public
       - private # Assigns this service to the shared network
-      - web
     secrets:
       - db-password
     depends_on:

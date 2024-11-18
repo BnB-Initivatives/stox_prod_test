@@ -37,7 +37,7 @@ services:
       target: development
     container_name: StoX_Frontend
     environment:
-      - REACT_APP_API_URL=http://localhost:8000/
+      - REACT_APP_API_URL=http://localhost:80/
     volumes:
       - ./frontend/src:/code/src
     networks:
@@ -55,8 +55,8 @@ services:
     build:
       context: backend
     container_name: StoX_Backend # Optional name for the container
-    # ports:
-    #   - 8000:8000
+    ports:
+      - 8000:8000
     environment:
       - POSTGRES_SERVER=db
       - POSTGRES_PORT=5432

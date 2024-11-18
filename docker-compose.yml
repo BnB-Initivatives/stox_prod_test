@@ -32,7 +32,7 @@ services:
       - letsencrypt:/letsencrypt
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
     networks:
-      - web
+      - public
 
   frontend:
     build:
@@ -57,7 +57,6 @@ services:
       - backend
     networks:
       - public
-      - web
 
   backend:
     build:
@@ -128,7 +127,7 @@ volumes: # Defines named volumes to persist data
 networks: # Defines the Docker network for communication
   public:
     driver: bridge # Uses the default bridge network driver
+    external: true
   private: # Name of the custom network for the services
     driver: bridge # Uses the default bridge network driver
-  web:
-    external: true
+

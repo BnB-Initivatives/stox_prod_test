@@ -30,7 +30,10 @@ services:
       - "8080:8080"
     volumes:
       - letsencrypt:/letsencrypt
-      - /var/run/docker.sock:/var/run/docker.sock
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+    networks:
+      - web
+
   frontend:
     build:
       context: frontend
@@ -42,17 +45,20 @@ services:
       - 80:8000
     volumes:
       - ./frontend/src:/code/src
-    networks:
-      - public
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.frontend.rule=Host(`stox.systems`) && !Method(`POST`)"
-      - "traefik.http.routers.frontend.entrypoints=websecure"
-      - "traefik.http.routers.frontend.tls.certresolver=myresolver"
-      - "traefik.http.middlewares.frontend-ratelimit.ratelimit.average=20"
-      - "traefik.http.routers.frontend.middlewares=frontend-ratelimit"
+      - "traefik.http.services.frontend.loadbalancer.server.port=80"
+      # - "traefik.http.routers.frontend.entrypoints=websecure"
+      # - "traefik.http.routers.frontend.tls.certresolver=myresolver"
+      # - "traefik.http.middlewares.frontend-ratelimit.ratelimit.average=20"
+      # - "traefik.http.routers.frontend.middlewares=frontend-ratelimit"
     depends_on:
       - backend
+    networks:
+      - public
+      - web
+
   backend:
     build:
       context: backend
@@ -65,9 +71,14 @@ services:
       - POSTGRES_USER=dbadmin
       - POSTGRES_DB=stox
       - POSTGRES_PASSWORD_FILE=/run/secrets/db-password
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.backend.rule=Host(`stox.systems`) && PathPrefix(`/api`)"
+      - "traefik.http.services.backend.loadbalancer.server.port=8000"
     networks:
       - public
       - private # Assigns this service to the shared network
+      - web
     secrets:
       - db-password
     depends_on:
@@ -119,3 +130,5 @@ networks: # Defines the Docker network for communication
     driver: bridge # Uses the default bridge network driver
   private: # Name of the custom network for the services
     driver: bridge # Uses the default bridge network driver
+  web:
+    external: true

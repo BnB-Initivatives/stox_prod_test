@@ -3,7 +3,7 @@
 FROM node:lts AS development
 
 ENV CI=true
-ENV PORT=3000
+ENV PORT=80
 ARG REACT_APP_API_URL
 ENV REACT_APP_API_URL=$REACT_APP_API_URL
 # Set the working directory

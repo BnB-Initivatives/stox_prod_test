@@ -83,9 +83,9 @@ services:
     secrets:
       - db-password
     depends_on:
-      - reverse-proxy
-      - db:
-          condition: service_healthy
+      # - reverse-proxy
+      db:
+        condition: service_healthy
 
   db:
     image: postgres:13-alpine

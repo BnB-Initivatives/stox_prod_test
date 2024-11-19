@@ -21,7 +21,7 @@ services:
       - "--entrypoints.websecure.address=:443"
       - "--certificatesresolvers.myresolver.acme.tlschallenge=true"
       - "--certificatesresolvers.myresolver.acme.email=mjmax36@gmail.com"
-      - "--certificatesresolvers.myresolver.acme.storage=./proxy/acme.json"
+      - "--certificatesresolvers.myresolver.acme.storage=./acme.json"
       - "--entrypoints.web.http.redirections.entrypoint.to=websecure"
       - "--entrypoints.web.http.redirections.entrypoint.scheme=https"
       - "--entryPoints.web.forwardedHeaders.insecure"
@@ -45,7 +45,7 @@ services:
       - /etc/localtime:/etc/localtime:ro
       # - ./proxy/traefik.yml:/etc/traefik/traefik.yml
       - ./proxy/acme.json:/acme.json
-      # - ./proxy/config.yml:/config.yml
+      - ./proxy/config.yml:/config.yml
     networks:
       - public
 
@@ -67,8 +67,8 @@ services:
       # - "traefik.http.middlewares.frontend-redirect.redirectscheme.scheme=https"
       # - "traefik.http.middlewares.sslheader.headers.customrequestheaders.X-Forwarded-Proto=https"
       # - "traefik.http.routers.frontend.middlewares=traefik-https-redirect"
-      # - "traefik.http.routers.frontend-secure.entrypoints=https"
-      # - "traefik.http.routers.frontend-secure.rule=Host(`stox.systems`)"
+      - "traefik.http.routers.frontend-secure.entrypoints=websecure"
+      - "traefik.http.routers.frontend-secure.rule=Host(`stox.systems`)"
       # - "traefik.http.routers.frontend-secure.tls=true"
       # - "traefik.http.routers.frontend-secure.rule=Host(`stox.systems`)"
       - "traefik.http.routers.frontend-secure.tls.certresolver=myresolver"
@@ -102,6 +102,9 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.backend.rule=(Host(`.stox.systems`) && PathPrefix(`/api`))"
+      - "traefik.http.routers.backend-secure.entrypoints=websecure"
+      - "traefik.http.routers.backend-secure.rule=Host(`stox.systems`) && PathPrefix(`/api`)"
+      - "traefik.http.routers.backend-secure.tls.certresolver=myresolver"
       # - "traefik.http.services.backend.loadbalancer.server.port=8000"
     networks:
       - public

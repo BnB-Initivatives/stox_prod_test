@@ -31,7 +31,7 @@ services:
       # - "8000:8000"
       # - "3000:3000"
     volumes:
-      - letsencrypt:/letsencrypt
+      - ./letsencrypt:/letsencrypt
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
     networks:
       - public
@@ -44,7 +44,7 @@ services:
     environment:
       - REACT_APP_API_URL=http://localhost:3000
     ports:
-      - 3000:3000
+      - 3000:80
     volumes:
       - ./frontend/src:/code/src
     labels:

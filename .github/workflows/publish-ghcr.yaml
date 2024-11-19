@@ -28,7 +28,6 @@ jobs:
           registry: ghcr.io
           username: mbjethwa
           password: ${{ secrets.GIT_AUTH }}
-
       - name: Build and push frontend Docker image
         uses: docker/build-push-action@v2
         with:
@@ -37,7 +36,6 @@ jobs:
           push: true
          tags: ghcr.io/bnb-Initivatives/frontend:latest
           # tags: ghcr.io/mbjethwa/frontend:latest #${{ env.COMMIT_SHORT_SHA }}
-
       - name: Build and push backend Docker image
         uses: docker/build-push-action@v2
         with:

@@ -28,23 +28,24 @@ jobs:
           registry: ghcr.io
           username: mbjethwa
           password: ${{ secrets.GIT_AUTH }}
+
       - name: Build and push frontend Docker image
         uses: docker/build-push-action@v2
         with:
           context: ./frontend
           dockerfile: Dockerfile
           push: true
-         tags: ghcr.io/bnb-Initivatives/frontend:latest
+          tags: ghcr.io/bnb-Initivatives/frontend:latest
           # tags: ghcr.io/mbjethwa/frontend:latest #${{ env.COMMIT_SHORT_SHA }}
+
       - name: Build and push backend Docker image
         uses: docker/build-push-action@v2
         with:
           context: ./backend
           dockerfile: Dockerfile
           push: true
-         tags: ghcr.io/bnb-Initivatives/backend:latest
+          tags: ghcr.io/bnb-Initivatives/backend:latest
           # tags: ghcr.io/mbjethwa/backend:latest #${{ env.COMMIT_SHORT_SHA }}
-
 
       # - name: Build and push db Docker image
       #   uses: docker/build-push-action@v2

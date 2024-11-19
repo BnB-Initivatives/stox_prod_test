@@ -56,12 +56,13 @@ services:
     container_name: StoX_Frontend
     # environment:
     #   - REACT_APP_API_URL=http://localhost:80
-    # ports:
-    #   - 3000:3000
+    ports:
+      - 3000:3000
     volumes:
       - ./frontend/src:/code/src
     labels:
       - "traefik.enable=true"
+      - "traefik.http.services.frontend.loadbalancer.server.port=3000"
       # - "traefik.http.routers.frontend.entrypoint=http" # Specifies the domain name
       - "traefik.http.routers.frontend.rule=Host(`stox.systems`)"
       # - "traefik.http.middlewares.frontend-redirect.redirectscheme.scheme=https"

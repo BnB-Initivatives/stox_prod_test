@@ -17,20 +17,21 @@ certificatesResolvers:
   myresolver:
     acme:
       email: mjmax36@gmail.com
-      storage: /acme.json
-      tlsChallenge: {}
+      storage: acme.json
+      httpChallenge:
+        entryPoint: web
+      # tlsChallenge: {}
+# http:
+#   routers:
+#     my-router:
+#       rule: "Host(`stox.systems`)"
+#       entryPoints:
+#         - web
+#       middlewares:
+#         - https-redirect
+#       service: my-service
 
-http:
-  routers:
-    my-router:
-      rule: "Host(`stox.systems`)"
-      entryPoints:
-        - web
-      middlewares:
-        - https-redirect
-      service: my-service
-
-middlewares:
-  https-redirect:
-    redirectScheme:
-      scheme: https
+# middlewares:
+#   https-redirect:
+#     redirectScheme:
+#       scheme: https

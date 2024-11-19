@@ -73,8 +73,8 @@ services:
       # - "traefik.http.routers.frontend-secure.tls=true"
       # - "traefik.http.routers.frontend-secure.rule=Host(`stox.systems`)"
       - "traefik.http.routers.frontend-secure.tls.certresolver=myresolver"
-      - "traefik.http.routers.frontend-secure.tls.domains[0].main=stox.systems"
-      - "traefik.http.routers.frontend-secure.tls.domains[0].sans=*.stox.systems"
+      # - "traefik.http.routers.frontend-secure.tls.domains[0].main=stox.systems"
+      # - "traefik.http.routers.frontend-secure.tls.domains[0].sans=*.stox.systems"
       # - "traefik.http.routers.frontend-secure.service=frontend"
 
       # - "traefik.http.routers.frontend-secure.middlewares=traefik-auth"
@@ -103,6 +103,7 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.backend.rule=(Host(`.stox.systems`) && PathPrefix(`/api`))"
+      - "traefik.http.services.frontend.loadbalancer.server.port=8000"
       - "traefik.http.routers.backend-secure.entrypoints=websecure"
       - "traefik.http.routers.backend-secure.rule=Host(`stox.systems`) && PathPrefix(`/api`)"
       - "traefik.http.routers.backend-secure.tls.certresolver=myresolver"

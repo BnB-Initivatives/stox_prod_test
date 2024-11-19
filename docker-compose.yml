@@ -16,10 +16,10 @@ services:
       - "--log.level=ERROR"
       - "--accesslog=true"
       - "--entrypoints.web.address=:80"
-      # - "--entrypoints.websecure.address=:443"
+      - "--entrypoints.websecure.address=:443"
       # - "--certificatesresolvers.myresolver.acme.tlschallenge=true"
       # - "--certificatesresolvers.myresolver.acme.email=mjmax36@gmail.com"
-      # - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
+      # - "--certificatesresolvers.myresolver.acme.storage=./letsencrypt/acme.json"
       # - "--entrypoints.web.http.redirections.entrypoint.to=websecure"
       # - "--entrypoints.web.http.redirections.entrypoint.scheme=https"
       # - "--entryPoints.web.forwardedHeaders.insecure"
@@ -43,8 +43,8 @@ services:
     container_name: StoX_Frontend
     environment:
       - REACT_APP_API_URL=http://localhost:3000
-    ports:
-      - 3000:80
+    # ports:
+    #   - 3000:3000
     volumes:
       - ./frontend/src:/code/src
     labels:

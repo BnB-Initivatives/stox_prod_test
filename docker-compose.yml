@@ -10,6 +10,8 @@ services:
   #     - /var/run/docker.sock:/var/run/docker.sock
   reverse-proxy:
     image: traefik:v3.2
+    container_name: StoX_ReverseProxy
+    restart: unless-stopped
     command:
       - "--api.insecure=true" # Enable insecure API
       - "--providers.docker=true" # Enable Docker provider
@@ -17,22 +19,33 @@ services:
       - "--accesslog=true"
       - "--entrypoints.web.address=:80"
       - "--entrypoints.websecure.address=:443"
-      # - "--certificatesresolvers.myresolver.acme.tlschallenge=true"
-      # - "--certificatesresolvers.myresolver.acme.email=mjmax36@gmail.com"
-      # - "--certificatesresolvers.myresolver.acme.storage=./letsencrypt/acme.json"
-      # - "--entrypoints.web.http.redirections.entrypoint.to=websecure"
-      # - "--entrypoints.web.http.redirections.entrypoint.scheme=https"
-      # - "--entryPoints.web.forwardedHeaders.insecure"
-      # - "--entryPoints.websecure.forwardedHeaders.insecure"
+      - "--certificatesresolvers.myresolver.acme.tlschallenge=true"
+      - "--certificatesresolvers.myresolver.acme.email=mjmax36@gmail.com"
+      - "--certificatesresolvers.myresolver.acme.storage=./proxy/acme.json"
+      - "--entrypoints.web.http.redirections.entrypoint.to=websecure"
+      - "--entrypoints.web.http.redirections.entrypoint.scheme=https"
+      - "--entryPoints.web.forwardedHeaders.insecure"
+      - "--entryPoints.websecure.forwardedHeaders.insecure"
     ports:
       - "80:80"
       - "443:443"
       - "8080:8080"
       # - "8000:8000"
       # - "3000:3000"
+    # environment:
+    # CF_DNS_API_TOKEN_FILE: /run/secrets/cf_dns_api_token
+    #   cf_dns_api_token: ${CF_DNS_API_TOKEN}
+    # secrets:
+    #   - cf_dns_api_token
+    env_file: .env
+
     volumes:
-      - ./letsencrypt:/letsencrypt
-      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+      # - ./letsencrypt:/letsencrypt
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /etc/localtime:/etc/localtime:ro
+      # - ./proxy/traefik.yml:/etc/traefik/traefik.yml
+      - ./proxy/acme.json:/acme.json
+      # - ./proxy/config.yml:/config.yml
     networks:
       - public
 
@@ -49,9 +62,22 @@ services:
       - ./frontend/src:/code/src
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.frontend.rule=Host(`stox.systems`) && !Method(`POST`)"
+      # - "traefik.http.routers.frontend.entrypoint=http" # Specifies the domain name
+      - "traefik.http.routers.frontend.rule=Host(`stox.systems`)"
+      # - "traefik.http.middlewares.frontend-redirect.redirectscheme.scheme=https"
+      # - "traefik.http.middlewares.sslheader.headers.customrequestheaders.X-Forwarded-Proto=https"
+      # - "traefik.http.routers.frontend.middlewares=traefik-https-redirect"
+      # - "traefik.http.routers.frontend-secure.entrypoints=https"
+      # - "traefik.http.routers.frontend-secure.rule=Host(`stox.systems`)"
+      # - "traefik.http.routers.frontend-secure.tls=true"
+      # - "traefik.http.routers.frontend-secure.rule=Host(`stox.systems`)"
+      - "traefik.http.routers.frontend-secure.tls.certresolver=myresolver"
+      - "traefik.http.routers.frontend-secure.tls.domains[0].main=stox.systems"
+      - "traefik.http.routers.frontend-secure.tls.domains[0].sans=*.stox.systems"
+      # - "traefik.http.routers.frontend-secure.service=frontend"
+
+      # - "traefik.http.routers.frontend-secure.middlewares=traefik-auth"
       # - "traefik.http.services.frontend.loadbalancer.server.port=80"
-      # - "traefik.http.routers.frontend.entrypoints=websecure"
       # - "traefik.http.routers.frontend.tls.certresolver=myresolver"
       # - "traefik.http.middlewares.frontend-ratelimit.ratelimit.average=20"
       # - "traefik.http.routers.frontend.middlewares=frontend-ratelimit"
@@ -124,9 +150,11 @@ services:
 secrets:
   db-password:
     file: secrets/db_password.txt
+  # cf_dns_api_token:
+  #   file: secrets/cf_dns_api_token.txt
 
 volumes: # Defines named volumes to persist data
-  letsencrypt: # Name of the volume for Let's Encrypt certificates
+  # letsencrypt: # Name of the volume for Let's Encrypt certificates
   postgres_data: # Name of the volume for PostgreSQL data
   postgres_logs: # Name of the volume for PostgreSQL logs
 networks: # Defines the Docker network for communication

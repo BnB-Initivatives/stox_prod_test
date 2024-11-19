@@ -41,8 +41,8 @@ services:
       context: frontend
       target: development
     container_name: StoX_Frontend
-    # environment:
-    #   - REACT_APP_API_URL=http://localhost:3000
+    environment:
+      - REACT_APP_API_URL=http://localhost:80
     # ports:
     #   - 3000:3000
     volumes:

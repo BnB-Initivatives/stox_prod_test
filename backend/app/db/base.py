@@ -5,10 +5,10 @@ from sqlalchemy.ext.declarative import declarative_base
 from app.core.config import settings
 
 # SQLALCHEMY_DATABASE_URL = 'sqlite:///./app.db'
-SQLALCHEMY_DATABASE_URI = str(
-    settings.SQLALCHEMY_DATABASE_URI
+SQLALCHEMY_DATABASE_URL = str(
+    settings.SQLALCHEMY_DATABASE_URL
 )  # "postgresql+psycopg://dbadmin:test123@db:5432/stox"
-engine = create_engine(SQLALCHEMY_DATABASE_URI)  # str(settings.SQLALCHEMY_DATABASE_URI)
+engine = create_engine(SQLALCHEMY_DATABASE_URL)  # str(settings.SQLALCHEMY_DATABASE_URI)
 
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 

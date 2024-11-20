@@ -9,7 +9,18 @@ from alembic import context
 
 # Import the Base and models
 from app.db.base import Base
-from app.db.models.rbac import User, Role, Permission, UserRole, RolePermission
+
+# Ensure all models are imported here in correct order to satisfy foreign key constraints
+from app.db.models import (
+    item_category,
+    unit_of_measure,
+    employee,
+    rbac,
+    vendor,
+    department,
+    item,
+)
+
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
@@ -33,7 +44,7 @@ target_metadata = Base.metadata
 # ... etc.
 def get_url():
     """Get dynamic database connection string"""
-    return str(settings.SQLALCHEMY_DATABASE_URI)
+    return str(settings.SQLALCHEMY_DATABASE_URL)
 
 
 def run_migrations_offline() -> None:

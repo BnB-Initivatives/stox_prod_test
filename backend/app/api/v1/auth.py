@@ -10,38 +10,52 @@ from app.core.config import settings
 from app.core.security import authenticate_user, create_access_token
 
 
-router = APIRouter(prefix="/auth", tags=["auth"])
+router = APIRouter(prefix="/auth", tags=["Authentication"])
 
 db_dependency = Annotated[Session, Depends(get_db)]
-
-
-@router.post("/submit")
-async def submit_form(
-    username: str = Form(...),  # Use Form to receive form data
-    user_id: int = Form(...),  # Assuming user_id is an integer
-):
-    # Implement your logic, e.g., save to a database or process the data
-    return {"detail": "OK", "username": username, "user_id": user_id}
 
 
 @router.post(
     "/token"
 )  # full route will be /auth/token matching the tokenUrl of OAuth2PasswordBearer
-async def get_access_token(
+def get_access_token(
     form_data: Annotated[OAuth2PasswordRequestForm, Depends()],
     db: db_dependency,
+    remember_me: bool = Form(False),  # Add remember_me field with default value False
 ):
+    """
+    Handles the process of obtaining an access token for a user.
+
+    Args:
+
+        - form_data (OAuth2PasswordRequestForm): The form data containing the username and password.
+        - db (Session): The database session dependency.
+        - remember_me (Bool): The form data containing the remember_me field to return a token with longer validity. Default is False.
+
+    Returns:
+
+        - dict: A dictionary containing the access token and token type. Example:
+        {
+            "access_token": "eyJhbGckpXVCJ9.eyJzdWIiOiJ1c2VyM",
+            "token_type": "bearer"
+        }
+
+    Raises:
+
+        - HTTPException: If the user cannot be authenticated, or if any database or unexpected errors occur.
+    """
     try:
-        print(form_data)
-        user = await authenticate_user(form_data.username, form_data.password, db)
+        # print(form_data)
+        # print(remember_me)
+        user = authenticate_user(form_data.username, form_data.password, db)
         if not user:
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
                 detail=f"Could not validate the user with username {form_data.username}.",
             )
-        token = await create_access_token(user.user_name, user.user_id)  # type: ignore
+        token = create_access_token(user.user_name, user.user_id, remember_me=remember_me)  # type: ignore
 
-        return {"access_token": token, "token_type": settings.ACCESS_TOKEN_TYPE}
+        return {"access_token": token, "token_type": settings.ACCESS_TOKEN_TYPE, "roles": user.roles}
 
     except IntegrityError as e:
         logging.error(f"Integrity error occurred: {str(e)}")

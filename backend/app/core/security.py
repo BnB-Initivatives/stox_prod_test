@@ -10,33 +10,43 @@ from starlette import status
 from app.core.config import settings
 from app.db.models.rbac import User
 from app.db.base import get_db
+from app.services.user_service import UserService
 
 
 db_dependency = Annotated[Session, Depends(get_db)]
 
 
-async def authenticate_user(username: str, password: str, db: db_dependency):
+def authenticate_user(username: str, password: str, db: db_dependency):
     # Fetch the user from DB
     stmt = select(User).where(User.user_name == username)
     user_model = db.execute(stmt).scalars().first()
-    # print(f"User: {user_model.user_name}")
-    # print(f"Username: {username} - Pass: {password}")
+    # Check if user exists and is enabled
     if user_model is None:
-        return None
+        return False
+    if not user_model.enabled:
+        return False
+
     # Verify credentials against DB
-    if not settings.bcrypt_context.verify(password, user_model.hashed_password):  # type: ignore
+    # if not settings.bcrypt_context.verify(password, user_model.hashed_password):  # type: ignore
+    if not UserService().check_password(user_model, password):
         return False
 
     return user_model
 
 
-async def create_access_token(
-    username: str, user_id: int, expires_delta: Optional[timedelta] = None
+def create_access_token(
+    username: str,
+    user_id: int,
+    expires_delta: Optional[timedelta] = None,
+    remember_me: bool = False,
 ):
     encode = {"sub": username, "id": user_id}
-
     if expires_delta:
         expire = datetime.now(timezone.utc) + expires_delta
+    elif remember_me:
+        expire = datetime.now(timezone.utc) + timedelta(
+            days=settings.ACCESS_TOKEN_EXPIRE_DAYS_WITH_REMEMBER_ME
+        )
     else:
         expire = datetime.now(timezone.utc) + timedelta(
             minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES
@@ -75,13 +85,23 @@ def get_current_user(
 
         return user_model
 
-    except JWTError:
+    except Exception:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED, detail="Could not validate user."
         )
 
 
 def check_permissions(required_permission: str):
+    """
+    Check if the current user has the required permission.
+
+    Args:
+        required_permission (str): The permission required to perform an action.
+
+    Returns:
+        function: A permission checker function that raises an HTTPException if the user lacks the required permission.
+    """
+
     def permission_checker(user: User = Depends(get_current_user)):
         if not any(
             permission.name == required_permission

@@ -1,0 +1,966 @@
+// Permissions
+[
+    {
+        "name": "create users",
+        "description": "Create users"
+    },
+    {
+        "name": "read users",
+        "description": "Read users"
+    },
+    {
+        "name": "update users",
+        "description": "Update users"
+    },
+    {
+        "name": "delete users",
+        "description": "Delete users"
+    },
+    {
+        "name": "create roles",
+        "description": "Create roles"
+    },
+    {
+        "name": "read roles",
+        "description": "Read roles"
+    },
+    {
+        "name": "update roles",
+        "description": "Update roles"
+    },
+    {
+        "name": "delete roles",
+        "description": "Delete roles"
+    },
+    {
+        "name": "create permissions",
+        "description": "Create permissions"
+    },
+    {
+        "name": "read permissions",
+        "description": "Read permissions"
+    },
+    {
+        "name": "update permissions",
+        "description": "Update permissions"
+    },
+    {
+        "name": "delete permissions",
+        "description": "Delete permissions"
+    },
+    {
+        "name": "assign permissions",
+        "description": "Assign permissions"
+    },
+    {
+        "name": "revoke permissions",
+        "description": "Revoke permissions"
+    },
+    {
+        "name": "assign roles",
+        "description": "Assign roles"
+    },
+    {
+        "name": "revoke roles",
+        "description": "Revoke roles"
+    },
+    {
+        "name": "create departments",
+        "description": "Create departments"
+    },
+    {
+        "name": "read departments",
+        "description": "Read departments"
+    },
+    {
+        "name": "update departments",
+        "description": "Update departments"
+    },
+    {
+        "name": "delete departments",
+        "description": "Delete departments"
+    },
+    {
+        "name": "create employees",
+        "description": "Create employees"
+    },
+    {
+        "name": "read employees",
+        "description": "Read employees"
+    },
+    {
+        "name": "update employees",
+        "description": "Update employees"
+    },
+    {
+        "name": "delete employees",
+        "description": "Delete employees"
+    },
+    {
+        "name": "create item categories",
+        "description": "Create item categories"
+    },
+    {
+        "name": "read item categories",
+        "description": "Read item categories"
+    },
+    {
+        "name": "update item categories",
+        "description": "Update item categories"
+    },
+    {
+        "name": "delete item categories",
+        "description": "Delete item categories"
+    },
+    {
+        "name": "create unit of measure",
+        "description": "Create unit of measure"
+    },
+    {
+        "name": "read unit of measure",
+        "description": "Read unit of measure"
+    },
+    {
+        "name": "update unit of measure",
+        "description": "Update unit of measure"
+    },
+    {
+        "name": "delete unit of measure",
+        "description": "Delete unit of measure"
+    },
+    {
+        "name": "create vendors",
+        "description": "Create vendors"
+    },
+    {
+        "name": "read vendors",
+        "description": "Read vendors"
+    },
+    {
+        "name": "update vendors",
+        "description": "Update vendors"
+    },
+    {
+        "name": "delete vendors",
+        "description": "Delete vendors"
+    },
+    {
+        "name": "create items",
+        "description": "Create items"
+    },
+    {
+        "name": "read items",
+        "description": "Read items"
+    },
+    {
+        "name": "update items",
+        "description": "Update items"
+    },
+    {
+        "name": "delete items",
+        "description": "Delete items"
+    },
+    {
+        "name": "create invoices",
+        "description": "Create invoices"
+    },
+    {
+        "name": "read invoices",
+        "description": "Read invoices"
+    },
+    {
+        "name": "update invoices",
+        "description": "Update invoices"
+    },
+    {
+        "name": "delete invoices",
+        "description": "Delete invoices"
+    },
+    {
+        "name": "create transactions",
+        "description": "Create transactions"
+    },
+    {
+        "name": "read transactions",
+        "description": "Read transactions"
+    },
+    {
+        "name": "update transactions",
+        "description": "Update transactions"
+    },
+    {
+        "name": "delete transactions",
+        "description": "Delete transactions"
+    },
+    {
+        "name": "create logs",
+        "description": "Create logs"
+    },
+    {
+        "name": "read logs",
+        "description": "Read logs"
+    },
+    {
+        "name": "update logs",
+        "description": "Update logs"
+    },
+    {
+        "name": "delete logs",
+        "description": "Delete logs"
+    }
+]
+// Roles_Permissions
+[
+    {
+        "name": "Super User",
+        "description": "Super User role",
+        "permissions": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26,
+            27,
+            28,
+            29,
+            30,
+            31,
+            32,
+            33,
+            34,
+            35,
+            36,
+            37,
+            38,
+            39,
+            40,
+            41,
+            42,
+            43,
+            44,
+            45,
+            46,
+            47,
+            48,
+            49,
+            50,
+            51,
+            52
+        ]
+    },
+    {
+        "name": "Manager",
+        "description": "Manager role",
+        "permissions": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26,
+            27,
+            28,
+            29,
+            30,
+            31,
+            32,
+            33,
+            34,
+            35,
+            36,
+            37,
+            38,
+            39,
+            40,
+            41,
+            42,
+            43,
+            44,
+            45,
+            46,
+            47,
+            48,
+            49,
+            50,
+            51,
+            52
+        ]
+    },
+    {
+        "name": "Receiver",
+        "description": "Receiver role",
+        "permissions": [
+            41,
+            42,
+            43,
+            44
+        ]
+    },
+    {
+        "name": "Retail Staff",
+        "description": "Retail Staff role",
+        "permissions": [
+            45,
+            46,
+            47,
+            48
+        ]
+    }
+]
+// Roles only
+[
+    {
+        "name": "Super User",
+        "description": "Super User role"
+    },
+    {
+        "name": "Manager",
+        "description": "Manager role"
+    },
+    {
+        "name": "Receiver",
+        "description": "Receiver role"
+    },
+    {
+        "name": "Retail Staff",
+        "description": "Retail Staff role"
+    }
+]
+
+// Users only
+[
+    {
+        "user_name": "SuperUser",
+        "password": "12345678"
+    },
+    {
+        "user_name": "Manager",
+        "password": "12345678"
+    },
+    {
+        "user_name": "Receiver",
+        "password": "12345678"
+    },
+    {
+        "user_name": "RetailStaff",
+        "password": "12345678"
+    }
+]
+
+// Departments
+[
+    {
+        "name": "Operations",
+        "description": "Operations"
+    },
+    {
+        "name": "Tim Horton",
+        "description": "Tim Horton"
+    },
+    {
+        "name": "Starbucks",
+        "description": "Starbucks"
+    },
+    {
+
+        "name": "Bento Sushi",
+        "description": "Bento Sushi"
+    },
+    {
+
+        "name": "Osmos",
+        "description": "Osmos"
+    }
+]
+
+// Vendors
+[
+    {
+        "name": "Vendor 1",
+        "description": "Vendor 1"
+    },
+    {
+        "name": "Vendor 2",
+        "description": "Vendor 2"
+    }
+]
+
+// Item Categories
+[
+    {
+        "name": "Food",
+        "description": "Food"
+    },
+    {
+        "name": "Beverage",
+        "description": "Beverage"
+    }
+]
+
+// UOM
+[
+    {
+        "name": "Piece",
+        "abbreviation": "pc",
+        "description": "Piece"
+    },
+    {
+        "name": "Box",
+        "abbreviation": "box",
+        "description": "Box"
+    },
+    {
+        "name": "Kilogram",
+        "abbreviation": "kg",
+        "description": "Kilogram"
+    },
+    {
+        "name": "Liter",
+        "abbreviation": "l",
+        "description": "Liter"
+    }
+]
+
+//Employees
+[
+    {
+        "employee_number": "00000001",
+        "first_name": "John-Manager",
+        "middle_name": "A.",
+        "last_name": "Doe",
+        "department_id": 1
+    },
+    {
+        "employee_number": "00000002",
+        "first_name": "Jane-Receiver",
+        "middle_name": "B.",
+        "last_name": "Doe",
+        "department_id": 1
+    },
+    {
+        "employee_number": "00000003",
+        "first_name": "Juan-Staff",
+        "middle_name": "C.",
+        "last_name": "Dela Cruz",
+        "department_id": 2
+    },
+    {
+        "employee_number": "00000004",
+        "first_name": "Pedro-Staff",
+        "middle_name": "D.",
+        "last_name": "Penduko",
+        "department_id": 3
+    },
+    {
+        "employee_number": "00000005",
+        "first_name": "Jack-Staff",
+        "middle_name": "5.",
+        "last_name": "Tamad",
+        "department_id": 4
+    }
+]
+
+// Items
+[
+    {
+        "item_code": "10018345",
+        "name": "Garlic herb croissant",
+        "description": "Garlic herb croissant from Tim Horton",
+        "category": 1,
+        "vendor_id": 1,
+        "owner_department": 2,
+        "has_barcode": true,
+        "barcode":"10018345",
+        "image_path": "images/items/10018345.jpg",
+        "unit_of_measure": 2,
+        "quantity": 50,
+        "low_stock_threshold": 10
+    },
+    {
+        "item_code": "10016423",
+        "name": "Bagel everything",
+        "description": "Bagel everything from Tim Horton",
+        "category": 1,
+        "vendor_id": 1,
+        "owner_department": 2,
+        "has_barcode": true,
+        "barcode":"10016423",
+        "image_path": "images/items/10016423.jpg",
+        "unit_of_measure": 2,
+        "quantity": 22,
+        "low_stock_threshold": 10
+    },
+    {
+        "item_code": "10016484",
+        "name": "Timbit plain",
+        "description": "Timbit plain from Tim Horton",
+        "category": 1,
+        "vendor_id": 1,
+        "owner_department": 2,
+        "has_barcode": true,
+        "barcode":"10016484",
+        "image_path": "images/items/10016484.jpg",
+        "unit_of_measure": 2,
+        "quantity": 12,
+        "low_stock_threshold": 10
+    },
+    {
+        "item_code": "011153107317",
+        "name": "Caramel Macchiato",
+        "description": "Caramel Macchiato from Starbucks",
+        "category": 2,
+        "vendor_id": 2,
+        "owner_department": 3,
+        "has_barcode": true,
+        "barcode":"011153107317",
+        "image_path": "images/items/011153107317.jpg",
+        "unit_of_measure": 1,
+        "quantity": 12,
+        "low_stock_threshold": 5
+    },
+    {
+        "item_code": "011153107324",
+        "name": "Vanilla Bean Frappuccino",
+        "description": "Vanilla Bean Frappuccino from Starbucks",
+        "category": 2,
+        "vendor_id": 2,
+        "owner_department": 3,
+        "has_barcode": true,
+        "barcode":"011153107324",
+        "image_path": "images/items/011153107324.jpg",
+        "unit_of_measure": 1,
+        "quantity": 14,
+        "low_stock_threshold": 5
+    },
+    {
+        "item_code": "011153107331",
+        "name": "Pike place Roast",
+        "description": "Pike place Roast from Starbucks",
+        "category": 2,
+        "vendor_id": 2,
+        "owner_department": 3,
+        "has_barcode": true,
+        "barcode":"011153107331",
+        "image_path": "images/items/011153107331.jpg",
+        "unit_of_measure": 1,
+        "quantity": 17,
+        "low_stock_threshold": 5
+    },
+    {
+        "item_code": "2658128",
+        "name": "Noodle Shanghai cooked",
+        "description": "Noodle Shanghai cooked from Bento Sushi",
+        "category": 1,
+        "vendor_id": 2,
+        "owner_department": 4,
+        "has_barcode": true,
+        "barcode":"2658128",
+        "image_path": "images/items/2658128.jpg",
+        "unit_of_measure": 2,
+        "quantity": 30,
+        "low_stock_threshold": 10
+    },
+    {
+        "item_code": "4790630",
+        "name": "Spring Roll",
+        "description": "Spring Roll from Bento Sushi",
+        "category": 1,
+        "vendor_id": 2,
+        "owner_department": 4,
+        "has_barcode": true,
+        "barcode":"4790630",
+        "image_path": "images/items/4790630.jpg",
+        "unit_of_measure": 2,
+        "quantity": 23,
+        "low_stock_threshold": 10
+    },
+    {
+        "item_code": "4452336",
+        "name": "Dumpling chicken",
+        "description": "Dumpling chicken from Bento Sushi",
+        "category": 1,
+        "vendor_id": 2,
+        "owner_department": 4,
+        "has_barcode": true,
+        "barcode":"4452336",
+        "image_path": "images/items/4452336.jpg",
+        "unit_of_measure": 2,
+        "quantity": 19,
+        "low_stock_threshold": 10
+    },
+    {
+        "item_code": "2472773",
+        "name": "Rice",
+        "description": "Rice from Bento Sushi",
+        "category": 1,
+        "vendor_id": 2,
+        "owner_department": 4,
+        "has_barcode": true,
+        "barcode":"2472773",
+        "image_path": "images/items/2472773.jpg",
+        "unit_of_measure": 3,
+        "quantity": 18,
+        "low_stock_threshold": 5
+    },
+    {
+        "item_code": "1461782",
+        "name": "Chicken Shawarma",
+        "description": "Chicken Shawarma from Osmos",
+        "category": 1,
+        "vendor_id": 1,
+        "owner_department": 5,
+        "has_barcode": true,
+        "barcode":"1461782",
+        "image_path": "images/items/1461782.jpg",
+        "unit_of_measure": 3,
+        "quantity": 15,
+        "low_stock_threshold": 5
+    }, 
+    {
+        "item_code": "1440579",
+        "name": "Cheese curd",
+        "description": "Cheese curd from Osmos",
+        "category": 1,
+        "vendor_id": 1,
+        "owner_department": 5,
+        "has_barcode": true,
+        "barcode":"1440579",
+        "image_path": "images/items/1440579.jpg",
+        "unit_of_measure": 3,
+        "quantity": 15,
+        "low_stock_threshold": 5
+    },
+    {
+        "item_code": "1482642",
+        "name": "Hummus",
+        "description": "Hummus from Osmos",
+        "category": 1,
+        "vendor_id": 1,
+        "owner_department": 5,
+        "has_barcode": true,
+        "barcode":"1482642",
+        "image_path": "images/items/1482642.jpg",
+        "unit_of_measure": 2,
+        "quantity": 10,
+        "low_stock_threshold": 5
+    }
+]
+
+// Items with no barcode
+[
+    {
+        "item_code": "MSC1000001",
+        "name": "Msc Product 1",
+        "description": "Msc Product 1 from Tim Horton",
+        "category": 1,
+        "vendor_id": 1,
+        "owner_department": 2,
+        "has_barcode": false,
+        "barcode": "",
+        "image_path": "images/items/MSC1000001.jpg",
+        "unit_of_measure": 2,
+        "quantity": 11,
+        "low_stock_threshold": 5
+    },
+    {
+        "item_code": "MSC1000002",
+        "name": "Msc Product 1",
+        "description": "Msc Product 2 from Tim Horton",
+        "category": 1,
+        "vendor_id": 1,
+        "owner_department": 2,
+        "has_barcode": false,
+        "barcode": "",
+        "image_path": "images/items/MSC1000002.jpg",
+        "unit_of_measure": 2,
+        "quantity": 11,
+        "low_stock_threshold": 5
+    },
+    {
+        "item_code": "MSC1000003",
+        "name": "Msc Product 3",
+        "description": "Msc Product 3 from Tim Horton",
+        "category": 1,
+        "vendor_id": 1,
+        "owner_department": 2,
+        "has_barcode": false,
+        "barcode": "",
+        "image_path": "images/items/MSC1000003.jpg",
+        "unit_of_measure": 2,
+        "quantity": 11,
+        "low_stock_threshold": 5
+    },
+    {
+        "item_code": "MSC1000004",
+        "name": "Msc Product 4",
+        "description": "Msc Product 4 from Tim Horton",
+        "category": 1,
+        "vendor_id": 1,
+        "owner_department": 2,
+        "has_barcode": false,
+        "barcode": "",
+        "image_path": "images/items/MSC1000004.jpg",
+        "unit_of_measure": 2,
+        "quantity": 11,
+        "low_stock_threshold": 5
+    },
+    {
+        "item_code": "MSC1000005",
+        "name": "Msc Product 5",
+        "description": "Msc Product 5 from Tim Horton",
+        "category": 1,
+        "vendor_id": 1,
+        "owner_department": 2,
+        "has_barcode": false,
+        "barcode": "",
+        "image_path": "images/items/MSC1000005.jpg",
+        "unit_of_measure": 2,
+        "quantity": 11,
+        "low_stock_threshold": 5
+    },
+    {
+        "item_code": "MSC1000006",
+        "name": "Msc Product 6",
+        "description": "Msc Product 6 from Tim Horton",
+        "category": 1,
+        "vendor_id": 1,
+        "owner_department": 3,
+        "has_barcode": false,
+        "barcode": "",
+        "image_path": "images/items/MSC1000006.jpg",
+        "unit_of_measure": 2,
+        "quantity": 11,
+        "low_stock_threshold": 5
+    },
+    {
+        "item_code": "MSC1000007",
+        "name": "Msc Product 7",
+        "description": "Msc Product 7 from Tim Horton",
+        "category": 1,
+        "vendor_id": 1,
+        "owner_department": 3,
+        "has_barcode": false,
+        "barcode": "",
+        "image_path": "images/items/MSC1000007.jpg",
+        "unit_of_measure": 2,
+        "quantity": 11,
+        "low_stock_threshold": 5
+    },
+    {
+        "item_code": "MSC1000008",
+        "name": "Msc Product 8",
+        "description": "Msc Product 8 from Tim Horton",
+        "category": 1,
+        "vendor_id": 1,
+        "owner_department": 3,
+        "has_barcode": false,
+        "barcode": "",
+        "image_path": "images/items/MSC1000008.jpg",
+        "unit_of_measure": 2,
+        "quantity": 11,
+        "low_stock_threshold": 5
+    },
+    {
+        "item_code": "MSC1000009",
+        "name": "Msc Product 9",
+        "description": "Msc Product 9 from Tim Horton",
+        "category": 1,
+        "vendor_id": 1,
+        "owner_department": 3,
+        "has_barcode": false,
+        "barcode": "",
+        "image_path": "images/items/MSC1000009.jpg",
+        "unit_of_measure": 2,
+        "quantity": 11,
+        "low_stock_threshold": 5
+    },
+    {
+        "item_code": "MSC1000010",
+        "name": "Msc Product 10",
+        "description": "Msc Product 10 from Tim Horton",
+        "category": 1,
+        "vendor_id": 1,
+        "owner_department": 3,
+        "has_barcode": false,
+        "barcode": "",
+        "image_path": "images/items/MSC1000010.jpg",
+        "unit_of_measure": 2,
+        "quantity": 11,
+        "low_stock_threshold": 5
+    },
+    {
+        "item_code": "MSC1000011",
+        "name": "Msc Product 11",
+        "description": "Msc Product 11 from Tim Horton",
+        "category": 1,
+        "vendor_id": 1,
+        "owner_department": 4,
+        "has_barcode": false,
+        "barcode": "",
+        "image_path": "images/items/MSC1000011.jpg",
+        "unit_of_measure": 2,
+        "quantity": 11,
+        "low_stock_threshold": 5
+    },
+    {
+        "item_code": "MSC1000012",
+        "name": "Msc Product 12",
+        "description": "Msc Product 12 from Tim Horton",
+        "category": 1,
+        "vendor_id": 1,
+        "owner_department": 4,
+        "has_barcode": false,
+        "barcode": "",
+        "image_path": "images/items/MSC1000012.jpg",
+        "unit_of_measure": 2,
+        "quantity": 11,
+        "low_stock_threshold": 5
+    },
+    {
+        "item_code": "MSC1000013",
+        "name": "Msc Product 13",
+        "description": "Msc Product 13 from Tim Horton",
+        "category": 1,
+        "vendor_id": 1,
+        "owner_department": 4,
+        "has_barcode": false,
+        "barcode": "",
+        "image_path": "images/items/MSC1000013.jpg",
+        "unit_of_measure": 2,
+        "quantity": 11,
+        "low_stock_threshold": 5
+    },
+    {
+        "item_code": "MSC1000014",
+        "name": "Msc Product 14",
+        "description": "Msc Product 14 from Tim Horton",
+        "category": 1,
+        "vendor_id": 1,
+        "owner_department": 4,
+        "has_barcode": false,
+        "barcode": "",
+        "image_path": "images/items/MSC1000014.jpg",
+        "unit_of_measure": 2,
+        "quantity": 11,
+        "low_stock_threshold": 5
+    },
+    {
+        "item_code": "MSC1000015",
+        "name": "Msc Product 15",
+        "description": "Msc Product 15 from Tim Horton",
+        "category": 1,
+        "vendor_id": 1,
+        "owner_department": 4,
+        "has_barcode": false,
+        "barcode": "",
+        "image_path": "images/items/MSC1000015.jpg",
+        "unit_of_measure": 2,
+        "quantity": 11,
+        "low_stock_threshold": 5
+    },
+    {
+        "item_code": "MSC1000016",
+        "name": "Msc Product 16",
+        "description": "Msc Product 16 from Tim Horton",
+        "category": 1,
+        "vendor_id": 1,
+        "owner_department": 5,
+        "has_barcode": false,
+        "barcode": "",
+        "image_path": "images/items/MSC1000016.jpg",
+        "unit_of_measure": 2,
+        "quantity": 11,
+        "low_stock_threshold": 5
+    },
+    {
+        "item_code": "MSC1000017",
+        "name": "Msc Product 17",
+        "description": "Msc Product 17 from Tim Horton",
+        "category": 1,
+        "vendor_id": 1,
+        "owner_department": 5,
+        "has_barcode": false,
+        "barcode": "",
+        "image_path": "images/items/MSC1000017.jpg",
+        "unit_of_measure": 2,
+        "quantity": 11,
+        "low_stock_threshold": 5
+    },
+    {
+        "item_code": "MSC1000018",
+        "name": "Msc Product 18",
+        "description": "Msc Product 18 from Tim Horton",
+        "category": 1,
+        "vendor_id": 1,
+        "owner_department": 5,
+        "has_barcode": false,
+        "barcode": "",
+        "image_path": "images/items/MSC1000018.jpg",
+        "unit_of_measure": 2,
+        "quantity": 11,
+        "low_stock_threshold": 5
+    },
+    {
+        "item_code": "MSC1000019",
+        "name": "Msc Product 19",
+        "description": "Msc Product 19 from Tim Horton",
+        "category": 1,
+        "vendor_id": 1,
+        "owner_department": 5,
+        "has_barcode": false,
+        "barcode": "",
+        "image_path": "images/items/MSC1000019.jpg",
+        "unit_of_measure": 2,
+        "quantity": 11,
+        "low_stock_threshold": 5
+    },
+    {
+        "item_code": "MSC1000020",
+        "name": "Msc Product 20",
+        "description": "Msc Product 20 from Tim Horton",
+        "category": 1,
+        "vendor_id": 1,
+        "owner_department": 5,
+        "has_barcode": false,
+        "barcode": "",
+        "image_path": "images/items/MSC1000020.jpg",
+        "unit_of_measure": 2,
+        "quantity": 11,
+        "low_stock_threshold": 5
+    }
+]

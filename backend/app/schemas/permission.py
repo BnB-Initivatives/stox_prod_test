@@ -15,10 +15,6 @@ class PermissionReadRequest(BaseModel):
     permission_id: int
     name: str
     description: str
-    # roles: list["RoleReadRequest"] = (  # type: ignore
-    #     []
-    # )  # Nested RoleReadRequest models to include roles containing this permission
-    # # Use string "RoleReadRequest" for forward reference to avoid the error of circular dependencies
 
     class Config:
         from_attributes = True  # Enables compatibility with SQLAlchemy models

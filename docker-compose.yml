@@ -63,25 +63,26 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.services.frontend.loadbalancer.server.port=3000"
-      # - "traefik.http.routers.frontend.entrypoint=http" # Specifies the domain name
       - "traefik.http.routers.frontend.rule=Host(`stox.systems`)"
+      - "traefik.http.routers.frontend-secure.entrypoints=websecure"
+      - "traefik.http.routers.frontend-secure.rule=Host(`stox.systems`)"
+      - "traefik.http.routers.frontend-secure.tls.certresolver=myresolver"
+      - "traefik.http.middlewares.frontend-ratelimit.ratelimit.average=20"
+      - "traefik.http.routers.frontend.middlewares=frontend-ratelimit"
+
       # - "traefik.http.middlewares.frontend-redirect.redirectscheme.scheme=https"
       # - "traefik.http.middlewares.sslheader.headers.customrequestheaders.X-Forwarded-Proto=https"
       # - "traefik.http.routers.frontend.middlewares=traefik-https-redirect"
-      - "traefik.http.routers.frontend-secure.entrypoints=websecure"
-      - "traefik.http.routers.frontend-secure.rule=Host(`stox.systems`)"
+
       # - "traefik.http.routers.frontend-secure.tls=true"
       # - "traefik.http.routers.frontend-secure.rule=Host(`stox.systems`)"
-      - "traefik.http.routers.frontend-secure.tls.certresolver=myresolver"
+
       # - "traefik.http.routers.frontend-secure.tls.domains[0].main=stox.systems"
       # - "traefik.http.routers.frontend-secure.tls.domains[0].sans=*.stox.systems"
       # - "traefik.http.routers.frontend-secure.service=frontend"
 
       # - "traefik.http.routers.frontend-secure.middlewares=traefik-auth"
-      # - "traefik.http.services.frontend.loadbalancer.server.port=80"
-      # - "traefik.http.routers.frontend.tls.certresolver=myresolver"
-      # - "traefik.http.middlewares.frontend-ratelimit.ratelimit.average=20"
-      # - "traefik.http.routers.frontend.middlewares=frontend-ratelimit"
+
     depends_on:
       - backend
       - reverse-proxy

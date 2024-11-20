@@ -103,11 +103,10 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.backend.rule=(Host(`.stox.systems`) && PathPrefix(`/api`))"
-      - "traefik.http.services.frontend.loadbalancer.server.port=8000"
+      - "traefik.http.services.backend.loadbalancer.server.port=8000"
       - "traefik.http.routers.backend-secure.entrypoints=websecure"
       - "traefik.http.routers.backend-secure.rule=Host(`stox.systems`) && PathPrefix(`/api`)"
       - "traefik.http.routers.backend-secure.tls.certresolver=myresolver"
-      # - "traefik.http.services.backend.loadbalancer.server.port=8000"
     networks:
       - public
       - private # Assigns this service to the shared network

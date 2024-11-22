@@ -76,9 +76,9 @@ export default function Dashboard() {
 		// Fetch vendor data from the backend
 		const API_URL = process.env.REACT_APP_API_URL;
 		console.log(API_URL);
-		console.log(`${API_URL}vendors/`);
+		console.log(`${API_URL}/vendors/`);
 	
-		fetch(`${API_URL}vendors/`)
+		fetch(`${API_URL}/vendors/`)
 			.then(response => response.json())
 			.then(data => {
 				console.log('Fetched Data:', data);  // Log the fetched data

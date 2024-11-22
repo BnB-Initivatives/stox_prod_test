@@ -15,7 +15,6 @@ import {
   useBreakpointValue,
 } from '@chakra-ui/react';
 import axios from 'axios';
-import { Camera } from 'react-camera-pro';
 
 const OCR_API_URL = 'https://api.ocr.space/parse/image'; // OCR.space API URL
 const API_KEY = 'K82628486988957'; // Replace with your OCR.space API key

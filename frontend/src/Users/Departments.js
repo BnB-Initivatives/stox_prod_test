@@ -45,6 +45,7 @@ function Dashboard() {
   const [newDepartment, setNewDepartment] = useState({ name: '', description: '' }); // State for new department form
   const [deleteId, setDeleteId] = useState(''); // State for department_id to delete
   const [updateDepartment, setUpdateDepartment] = useState({ id: '', name: '', description: '' }); // State for updating department
+  const [searchQuery, setSearchQuery] = useState(''); // State for search query
   const toast = useToast();
 
   // Fetch departments list
@@ -71,6 +72,18 @@ function Dashboard() {
     const { name, value } = e.target;
     setNewDepartment((prev) => ({ ...prev, [name]: value }));
   };
+
+  // Handle search query change
+  const handleSearchChange = (e) => {
+    setSearchQuery(e.target.value);
+  };
+
+  // Filter departments based on the search query
+  const filteredDepartments = departments.filter(
+    (department) =>
+      department.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      department.description.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   // Handle create department
   const handleCreateDepartment = () => {
@@ -240,6 +253,19 @@ function Dashboard() {
         </Button>
       </Flex>
 
+      {/* Search Box */}
+      <Flex justify="center" mb={4}>
+        <Input
+          placeholder="Search departments..."
+          value={searchQuery}
+          onChange={handleSearchChange}
+          w="25%" // Adjust the width of the search box
+          top="-50px"
+          bgColor="white"
+          color="black"
+        />
+      </Flex>
+
       <Table variant="simple" color="white">
         <Thead>
           <Tr>
@@ -250,7 +276,7 @@ function Dashboard() {
           </Tr>
         </Thead>
         <Tbody>
-          {departments.map((department) => (
+          {filteredDepartments.map((department) => (
             <Tr key={department.department_id}>
               <Td>{department.department_id}</Td>
               <Td>{department.name}</Td>
@@ -291,24 +317,24 @@ function Dashboard() {
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Enter new department details</ModalHeader>
+          <ModalHeader>Create Department</ModalHeader>
           <ModalBody>
             <Input
-              placeholder="Department Name"
-              mb={4}
               name="name"
+              placeholder="Department Name"
               value={newDepartment.name}
               onChange={handleInputChange}
+              mb={3}
             />
             <Input
-              placeholder="Department Description"
               name="description"
+              placeholder="Department Description"
               value={newDepartment.description}
               onChange={handleInputChange}
             />
           </ModalBody>
           <ModalFooter>
-            <Button colorScheme="teal" mr={3} onClick={handleCreateDepartment}>
+            <Button colorScheme="teal" onClick={handleCreateDepartment}>
               Create
             </Button>
             <Button variant="ghost" onClick={onClose}>
@@ -318,17 +344,17 @@ function Dashboard() {
         </ModalContent>
       </Modal>
 
-      {/* Delete Department Confirmation Modal */}
+      {/* Delete Confirmation Modal */}
       <Modal isOpen={isDeleteOpen} onClose={onDeleteClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Confirm Delete</ModalHeader>
+          <ModalHeader>Confirm Deletion</ModalHeader>
           <ModalBody>
-            <Text>Are you sure you want to delete this department?</Text>
+            Are you sure you want to delete this department?
           </ModalBody>
           <ModalFooter>
-            <Button colorScheme="red" mr={3} onClick={handleDeleteDepartment}>
-              Yes, Delete
+            <Button colorScheme="red" onClick={handleDeleteDepartment}>
+              Delete
             </Button>
             <Button variant="ghost" onClick={onDeleteClose}>
               Cancel
@@ -344,25 +370,21 @@ function Dashboard() {
           <ModalHeader>Update Department</ModalHeader>
           <ModalBody>
             <Input
-              placeholder="Department Name"
-              mb={4}
               name="name"
+              placeholder="Department Name"
               value={updateDepartment.name}
-              onChange={(e) =>
-                setUpdateDepartment({ ...updateDepartment, name: e.target.value })
-              }
+              onChange={(e) => setUpdateDepartment({ ...updateDepartment, name: e.target.value })}
+              mb={3}
             />
             <Input
-              placeholder="Department Description"
               name="description"
+              placeholder="Department Description"
               value={updateDepartment.description}
-              onChange={(e) =>
-                setUpdateDepartment({ ...updateDepartment, description: e.target.value })
-              }
+              onChange={(e) => setUpdateDepartment({ ...updateDepartment, description: e.target.value })}
             />
           </ModalBody>
           <ModalFooter>
-            <Button colorScheme="teal" mr={3} onClick={handleUpdateDepartment}>
+            <Button colorScheme="teal" onClick={handleUpdateDepartment}>
               Update
             </Button>
             <Button variant="ghost" onClick={onUpdateClose}>

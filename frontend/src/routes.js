@@ -34,6 +34,7 @@ import SU_Vendors from "Users/vendors";
 import SU_Items from "Users/Items";
 import SU_ItemsCategories from "Users/ItemCategories";
 import SU_transactions from "Users/transactions";
+import SU_ScannedInvoices from "Users/Scanned_Invoices";
 
 // import RTLPage from "views/RTL/RTLPage.js";
 import Profile from "Users/Users";
@@ -110,16 +111,23 @@ var dashRoutes = [
   },
   {
     path: "/Departments",
-    name: "Dept",
+    name: "Departments",
     icon: <HomeIcon color='inherit' />,
     component: SU_Dept,
     layout: "/Superuser",
   },
   {
     path: "/Employees",
-    name: "Emp",
+    name: "Employees",
     icon: <HomeIcon color='inherit' />,
     component: SU_Emp,
+    layout: "/Superuser",
+  },
+  {
+    path: "/Scanned_Invoices",
+    name: "Scanned_Invoices",
+    icon: <HomeIcon color='inherit' />,
+    component: SU_ScannedInvoices,
     layout: "/Superuser",
   },
   {

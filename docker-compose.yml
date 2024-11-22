@@ -1,21 +1,21 @@
 services:
-  watchtower:
-    image: ghcr.io/containrrr/watchtower
-    container_name: StoX_Watchtower
-    restart: unless-stopped
-    command:
-      - "--label-enable" # Enable the ability to filter containers by label
-      - "--interval" # Check for updates every 30 seconds
-      - "30" # Check for updates every 30 seconds
-      - "--rolling-restart" # Restart services one at a time
-      - "--cleanup" # Remove old images after updating
-    environment:
-      - REPO_USER=${GHCR_USERNAME}
-      - REPO_PASS=${GHCR_TOKEN}
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock # Mounts the Docker socket for communication
-    networks:
-      - public # Assigns this service to the shared network
+  # watchtower:
+  #   image: ghcr.io/containrrr/watchtower
+  #   container_name: StoX_Watchtower
+  #   restart: unless-stopped
+  #   command:
+  #     - "--label-enable" # Enable the ability to filter containers by label
+  #     - "--interval" # Check for updates every 30 seconds
+  #     - "30" # Check for updates every 30 seconds
+  #     - "--rolling-restart" # Restart services one at a time
+  #     - "--cleanup" # Remove old images after updating
+  #   environment:
+  #     - REPO_USER=${GHCR_USERNAME}
+  #     - REPO_PASS=${GHCR_TOKEN}
+  #   volumes:
+  #     - /var/run/docker.sock:/var/run/docker.sock # Mounts the Docker socket for communication
+  #   networks:
+  #     - public # Assigns this service to the shared network
 
   reverse-proxy:
     image: traefik:v3.2

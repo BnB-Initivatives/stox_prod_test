@@ -1,13 +1,19 @@
 services:
-  # watchtower:
-  #   image: containrrr/watchtower
-  #   command:
-  #     - "--label-enable"
-  #     - "--interval"
-  #     - "30"
-  #     - "--rolling-restart"
-  #   volumes:
-  #     - /var/run/docker.sock:/var/run/docker.sock
+  watchtower:
+    image: containrrr/watchtower
+    container_name: StoX_Watchtower
+    restart: unless-stopped
+    command:
+      - "--label-enable" # Enable the ability to filter containers by label
+      - "--interval" # Check for updates every 30 seconds
+      - "30" # Check for updates every 30 seconds
+      - "--rolling-restart" # Restart services one at a time
+      - "--cleanup" # Remove old images after updating
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock # Mounts the Docker socket for communication
+    networks:
+      - public # Assigns this service to the shared network
+
   reverse-proxy:
     image: traefik:v3.2
     container_name: StoX_ReverseProxy
@@ -26,10 +32,12 @@ services:
       - "--entrypoints.web.http.redirections.entrypoint.scheme=https"
       - "--entryPoints.web.forwardedHeaders.insecure"
       - "--entryPoints.websecure.forwardedHeaders.insecure"
+      - "--configFile=/config.yml"
+
     ports:
       - "80:80"
       - "443:443"
-      - "8080:8080"
+      # - "8080:8080"
       # - "8000:8000"
       # - "3000:3000"
     # environment:
@@ -43,9 +51,9 @@ services:
       # - ./letsencrypt:/letsencrypt
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - /etc/localtime:/etc/localtime:ro
-      # - ./proxy/traefik.yml:/etc/traefik/traefik.yml
+      - ./proxy/dynamic.yml:/dynamic.yml:ro
       - ./proxy/acme.json:/acme.json
-      - ./proxy/config.yml:/config.yml
+      - ./proxy/config.yml:/config.yml:ro
     networks:
       - public
 
@@ -70,19 +78,6 @@ services:
       - "traefik.http.middlewares.frontend-ratelimit.ratelimit.average=20"
       - "traefik.http.routers.frontend.middlewares=frontend-ratelimit"
 
-      # - "traefik.http.middlewares.frontend-redirect.redirectscheme.scheme=https"
-      # - "traefik.http.middlewares.sslheader.headers.customrequestheaders.X-Forwarded-Proto=https"
-      # - "traefik.http.routers.frontend.middlewares=traefik-https-redirect"
-
-      # - "traefik.http.routers.frontend-secure.tls=true"
-      # - "traefik.http.routers.frontend-secure.rule=Host(`stox.systems`)"
-
-      # - "traefik.http.routers.frontend-secure.tls.domains[0].main=stox.systems"
-      # - "traefik.http.routers.frontend-secure.tls.domains[0].sans=*.stox.systems"
-      # - "traefik.http.routers.frontend-secure.service=frontend"
-
-      # - "traefik.http.routers.frontend-secure.middlewares=traefik-auth"
-
     depends_on:
       - backend
       - reverse-proxy
@@ -102,17 +97,17 @@ services:
       - POSTGRES_DB=stox
       - POSTGRES_PASSWORD_FILE=/run/secrets/db-password
     labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.backend.rule=(Host(`.stox.systems`) && PathPrefix(`/api`))"
-      - "traefik.http.services.backend.loadbalancer.server.port=8000"
-      - "traefik.http.routers.backend-secure.entrypoints=websecure"
-      - "traefik.http.routers.backend-secure.rule=Host(`stox.systems`) && PathPrefix(`/api`)"
-      - "traefik.http.routers.backend-secure.tls.certresolver=myresolver"
+      - "traefik.enable=true" # Enables Traefik for this service
+      - "traefik.http.routers.backend.rule=(Host(`.stox.systems`) && PathPrefix(`/api`))" # Specifies the routing rule
+      - "traefik.http.services.backend.loadbalancer.server.port=3000" # Specifies the service port
+      - "traefik.http.routers.backend-secure.entrypoints=websecure" # Specifies the secure entry point
+      - "traefik.http.routers.backend-secure.rule=Host(`stox.systems`) && PathPrefix(`/api`)" # Specifies the secure routing rule
+      - "traefik.http.routers.backend-secure.tls.certresolver=myresolver" # Specifies the certificate resolver
     networks:
-      - public
+      - public # Assigns this service to the shared network
       - private # Assigns this service to the shared network
     secrets:
-      - db-password
+      - db-password # Specifies the secret for the database password
     depends_on:
       # - reverse-proxy
       db:

@@ -82,6 +82,10 @@ services:
       - public
     env_file:
       - .env
+    deploy:
+      mode: replicated
+      replicas: 3
+    restart: always
 
   backend:
     # build:
@@ -115,6 +119,7 @@ services:
         condition: service_healthy
     env_file:
       - .env
+    restart: always
 
   db:
     image: postgres:13-alpine

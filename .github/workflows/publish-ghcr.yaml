@@ -16,7 +16,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
         with:
-          repository: BnB-Initivatives/stox_prod_test.git
+          repository: BnB-Initivatives/stox_prod_test
 
       # - name: Set short git commit SHA
       #   id: vars

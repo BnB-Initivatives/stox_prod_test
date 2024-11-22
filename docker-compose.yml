@@ -16,6 +16,8 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock # Mounts the Docker socket for communication
     networks:
       - public
+    env_file:
+      - .env
 
   reverse-proxy:
     image: traefik:v3.2
@@ -36,14 +38,12 @@ services:
       - "--entryPoints.web.forwardedHeaders.insecure"
       - "--entryPoints.websecure.forwardedHeaders.insecure"
       - "--configFile=/config.yml"
-
     ports:
       - "80:80"
       - "443:443"
       - "8080:8080"
       # - "8000:8000"
       # - "3000:3000"
-
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - /etc/localtime:/etc/localtime:ro
@@ -80,6 +80,8 @@ services:
       - reverse-proxy
     networks:
       - public
+    env_file:
+      - .env
 
   backend:
     # build:
@@ -111,6 +113,8 @@ services:
       # - reverse-proxy
       db:
         condition: service_healthy
+    env_file:
+      - .env
 
   db:
     image: postgres:13-alpine
@@ -161,6 +165,3 @@ networks: # Defines the Docker network for communication
     driver: bridge # Uses the default bridge network driver
   private: # Name of the custom network for the services
     driver: bridge # Uses the default bridge network driver
-
-env_file:
-  - .env

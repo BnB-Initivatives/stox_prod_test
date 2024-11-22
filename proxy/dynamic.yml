@@ -12,9 +12,10 @@ http:
       tls:
         certResolver: myresolver # Optional: For Traefik Dashboard
 
-    backend:
-      rule: "Host(`stox.systems`) && PathPrefix(`/api`)"
-      service: backend
-      middlewares: [redirect-to-https]
-      tls:
-        certResolver: myresolver
+
+    # backend:
+    #   rule: "Host(`stox.systems`) && PathPrefix(`/api`)"
+    #   service: backend
+    #   middlewares: [redirect-to-https]
+    #   tls:
+    #     certResolver: myresolver

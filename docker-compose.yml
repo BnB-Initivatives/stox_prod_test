@@ -40,8 +40,8 @@ services:
     ports:
       - "80:80"
       - "443:443"
-      # - "8080:8080"
-      # - "8000:8000"
+      - "8080:8080"
+      - "8000:8000"
       # - "3000:3000"
     # environment:
     # CF_DNS_API_TOKEN_FILE: /run/secrets/cf_dns_api_token

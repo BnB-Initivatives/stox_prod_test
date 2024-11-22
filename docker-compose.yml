@@ -40,18 +40,11 @@ services:
     ports:
       - "80:80"
       - "443:443"
-      # - "8080:8080"
+      - "8080:8080"
       # - "8000:8000"
       # - "3000:3000"
-    # environment:
-    # CF_DNS_API_TOKEN_FILE: /run/secrets/cf_dns_api_token
-    #   cf_dns_api_token: ${CF_DNS_API_TOKEN}
-    # secrets:
-    #   - cf_dns_api_token
-    # env_file: .envggghghg
 
     volumes:
-      # - ./letsencrypt:/letsencrypt
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - /etc/localtime:/etc/localtime:ro
       - ./proxy/dynamic.yml:/dynamic.yml:ro
@@ -73,8 +66,8 @@ services:
       - ./frontend/src:/code/src
     labels:
       - "traefik.enable=true" # Enables Traefik for this service
-      - "traefik.http.services.frontend.loadbalancer.server.port=3000" # Specifies the service port
-      - "traefik.http.routers.frontend.rule=Host(`stox.systems`)" # Specifies the routing rule
+      # - "traefik.http.services.frontend.loadbalancer.server.port=3000" # Specifies the service port
+      # - "traefik.http.routers.frontend.rule=Host(`stox.systems`)" # Specifies the routing rule
       - "traefik.http.routers.frontend-secure.entrypoints=websecure" # Specifies the secure entry point
       - "traefik.http.routers.frontend-secure.rule=Host(`stox.systems`)" # Specifies the secure routing rule
       - "traefik.http.routers.frontend-secure.tls.certresolver=myresolver" # Specifies the certificate resolver
@@ -101,12 +94,12 @@ services:
       - POSTGRES_PASSWORD_FILE=/run/secrets/db-password
     labels:
       - "traefik.enable=true" # Enables Traefik for this service
-      - "traefik.http.routers.backend.rule=(Host(`.stox.systems`) && PathPrefix(`/api`))" # Specifies the routing rule
-      - "traefik.http.services.backend.loadbalancer.server.port=8000" # Specifies the service port
+      # - "traefik.http.routers.backend.rule=(Host(`.stox.systems`) && PathPrefix(`/api`))" # Specifies the routing rule
+      # - "traefik.http.services.backend.loadbalancer.server.port=8000" # Specifies the service port
       - "traefik.http.routers.backend-secure.entrypoints=websecure" # Specifies the secure entry point
       - "traefik.http.routers.backend-secure.rule=Host(`stox.systems`) && PathPrefix(`/api`)" # Specifies the secure routing rule
       - "traefik.http.routers.backend-secure.tls.certresolver=myresolver" # Specifies the certificate resolver
-      - "com.centurylinklabs.watchtower.enable=true" # Enables Watchtower for this service
+      # - "com.centurylinklabs.watchtower.enable=true" # Enables Watchtower for this service
     networks:
       - public # Assigns this service to the shared network
       - private # Assigns this service to the shared network

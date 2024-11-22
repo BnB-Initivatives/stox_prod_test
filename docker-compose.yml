@@ -69,15 +69,15 @@ services:
     volumes:
       - ./frontend/src:/code/src
     labels:
-      - "traefik.enable=true"
-      - "traefik.http.services.frontend.loadbalancer.server.port=3000"
-      - "traefik.http.routers.frontend.rule=Host(`stox.systems`)"
-      - "traefik.http.routers.frontend-secure.entrypoints=websecure"
-      - "traefik.http.routers.frontend-secure.rule=Host(`stox.systems`)"
-      - "traefik.http.routers.frontend-secure.tls.certresolver=myresolver"
-      - "traefik.http.middlewares.frontend-ratelimit.ratelimit.average=20"
-      - "traefik.http.routers.frontend.middlewares=frontend-ratelimit"
-
+      - "traefik.enable=true" # Enables Traefik for this service
+      - "traefik.http.services.frontend.loadbalancer.server.port=3000" # Specifies the service port
+      - "traefik.http.routers.frontend.rule=Host(`stox.systems`)" # Specifies the routing rule
+      - "traefik.http.routers.frontend-secure.entrypoints=websecure" # Specifies the secure entry point
+      - "traefik.http.routers.frontend-secure.rule=Host(`stox.systems`)" # Specifies the secure routing rule
+      - "traefik.http.routers.frontend-secure.tls.certresolver=myresolver" # Specifies the certificate resolver
+      - "traefik.http.middlewares.frontend-ratelimit.ratelimit.average=20" # Specifies the average rate limit
+      - "traefik.http.routers.frontend.middlewares=frontend-ratelimit" # Specifies the middleware
+      - "com.centurylinklabs.watchtower.enable=true" # Enables Watchtower for this service
     depends_on:
       - backend
       - reverse-proxy
@@ -99,10 +99,11 @@ services:
     labels:
       - "traefik.enable=true" # Enables Traefik for this service
       - "traefik.http.routers.backend.rule=(Host(`.stox.systems`) && PathPrefix(`/api`))" # Specifies the routing rule
-      - "traefik.http.services.backend.loadbalancer.server.port=3000" # Specifies the service port
+      - "traefik.http.services.backend.loadbalancer.server.port=8000" # Specifies the service port
       - "traefik.http.routers.backend-secure.entrypoints=websecure" # Specifies the secure entry point
       - "traefik.http.routers.backend-secure.rule=Host(`stox.systems`) && PathPrefix(`/api`)" # Specifies the secure routing rule
       - "traefik.http.routers.backend-secure.tls.certresolver=myresolver" # Specifies the certificate resolver
+      - "com.centurylinklabs.watchtower.enable=true" # Enables Watchtower for this service
     networks:
       - public # Assigns this service to the shared network
       - private # Assigns this service to the shared network

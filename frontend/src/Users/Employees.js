@@ -79,7 +79,8 @@ function Employees() {
 
   // Handle Create or Update Employee
   const handleEmployeeSubmit = () => {
-    if (!newEmployee.first_name || !newEmployee.last_name) {
+    // Only check for first and last name when creating a new employee
+    if (!selectedEmployee && (!newEmployee.first_name || !newEmployee.last_name)) {
       toast({
         title: 'Error',
         description: 'First and Last name are required.',
@@ -89,12 +90,12 @@ function Employees() {
       });
       return;
     }
-
+  
     const method = selectedEmployee ? 'PUT' : 'POST';
     const url = selectedEmployee
       ? `${API_URL}/employees/${selectedEmployee.employee_id}`
       : `${API_URL}/employees/`;
-
+  
     fetch(url, {
       method: method,
       headers: {
@@ -128,6 +129,7 @@ function Employees() {
         });
       });
   };
+  
 
   // Handle delete confirmation
   const handleDeleteEmployee = () => {
@@ -222,7 +224,8 @@ function Employees() {
               <Td>{employee.first_name}</Td>
               <Td>{employee.middle_name || 'N/A'}</Td>
               <Td>{employee.last_name}</Td>
-              <Td>{employee.department?.name || 'N/A'}</Td>
+              <Td>{employee.department?.department_id || 'N/A'}</Td> {/* Department ID */}
+              <Td>{employee.department?.name || 'N/A'}</Td> {/* Department Name */}
               <Td>
                 <IconButton
                   icon={<FiEdit />}
@@ -329,11 +332,31 @@ function Employees() {
               value={selectedEmployee?.last_name}
               onChange={(e) => setSelectedEmployee({ ...selectedEmployee, last_name: e.target.value })}
             />
+            {/* Department ID Field */}
             <Input
               placeholder="Department ID"
               mb={4}
-              value={selectedEmployee?.department_id}
-              onChange={(e) => setSelectedEmployee({ ...selectedEmployee, department_id: e.target.value })}
+              value={selectedEmployee?.department?.department_id} // Ensure you're accessing department_id correctly
+              onChange={(e) => setSelectedEmployee({ 
+                ...selectedEmployee, 
+                department: { 
+                  ...selectedEmployee?.department, // Preserve other department properties
+                  department_id: e.target.value 
+                } 
+              })}
+            />
+            {/* Department Name Field */}
+            <Input
+              placeholder="Department Name"
+              mb={4}
+              value={selectedEmployee?.department?.name} // Ensure you're accessing name correctly
+              onChange={(e) => setSelectedEmployee({
+                ...selectedEmployee,
+                department: {
+                  ...selectedEmployee?.department, // Preserve other department properties
+                  name: e.target.value
+                }
+              })}
             />
           </ModalBody>
           <ModalFooter>

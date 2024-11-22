@@ -11,7 +11,7 @@ from app.schemas.item_category import ItemCategoryReadRequest
 
 class ItemCreateRequest(BaseModel):
     item_code: str = Field(
-        ..., min_length=1, max_length=100
+        ..., min_length=1, max_length=20
     )  # external item code or product number e.g. value in the invoice
     name: str = Field(..., min_length=1, max_length=100)
     description: Optional[str] = Field(None, max_length=255)
@@ -19,7 +19,7 @@ class ItemCreateRequest(BaseModel):
     vendor_id: Optional[int] = Field(None, gt=0)
     owner_department: int = Field(..., gt=0)
     has_barcode: bool = False
-    barcode: Optional[str] = Field(None, max_length=12)
+    barcode: Optional[str] = Field(None, max_length=13)
     image_path: Optional[str] = Field(None, max_length=255)
     unit_of_measure: int = Field(..., gt=0)
     quantity: int = Field(default=0, ge=0)
@@ -58,7 +58,7 @@ class ItemUpdateRequest(BaseModel):
     vendor_id: Optional[int] = Field(None, gt=0)
     owner_department: Optional[int] = Field(None, gt=0)
     has_barcode: Optional[bool] = Field(None)
-    barcode: Optional[str] = Field(None, max_length=12)
+    barcode: Optional[str] = Field(None, max_length=13)
     image_path: Optional[str] = Field(None, max_length=255)
     unit_of_measure: Optional[int] = Field(None, gt=0)
     quantity: Optional[int] = Field(None, ge=0)

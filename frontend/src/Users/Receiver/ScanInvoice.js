@@ -17,7 +17,6 @@ import axios from 'axios';
 
 const OCR_API_URL = 'https://api.ocr.space/parse/image'; // OCR.space API URL
 const API_KEY = 'K82628486988957'; // Replace with your OCR.space API key
-const CLOUD_BUCKET_URL = 'https://objectstorage.ca-toronto-1.oraclecloud.com/p/bEvVAA89ttDQeKjN3j6b6dfkgxe4jXqrtipdGDWi4tfYb_inpKUSdBaZ4WwgER_P/n/yzwrpj44pind/b/Stox_app_invoice/o/'; // Cloud bucket URL
 
 const ScanInvoice = () => {
   const videoRef = useRef(null);
@@ -30,7 +29,8 @@ const ScanInvoice = () => {
   const [isEditing, setIsEditing] = useState(false); // Toggle edit mode
   const [editedData, setEditedData] = useState([]); // Hold edited data
   const [submitLoading, setSubmitLoading] = useState(false); // For the submit button loading
-
+  
+  const API_URL = "http://localhost:8000/invoices/";
   // Start camera
   const handleCameraStart = () => {
     navigator.mediaDevices.getUserMedia({ video: true })
@@ -181,39 +181,41 @@ const ScanInvoice = () => {
   };
 
   // Submit the data to backend
-  const handleSubmit = async () => {
-    setSubmitLoading(true);
-    try {
-      // Upload image to cloud storage
-      const date = new Date();
-      const imageFilePath = `${CLOUD_BUCKET_URL}${date.toISOString().split('T')[0]}_invoice.png`;
+// Submit the data to backend
+const handleSubmit = async () => {
+  setSubmitLoading(true);
+  try {
+    const date = new Date();
+    const payload = {
+      invoice_number: `INV_${date.getTime()}`,
+      vendor_name: 'Vendor 1', // Replace with actual vendor name
+      scanned_by: 1, // Replace with actual scanned by user ID
+      scanned_invoice_items: editedData.map((item) => ({
+        item_code: item.id,
+        quantity: parseInt(item.quantity, 10) || 0,
+      })),
+    };
 
-      // Post data to the backend
-      const payload = {
-        invoice_number: `INV_${date.getTime()}`,
-        vendor_name: 'Vendor Name', // Replace with actual vendor name
-        scanned_by: 1, // Replace with actual scanned by user ID
-        image_file_path: imageFilePath,
-        scanned_invoice_items: editedData.map((item) => ({
-          item_code: item.id,
-          quantity: parseInt(item.quantity, 10),
-          item_id: item.id, // Replace with actual item ID
-        })),
-      };
+    console.log("Payload being sent:", payload);
+    console.log(`${API_URL}`);
+    const response = await axios.post(`${API_URL}`, payload);
 
-      const response = await axios.post('http://localhost:8000/invoices/', payload);
-      if (response.status === 200) {
-        alert('Invoice submitted successfully!');
-      } else {
-        alert('Error submitting the invoice.');
-      }
-    } catch (error) {
-      console.error('Error submitting invoice:', error);
-      alert('Error during submission.');
-    } finally {
-      setSubmitLoading(false);
+    console.log("Response from backend:", response);
+
+    if (response.status === 201) {
+      alert('Invoice submitted successfully!');
+    } else {
+      console.error("Unexpected response:", response);
+      alert('Error submitting the invoice.');
     }
-  };
+  } catch (error) {
+    console.error("Error during invoice submission:", error.response?.data || error.message);
+    alert('Error during submission.');
+  } finally {
+    setSubmitLoading(false);
+  }
+};
+
 
   return (
     <Box p={5}>

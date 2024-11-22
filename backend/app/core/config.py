@@ -37,58 +37,58 @@ class Settings(BaseSettings):
     def oauth2_bearer(self) -> OAuth2PasswordBearer:
         return OAuth2PasswordBearer(tokenUrl="auth/token")
 
-    ## SETTINGS FOR DATABASE
-    POSTGRES_SERVER: str
-    POSTGRES_PORT: int = 5432
-    POSTGRES_USER: str
-    POSTGRES_PASSWORD: str | None = None
-    POSTGRES_PASSWORD_FILE: str | None = None
-    POSTGRES_DB: str
+    # ## SETTINGS FOR DATABASE
+    # POSTGRES_SERVER: str
+    # POSTGRES_PORT: int = 5432
+    # POSTGRES_USER: str
+    # POSTGRES_PASSWORD: str | None = None
+    # POSTGRES_PASSWORD_FILE: str | None = None
+    # POSTGRES_DB: str
 
-    @model_validator(mode="before")
-    @classmethod
-    def check_postgres_password(cls, data: Any) -> Any:
-        if isinstance(data, dict):
-            if (
-                data.get("POSTGRES_PASSWORD_FILE") is None
-                and data.get("POSTGRES_PASSWORD") is None
-            ):
-                raise ValueError(
-                    "At least one of POSTGRES_PASSWORD_FILE and POSTGRES_PASSWORD must be set."
-                )
-        return data
+    # @model_validator(mode="before")
+    # @classmethod
+    # def check_postgres_password(cls, data: Any) -> Any:
+    #     if isinstance(data, dict):
+    #         if (
+    #             data.get("POSTGRES_PASSWORD_FILE") is None
+    #             and data.get("POSTGRES_PASSWORD") is None
+    #         ):
+    #             raise ValueError(
+    #                 "At least one of POSTGRES_PASSWORD_FILE and POSTGRES_PASSWORD must be set."
+    #             )
+    #     return data
 
-    @field_validator("POSTGRES_PASSWORD_FILE")
-    def read_password_from_file(cls, v):
-        if v is not None:
-            file_path = v
-            if os.path.exists(file_path):
-                with open(file_path, "r") as file:
-                    return file.read().strip()
-            raise ValueError(f"Password file {file_path} does not exist.")
-        return v
+    # @field_validator("POSTGRES_PASSWORD_FILE")
+    # def read_password_from_file(cls, v):
+    #     if v is not None:
+    #         file_path = v
+    #         if os.path.exists(file_path):
+    #             with open(file_path, "r") as file:
+    #                 return file.read().strip()
+    #         raise ValueError(f"Password file {file_path} does not exist.")
+    #     return v
 
-    @computed_field
-    @property
-    def SQLALCHEMY_DATABASE_URL(self) -> PostgresDsn:
-        return MultiHostUrl.build(
-            scheme="postgresql+psycopg",
-            username=self.POSTGRES_USER,
-            password=(
-                self.POSTGRES_PASSWORD
-                if self.POSTGRES_PASSWORD
-                else self.POSTGRES_PASSWORD_FILE
-            ),
-            host=self.POSTGRES_SERVER,
-            port=self.POSTGRES_PORT,
-            path=self.POSTGRES_DB,
-        )
-
-    # DB Connection for SQLite for local development
     # @computed_field
     # @property
-    # def SQLALCHEMY_DATABASE_URL(self) -> str:
-    #     return "sqlite:///./app.db"
+    # def SQLALCHEMY_DATABASE_URL(self) -> PostgresDsn:
+    #     return MultiHostUrl.build(
+    #         scheme="postgresql+psycopg",
+    #         username=self.POSTGRES_USER,
+    #         password=(
+    #             self.POSTGRES_PASSWORD
+    #             if self.POSTGRES_PASSWORD
+    #             else self.POSTGRES_PASSWORD_FILE
+    #         ),
+    #         host=self.POSTGRES_SERVER,
+    #         port=self.POSTGRES_PORT,
+    #         path=self.POSTGRES_DB,
+    #     )
+
+    # DB Connection for SQLite for local development
+    @computed_field
+    @property
+    def SQLALCHEMY_DATABASE_URL(self) -> str:
+        return "sqlite:///./app.db"
 
 
 settings = Settings()

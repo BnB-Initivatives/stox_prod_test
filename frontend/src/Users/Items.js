@@ -34,6 +34,7 @@ const API_URL = process.env.REACT_APP_API_URL;
 function Items() {
   const [items, setItems] = useState([]); // Stores the list of items
   const [loading, setLoading] = useState(true); // Loading state
+  const [searchTerm, setSearchTerm] = useState(''); // Stores the search term
   const { isOpen, onOpen, onClose } = useDisclosure(); // Modal controls for create/update
   const { isOpen: isDeleteOpen, onOpen: onDeleteOpen, onClose: onDeleteClose } = useDisclosure(); // Modal controls for delete confirmation
   const [selectedItem, setSelectedItem] = useState(null); // Stores selected item for update
@@ -58,6 +59,11 @@ function Items() {
         setLoading(false);
       });
   };
+
+  // Filter items based on the search term
+  const filteredItems = items.filter(item => 
+    item.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   // Handle Create or Update Item
   const handleItemSubmit = () => {
@@ -164,6 +170,17 @@ function Items() {
     <Box mt="50px" p={6} color="white">
       <Flex justify="space-between" align="center" mb={4}>
         <Heading size="lg">Items List</Heading>
+
+        {/* Search Box */}
+        <Input
+          placeholder="Search by Item Name"
+          width="250px"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          bgColor="white" // Added white background color
+          color="black"
+        />
+
         <Button colorScheme="teal" onClick={() => { setSelectedItem({}); onOpen(); }}>
           Create New Item
         </Button>
@@ -184,7 +201,7 @@ function Items() {
           </Tr>
         </Thead>
         <Tbody>
-          {items.map((item) => (
+          {filteredItems.map((item) => (
             <Tr key={item.item_id}>
               <Td>{item.item_id}</Td>
               <Td>{item.item_code}</Td>
@@ -270,66 +287,32 @@ function Items() {
               <option value="2">Vendor 2</option>
               <option value="3">Vendor 3</option>
             </Select>
-            <Select
-              placeholder="Select Owner Department"
-              mb={4}
-              value={selectedItem?.owner_department || ''}
-              onChange={(e) => setSelectedItem({ ...selectedItem, owner_department: e.target.value })}
-            >
-              <option value="1">Department 1</option>
-              <option value="2">Department 2</option>
-              <option value="3">Department 3</option>
-            </Select>
-            <Flex mb={4} align="center">
-              <Text mr={2}>Has Barcode</Text>
-              <Switch
-                isChecked={selectedItem?.has_barcode || false}
-                onChange={(e) => setSelectedItem({ ...selectedItem, has_barcode: e.target.checked })}
-              />
-            </Flex>
-            <Input
-              placeholder="Barcode"
-              mb={4}
-              value={selectedItem?.barcode || ''}
-              onChange={(e) => setSelectedItem({ ...selectedItem, barcode: e.target.value })}
-              disabled={!selectedItem?.has_barcode}
-            />
-            <Input
-              placeholder="Image Path"
-              mb={4}
-              value={selectedItem?.image_path || ''}
-              onChange={(e) => setSelectedItem({ ...selectedItem, image_path: e.target.value })}
-            />
-            <Select
-              placeholder="Select Unit of Measure"
-              mb={4}
-              value={selectedItem?.unit_of_measure || ''}
-              onChange={(e) => setSelectedItem({ ...selectedItem, unit_of_measure: e.target.value })}
-            >
-              <option value="1">Unit 1</option>
-              <option value="2">Unit 2</option>
-            </Select>
             <Input
               placeholder="Quantity"
               mb={4}
-              type="number"
-              value={selectedItem?.quantity }
+              value={selectedItem?.quantity || ''}
               onChange={(e) => setSelectedItem({ ...selectedItem, quantity: e.target.value })}
             />
             <Input
               placeholder="Low Stock Threshold"
               mb={4}
-              type="number"
-              value={selectedItem?.low_stock_threshold }
+              value={selectedItem?.low_stock_threshold || ''}
               onChange={(e) => setSelectedItem({ ...selectedItem, low_stock_threshold: e.target.value })}
             />
+            <Switch
+              isChecked={selectedItem?.has_barcode || false}
+              onChange={() => setSelectedItem({ ...selectedItem, has_barcode: !selectedItem?.has_barcode })}
+            >
+              Has Barcode
+            </Switch>
           </ModalBody>
+
           <ModalFooter>
+            <Button colorScheme="blue" onClick={handleItemSubmit}>
+              {selectedItem?.item_id ? 'Update' : 'Create'} Item
+            </Button>
             <Button variant="ghost" onClick={onClose}>
               Cancel
-            </Button>
-            <Button colorScheme="blue" onClick={handleItemSubmit}>
-              {selectedItem?.item_id ? 'Update Item' : 'Create Item'}
             </Button>
           </ModalFooter>
         </ModalContent>
@@ -339,14 +322,16 @@ function Items() {
       <Modal isOpen={isDeleteOpen} onClose={onDeleteClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Delete Item</ModalHeader>
-          <ModalBody>Are you sure you want to delete this item?</ModalBody>
+          <ModalHeader>Confirm Deletion</ModalHeader>
+          <ModalBody>
+            Are you sure you want to delete this item?
+          </ModalBody>
           <ModalFooter>
+            <Button colorScheme="red" onClick={handleDeleteItem}>
+              Delete
+            </Button>
             <Button variant="ghost" onClick={onDeleteClose}>
               Cancel
-            </Button>
-            <Button colorScheme="red" onClick={handleDeleteItem}>
-              Delete Item
             </Button>
           </ModalFooter>
         </ModalContent>

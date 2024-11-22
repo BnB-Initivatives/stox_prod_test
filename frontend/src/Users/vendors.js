@@ -142,19 +142,19 @@ function Vendors() {
       });
   };
 
-  // Filter vendors based on search query
-  let filteredVendors = [];
+// Filter vendors based on search query
+let filteredVendors = [];
 
-  if (Array.isArray(vendors)) {
-    filteredVendors = vendors.filter((vendor) =>
-      vendor.name.toLowerCase().includes(searchQuery.toLowerCase())
-    );
-  } else {
-    console.error("vendors is not an array");
-  }
-  
-  // Now you can use filteredVendors here
-  console.log(filteredVendors);
+if (Array.isArray(vendors)) {
+  filteredVendors = vendors.filter((vendor) =>
+    vendor.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+} else {
+  console.error("vendors is not an array");
+}
+
+// Now you can use filteredVendors here
+console.log(filteredVendors);
   if (loading) {
     return (
       <Flex justifyContent="center" alignItems="center" height="100vh">

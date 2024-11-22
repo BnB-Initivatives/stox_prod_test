@@ -30,6 +30,8 @@ const API_URL = process.env.REACT_APP_API_URL;
 
 function ItemCategories() {
   const [categories, setCategories] = useState([]); // Stores the list of categories
+  const [filteredCategories, setFilteredCategories] = useState([]); // Stores the filtered categories based on search
+  const [searchQuery, setSearchQuery] = useState(''); // Stores the search input
   const [loading, setLoading] = useState(true); // Loading state
   const { isOpen, onOpen, onClose } = useDisclosure(); // Modal controls for create/update
   const { isOpen: isDeleteOpen, onOpen: onDeleteOpen, onClose: onDeleteClose } = useDisclosure(); // Modal controls for delete confirmation
@@ -48,12 +50,24 @@ function ItemCategories() {
       .then((response) => response.json())
       .then((data) => {
         setCategories(data);
+        setFilteredCategories(data); // Set the filtered categories initially to all categories
         setLoading(false);
       })
       .catch((error) => {
         console.error('Error fetching category data:', error);
         setLoading(false);
       });
+  };
+
+  // Filter categories based on search query
+  const handleSearchChange = (e) => {
+    const query = e.target.value.toLowerCase();
+    setSearchQuery(query);
+    const filtered = categories.filter((category) =>
+      category.name.toLowerCase().includes(query) ||
+      category.description.toLowerCase().includes(query)
+    );
+    setFilteredCategories(filtered);
   };
 
   // Handle Create or Update Category
@@ -160,6 +174,24 @@ function ItemCategories() {
         </Button>
       </Flex>
 
+      {/* Search Box with reduced length and manual position */}
+      <Flex justify="space-between" align="center" mb={4} position="relative" top="10px">
+        <Input
+          value={searchQuery}
+          onChange={handleSearchChange}
+          placeholder="Search by Category "
+          width="250px"  // Reduced width for the search box
+          bg="white"
+          color="black"
+          _placeholder={{ color: 'gray.500' }}
+          _focus={{ borderColor: 'teal.500' }}
+          position="absolute" // Manually positioned
+          top = "-60px"
+          left="50%" // Centered horizontally
+          transform="translateX(-50%)" // Offset by 50% for exact center alignment
+        />
+      </Flex>
+
       <Table variant="simple">
         <Thead>
           <Tr color="white">
@@ -170,7 +202,7 @@ function ItemCategories() {
           </Tr>
         </Thead>
         <Tbody>
-          {categories.map((category) => (
+          {filteredCategories.map((category) => (
             <Tr key={category.category_id}>
               <Td>{category.category_id}</Td>
               <Td>{category.name}</Td>
@@ -244,7 +276,7 @@ function ItemCategories() {
               Cancel
             </Button>
             <Button colorScheme="red" onClick={handleDeleteCategory}>
-              Delete Category
+              Delete
             </Button>
           </ModalFooter>
         </ModalContent>

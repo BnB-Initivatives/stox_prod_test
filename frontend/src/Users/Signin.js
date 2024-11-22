@@ -163,7 +163,7 @@ function SignIn() {
         </Text>
         <FormControl>
           <FormLabel fontSize="sm" fontWeight="normal" color="white">
-            Username
+            Usernamesss
           </FormLabel>
           <GradientBorder borderRadius="20px" mb="24px">
             <Input

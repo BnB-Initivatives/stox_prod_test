@@ -5,8 +5,8 @@ on:
     branches:
       - main
 
-# permissions:
-#   packages: write
+permissions:
+  packages: write
 
 jobs:
   build-and-push:
@@ -15,6 +15,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
+        with:
+          repository: BnB-Initivatives/stox_prod_test
 
       # - name: Set short git commit SHA
       #   id: vars
@@ -35,7 +37,8 @@ jobs:
           context: ./frontend
           dockerfile: Dockerfile
           push: true
-          tags: ghcr.io/bnb-initivatives/stox_prod_test/stox_prod_test-frontend:latest
+          tags: ghcr.io/bnb-initivatives/stox_prod_test-frontend:latest
+          # tags: ghcr.io/bnb-initivatives/stox_prod_test/stox_prod_test-frontend:latest
           # tags: ghcr.io/mbjethwa/frontend:latest #${{ env.COMMIT_SHORT_SHA }}
 
       - name: Build and push backend Docker image
@@ -44,7 +47,7 @@ jobs:
           context: ./backend
           dockerfile: Dockerfile
           push: true
-          tags: ghcr.io/bnb-initivatives/stox_prod_test/stox_prod_test-backend:latest
+          tags: ghcr.io/bnb-initivatives/stox_prod_test-backend:latest
           # tags: ghcr.io/mbjethwa/backend:latest #${{ env.COMMIT_SHORT_SHA }}
 
       # - name: Build and push db Docker image

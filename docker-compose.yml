@@ -57,7 +57,7 @@ services:
     # build:
     #   context: frontend
     #   target: development
-    image: ghcr.io/bnb-initiatives//stox_prod_test-frontend:latest
+    image: ghcr.io/bnb-initiatives/stox_prod_test-frontend:latest
     container_name: StoX_Frontend
     # environment:
     #   - REACT_APP_API_URL=http://localhost:80

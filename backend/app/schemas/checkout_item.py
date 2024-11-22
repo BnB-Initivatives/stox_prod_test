@@ -12,8 +12,8 @@ from app.schemas.unit_of_measure import UnitOfMeasureReadRequest
 class CheckoutItemCreateRequest(BaseModel):
     item_id: int = Field(..., gt=0)
     quantity: int = Field(..., gt=0)
-    category_id: int = Field(None, gt=0)
-    unit_of_measure: int = Field(None, gt=0)
+    # category_id: int = Field(None, gt=0)
+    # unit_of_measure: int = Field(None, gt=0)
 
 
 class CheckoutItemReadRequest(BaseModel):

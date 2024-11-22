@@ -42,10 +42,12 @@ docs for more detail on building and pushing.
 - [x] Set up database models for RBAC
 - [x] Implement CRUD operations, routers for RBAC
 - [x] Integrate authentication and authorization (JWT)
-- [ ] Integrate authorization (RBAC)
-- [ ] Check how to update password for user
-- [ ] Create all data models
-- [ ] Design all API routes
+- [x] Integrate authorization (RBAC)
+- [ ] Check how to update password for user: should have a specific route for just updating password
+- [x] Create data models for master data: department, employee, item category, item, unit of measure, vendor
+- [x] Design API routes for master data: department, employee, item category, item, unit of measure, vendor
+- [x] Create data models for scanning activities: invoice template, checkout transactions and items, inventory adjustment logs
+- [x] Design API routes for scanning activities: invoice template, checkout transactions and items, inventory adjustment logs
 - [ ] Write unit tests for endpoints
 - [x] Set up database connection
 
@@ -53,11 +55,11 @@ docs for more detail on building and pushing.
 
 - [x] Set up repository structure
 - [x] Set up Docker files and connection between 3 containers (backend, frontend, database)
-- [x] Set up VPS
-- [x] Set up HTTPS
-- [x] Set up SSH hardning
+- [ ] Set up VPS
+- [ ] Set up HTTPS
+- [ ] Set up SSH hardning
 - [ ] Set up traefick
-- [x] Set up CI/CD
+- [ ] Set up CI/CD
 - [ ] Set up watchtower
 - [ ] Configure production environment
 - [ ] Test deployment process
@@ -71,6 +73,7 @@ docs for more detail on building and pushing.
 ## RBAC IDEAS
 
 1. User Router: Manages user-related operations, such as creating, reading, updating, and deleting users, as well as assigning roles and permissions to users.
+   1. Note: if changing user name, the token validation will become invalidated. Require to sign in again. 
 2. Role Router: Handles CRUD operations for roles, allowing you to create, view, update, and delete roles within the system.
 3. Permission Router: Manages CRUD operations for permissions, enabling the creation, reading, updating, and deletion of permissions associated with various roles.
 4. Role-Permission Router: Manages the relationships between roles and permissions, allowing you to assign and revoke permissions from roles.
@@ -78,4 +81,4 @@ docs for more detail on building and pushing.
 6. Authentication Router: Handles user authentication tasks, such as logging in and logging out, and managing authentication tokens (e.g., JWT).
 7. Authorization Router: Manages checks and validations to ensure users have the necessary permissions to perform certain actions or access specific resources.
 8. Audit Router: Tracks and logs user activities related to RBAC, allowing you to monitor changes made to users, roles, and permissions.
-9. Settings Router: Manages global settings for the RBAC system, such as default roles and permissions, password policies, and user account settings.
+9.  Settings Router: Manages global settings for the RBAC system, such as default roles and permissions, password policies, and user account settings.

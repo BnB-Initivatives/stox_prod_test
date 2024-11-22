@@ -1,8 +1,31 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Box, Button, Heading, Input, Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, ModalFooter, Flex, Text, useToast, Table, Tbody, Tr, Td, Th, Thead } from '@chakra-ui/react';
-import { FiPlus, FiMinus, FiX } from 'react-icons/fi';
-import { useHistory } from 'react-router-dom';  // React Router for redirection
-import Quagga from 'quagga';
+import React, { useState, useEffect, useRef } from "react";
+import {
+  Box,
+  Button,
+  Heading,
+  Input,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalCloseButton,
+  ModalBody,
+  ModalFooter,
+  Flex,
+  Text,
+  useToast,
+  Table,
+  Tbody,
+  Tr,
+  Td,
+  Th,
+  Thead,
+} from "@chakra-ui/react";
+import { FiPlus, FiMinus, FiX } from "react-icons/fi";
+import { useHistory, useLocation } from "react-router-dom"; // React Router for redirection
+import Quagga from "quagga";
+import axios from "axios";
+const APIEndpoint = process.env.REACT_APP_API_URL;
 
 function CameraPage() {
   const [showModal, setShowModal] = useState(false);
@@ -14,25 +37,36 @@ function CameraPage() {
   const history = useHistory(); // For redirecting to the product card page
   const [scanLinePosition, setScanLinePosition] = useState(0); // For moving the red line
 
-  // Sample product data
+  const [employee, setEmployee] = useState(null); // Store employee data in state
+  // Access data passed between components
+  const location = useLocation();
+  useEffect(() => {
+    if (location.state && location.state.employee) {
+      setEmployee(location.state.employee);
+      console.log(
+        "Camera: Access employee data from other component:",
+        location.state.employee
+      );
+    }
+  }, [location.state]);
 
-  const products = [
-    { id: 1, title: 'Product 1', barcode: '0667557112374', description: 'Blueberry Muffin' },
-    { id: 1, title: 'Product 3', barcode: '0182757000684', description: 'Blueberry Muffin' },
-    { id: 2, title: 'Product 2', barcode: '123456002890', description: 'Fantastic item.' },
-    { id: 2, title: 'Product 5', barcode: '060410077498', description: 'Fantastic item.' },
-    { id: 2, title: 'Product 6', barcode: '0060410077498', description: 'Fantastic item.' },
-    { id: 2, title: 'Product 4', barcode: '0123456002890', description: 'Fantastic item.' },
-    // Add more products as necessary
-  ];
-
+  useEffect(() => {
+    if (location.state && location.state.cart) {
+      setCart(location.state.cart);
+      console.log(
+        "Camera: Access cart data from other component:",
+        location.state.cart
+      );
+    }
+  }, [location.state]);
 
   const handleQuantityChange = (e) => {
     setQuantity(Number(e.target.value));
   };
 
   const increaseQuantity = () => setQuantity((prev) => prev + 1);
-  const decreaseQuantity = () => setQuantity((prev) => (prev > 1 ? prev - 1 : 1));
+  const decreaseQuantity = () =>
+    setQuantity((prev) => (prev > 1 ? prev - 1 : 1));
 
   const handleAddToCart = () => {
     if (!scannedBarcode) return;
@@ -41,11 +75,11 @@ function CameraPage() {
 
     const newCart = [...cart, { ...product, quantity }];
     setCart(newCart);
-    localStorage.setItem('cart', JSON.stringify(newCart)); 
+    localStorage.setItem("cart", JSON.stringify(newCart));
     toast({
-      title: 'Product Added',
+      title: "Product Added",
       description: `${quantity} x ${product.title} added to cart.`,
-      status: 'success',
+      status: "success",
       duration: 3000,
       isClosable: true,
     });
@@ -58,51 +92,88 @@ function CameraPage() {
     const updatedCart = cart.filter((item) => item.barcode !== barcode);
     setCart(updatedCart);
     toast({
-      title: 'Product Removed',
-      description: 'Product removed from cart.',
-      status: 'info',
+      title: "Product Removed",
+      description: "Product removed from cart.",
+      status: "info",
       duration: 3000,
       isClosable: true,
     });
   };
 
-  const handleCheckout = () => {
-    toast({
-      title: 'Checkout Successful',
-      description: 'Your purchase has been completed.',
-      status: 'success',
-      duration: 3000,
-      isClosable: true,
-    });
-    setCart([]); // Clear the cart after checkout
-  };
+  // Handle checkout logic
+  const handleCheckout = async () => {
+    try {
+      // Prepare checkout payload
+      const checkoutPayload = {
+        employee_id: employee.employee_id,
+        department_id: employee.department.department_id,
+        total_items: cart.reduce((sum, item) => sum + item.quantity, 0),
+        checkout_items: cart.map((item) => ({
+          item_id: item.item_id,
+          quantity: item.quantity,
+        })),
+      };
 
-  const handleGoToProductCard = () => {
-    // Redirect to the Product Card page, passing cart data as state
-    history.push('/productcard', { cart });
+      // Send checkout data
+      const postResponse = await axios.post(
+        `${APIEndpoint}/transactions/`,
+        checkoutPayload
+      );
+      if (postResponse.status === 201) {
+        toast({
+          title: "Checkout Successful",
+          description: "Your items have been checked out successfully.",
+          status: "success",
+          duration: 3000,
+          isClosable: true,
+        });
+        setCart([]); // Clear the cart after checkout
+      } else {
+        toast({
+          title: "Checkout Failed",
+          description: "An error occurred during checkout.",
+          status: "error",
+          duration: 3000,
+          isClosable: true,
+        });
+      }
+    } catch (error) {
+      console.error("Checkout error:", error);
+      toast({
+        title: "Error",
+        description: "An unexpected error occurred.",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+    }
   };
 
   const startCamera = () => {
     if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-      navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } })
+      navigator.mediaDevices
+        .getUserMedia({ video: { facingMode: "environment" } })
         .then((stream) => {
           videoRef.current.srcObject = stream;
-          Quagga.init({
-            inputStream: {
-              name: 'Live',
-              type: 'LiveStream',
-              target: videoRef.current,
+          Quagga.init(
+            {
+              inputStream: {
+                name: "Live",
+                type: "LiveStream",
+                target: videoRef.current,
+              },
+              decoder: {
+                readers: ["code_128_reader", "ean_reader"],
+              },
             },
-            decoder: {
-              readers: ['code_128_reader', 'ean_reader'],
-            },
-          }, (err) => {
-            if (err) {
-              console.error('Error initializing Quagga:', err);
-              return;
+            (err) => {
+              if (err) {
+                console.error("Error initializing Quagga:", err);
+                return;
+              }
+              Quagga.start();
             }
-            Quagga.start();
-          });
+          );
 
           Quagga.onDetected((data) => {
             const barcode = data.codeResult.code;
@@ -116,9 +187,10 @@ function CameraPage() {
             } else {
               // If no matching product, show a toast notification
               toast({
-                title: 'Product Not Found',
-                description: 'This barcode does not match any product in the database.',
-                status: 'error',
+                title: "Product Not Found",
+                description:
+                  "This barcode does not match any product in the database.",
+                status: "error",
                 duration: 3000,
                 isClosable: true,
               });
@@ -126,7 +198,7 @@ function CameraPage() {
           });
         })
         .catch((err) => {
-          console.error('Error accessing camera:', err);
+          console.error("Error accessing camera:", err);
         });
     }
   };
@@ -141,7 +213,7 @@ function CameraPage() {
   };
 
   const updateScanLinePosition = () => {
-    setScanLinePosition((prev) => (prev >= 100 ? 0 : prev + 1));  // Moves line position up to 100%
+    setScanLinePosition((prev) => (prev >= 100 ? 0 : prev + 1)); // Moves line position up to 100%
   };
 
   useEffect(() => {
@@ -154,13 +226,20 @@ function CameraPage() {
   }, []);
 
   return (
-    <Box w="100%" minH="100vh" display="flex" justifyContent="center" alignItems="flex-start" p={4}>
+    <Box
+      w="100%"
+      minH="100vh"
+      display="flex"
+      justifyContent="center"
+      alignItems="flex-start"
+      p={4}
+    >
       <Box position="relative" w="100%" maxW="600px" mr={8}>
         <video
           ref={videoRef}
           width="100%"
           height="auto"
-          style={{ borderRadius: '8px', border: '2px solid #fff' }}
+          style={{ borderRadius: "8px", border: "2px solid #fff" }}
           autoPlay
           muted
           playsInline
@@ -186,7 +265,14 @@ function CameraPage() {
         </Button>
       </Box>
 
-      <Box w="100%" maxW="400px" p={4} boxShadow="lg" borderRadius="md" bg="white">
+      <Box
+        w="100%"
+        maxW="400px"
+        p={4}
+        boxShadow="lg"
+        borderRadius="md"
+        bg="white"
+      >
         <Heading size="md" mb={4} textAlign="center">
           Cart
         </Heading>
@@ -201,7 +287,7 @@ function CameraPage() {
           <Tbody>
             {cart.map((item) => (
               <Tr key={item.barcode}>
-                <Td>{item.title}</Td>
+                <Td>{item.name}</Td>
                 <Td>{item.quantity}</Td>
                 <Td>
                   <Button
@@ -220,32 +306,40 @@ function CameraPage() {
 
         {/* Checkout and Product Card Buttons */}
         <Flex justify="space-between" mt={4}>
-        <Button
-          colorScheme="green"
-          onClick={handleCheckout}
-          w="48%" // Ensures both buttons are of equal width
-          size="lg" // Keeps button size consistent
-        >
-          Checkout
-        </Button>
+          <Button
+            colorScheme="green"
+            onClick={handleCheckout}
+            w="48%" // Ensures both buttons are of equal width
+            size="lg" // Keeps button size consistent
+          >
+            Checkout
+          </Button>
 
-        <Button
-          colorScheme="blue"
-          onClick={() => history.push('/Retailcrew/ProductCard')}
-          w="48%" // Ensures both buttons are of equal width
-          size="lg" // Keeps button size consistent
-        >
-          Product Card
-        </Button>
-      </Flex>
-
+          <Button
+            colorScheme="blue"
+            onClick={() =>
+              history.push("/Retailcrew/ProductCard", { cart, employee })
+            }
+            w="48%" // Ensures both buttons are of equal width
+            size="lg" // Keeps button size consistent
+          >
+            Product Card
+          </Button>
+        </Flex>
       </Box>
 
       {/* Modal for quantity input */}
-      <Modal isOpen={showModal} onClose={() => setShowModal(false)} size="md" isCentered>
+      <Modal
+        isOpen={showModal}
+        onClose={() => setShowModal(false)}
+        size="md"
+        isCentered
+      >
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader textAlign="center">Enter Quantity for Product</ModalHeader>
+          <ModalHeader textAlign="center">
+            Enter Quantity for Product
+          </ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <Flex align="center" justify="center" direction="row" mb={4}>

@@ -24,7 +24,7 @@ function SignIn() {
   const textColor = "gray.400";
 
   // State to store form data
-  const [email, setEmail] = useState("");
+  const [username, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
 
@@ -32,49 +32,98 @@ function SignIn() {
   const toast = useToast();
   const history = useHistory();
 
-  // User credentials with roles
-  const userCredentials = {
-    "superuser@example.com": { password: "superuser123", role: "superuser" },
-    "retailcrew@example.com": { password: "retailcrew123", role: "retailcrew" },
-    "receiver@example.com": { password: "receiver123", role: "receiver" },
-    "manager@example.com": { password: "manager123", role: "manager" },
-  };
-
   // Handle form submission
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // const email = e.target.email.value;
-    // const password = e.target.password.value;
+    const APIEndpoint = process.env.REACT_APP_API_URL;
+    // Create form data
+    const formData = new URLSearchParams();
+    formData.append("remember_me", rememberMe);
+    formData.append("grant_type", "password");
+    formData.append("username", username);
+    formData.append("password", password);
 
-    // Check if email exists in userCredentials and password matches
-    if (
-      userCredentials[email] &&
-      userCredentials[email].password === password
-    ) {
-      const userRole = userCredentials[email].role;
-
-      toast({
-        title: "Login Successful",
-        description: `Welcome, ${userRole}`,
-        status: "success",
-        duration: 3000,
-        isClosable: true,
+    try {
+      const response = await fetch(`${APIEndpoint}/auth/token`, {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: formData,
       });
 
-      // Redirect based on role
-      if (userRole === "superuser") {
-        history.push("/Superuser/Dashboard");
-      } else if (userRole === "retailcrew") {
-        history.push("/Retailcrew/Dashboard");
-      } else if (userRole === "receiver") {
-        history.push("/Receiver/Dashboard");
-      } else if (userRole === "manager") {
-        history.push("/Manager/Dashboard");
+      if (!response.ok) {
+        console.error(`Error: HTTP ${response.status}`);
+        throw new Error(`HTTP response was not ok: ${response.statusText}`);
       }
-    } else {
+
+      const data = await response.json();
+      // Assign the response data to variables
+      const {
+        access_token,
+        employee_id,
+        roles,
+        token_type,
+        user_id,
+        user_name,
+      } = data[0];
+
+      console.log("Authentication successful for user:", user_name);
+
+      // Store the access token in local storage for subsequent requests
+      localStorage.setItem("authToken", access_token);
+
+      if (roles && roles.length > 0) {
+        const userRole = roles[0].name;
+        console.log("User role:", userRole);
+        localStorage.setItem("userRole", userRole);
+        // Store the user role in local storage for subsequent requests
+        toast({
+          title: "Login Successful",
+          description: `Welcome, ${user_name}`,
+          status: "success",
+          duration: 3000,
+          isClosable: true,
+        });
+
+        switch (userRole) {
+          case "SuperUser":
+            history.push("/Superuser/Dashboard");
+            break;
+          case "RetailStaff":
+            history.push("/Retailcrew/Dashboard");
+            break;
+          case "Receiver":
+            history.push("/Receiver/Dashboard");
+            break;
+          case "Manager":
+            history.push("/Manager/Dashboard");
+            break;
+          default:
+            toast({
+              title: "Invalid Role",
+              description: "The user role is not recognized.",
+              status: "error",
+              duration: 3000,
+              isClosable: true,
+            });
+            break;
+        }
+      } else {
+        toast({
+          title: "Invalid Credentials",
+          description: "Please check your user and the role assigned.",
+          status: "error",
+          duration: 3000,
+          isClosable: true,
+        });
+      }
+    } catch (error) {
+      console.error("Error:", error);
       toast({
-        title: "Invalid Credentials",
-        description: "Please check your email and password.",
+        title: "An error occurred",
+        description: "Unable to sign in. Please try again later.",
         status: "error",
         duration: 3000,
         isClosable: true,
@@ -83,7 +132,13 @@ function SignIn() {
   };
 
   return (
-    <Flex minH="100vh" align="center" justify="center" bg="rgb(19,21,54)" position="relative">
+    <Flex
+      minH="100vh"
+      align="center"
+      justify="center"
+      bg="rgb(19,21,54)"
+      position="relative"
+    >
       <Flex
         direction="column"
         w={{ base: "90%", md: "400px" }}
@@ -95,11 +150,16 @@ function SignIn() {
         justify="center"
       >
         <Image src={signInImage} alt="Logo" boxSize="100px" mb="20px" />
-        <Heading color={titleColor} fontSize="32px" mb="20px" textAlign="center">
+        <Heading
+          color={titleColor}
+          fontSize="32px"
+          mb="20px"
+          textAlign="center"
+        >
           Nice to see you!
         </Heading>
         <Text color={textColor} fontWeight="bold" fontSize="14px" mb="36px">
-          Enter your username and password to sign in 
+          Enter your username and password to sign in
         </Text>
         <FormControl>
           <FormLabel fontSize="sm" fontWeight="normal" color="white">
@@ -113,8 +173,8 @@ function SignIn() {
               borderRadius="20px"
               fontSize="sm"
               size="lg"
-              placeholder="Your email address"
-              value={email}
+              placeholder="Your user name"
+              value={username}
               onChange={(e) => setEmail(e.target.value)}
             />
           </GradientBorder>
@@ -147,7 +207,13 @@ function SignIn() {
               onChange={() => setRememberMe(!rememberMe)}
             />
           </DarkMode>
-          <FormLabel htmlFor="remember-login" mb="0" ms="1" fontWeight="normal" color="white">
+          <FormLabel
+            htmlFor="remember-login"
+            mb="0"
+            ms="1"
+            fontWeight="normal"
+            color="white"
+          >
             Remember me
           </FormLabel>
         </FormControl>

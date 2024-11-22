@@ -18,7 +18,7 @@
 
 import React from "react";
 import ReactDOM from "react-dom";
-import { HashRouter, Route, Switch, Redirect } from "react-router-dom";
+import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 // import superuser//
 import AuthLayout from "layouts/Auth.js";
 import AdminLayout from "layouts/Admin.js";
@@ -29,7 +29,7 @@ import RetailCrewuserlayout from "layouts/Retailcrew";
 // import RTLLayout from "layouts/RTL.js";
 
 ReactDOM.render(
-  <HashRouter>
+  <BrowserRouter>
     <Switch>
       <Route path={`/auth`} component={AuthLayout} />
       <Route path={`/admin`} component={AdminLayout} />
@@ -37,10 +37,10 @@ ReactDOM.render(
       <Route path={`/manager`} component={Manageruserlayout} />
       <Route path={`/Receiver`} component={Receiveruserlayout} />
       <Route path={`/Retailcrew`} component={RetailCrewuserlayout} />
-    
+
       {/* <Route path={`/rtl`} component={RTLLayout} /> */}
-      <Redirect from={`/`} to='/auth/signin' />
+      <Redirect from={`/`} to="/auth/signin" />
     </Switch>
-  </HashRouter>,
+  </BrowserRouter>,
   document.getElementById("root")
 );

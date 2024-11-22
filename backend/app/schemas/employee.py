@@ -7,7 +7,7 @@ from app.schemas.department import DepartmentReadRequest
 
 
 class EmployeeCreateRequest(BaseModel):
-    employee_number: str = Field(..., min_length=1, max_length=8)
+    employee_number: str = Field(..., min_length=8, max_length=8)
     first_name: str = Field(..., min_length=1, max_length=50)
     middle_name: Optional[str] = Field(None, min_length=1, max_length=50)
     last_name: str = Field(..., min_length=1, max_length=50)

@@ -134,25 +134,38 @@ export default function Dashboard() {
 
         {/* Dropdown Combo Box */}
         <Flex direction="column" mb="16px">
-          <Text fontSize="md" fontWeight="bold" color={textColor} mb="8px">
-            Select a vendor
-          </Text>
-          <Select
-            placeholder="Choose option"
-            bg="transparent"
-            color={textColor}
-            zIndex="2"
-            border="1px solid"
-            borderColor={textColor}
-            _focus={{ borderColor: 'teal.500' }}
-          >
-            {vendors.map((vendor) => (
-              <option key={vendor.vendor_id} value={vendor.vendor_id}>
-                {vendor.name}
-              </option>
-            ))}
-          </Select>
-        </Flex>
+  <Text fontSize="md" fontWeight="bold" color={textColor} mb="8px">
+    Select a vendor
+  </Text>
+  <Select
+    placeholder="Choose option"
+    bg="transparent"
+    color={textColor}
+    zIndex="2"
+    border="1px solid"
+    borderColor={textColor}
+    _focus={{ borderColor: 'teal.500' }}
+    sx={{
+      // Styles for the dropdown list
+      '& option': {
+        backgroundColor: 'white', // Dropdown items background
+        color: 'black',           // Dropdown items text color
+      },
+      '& option:checked': {
+        backgroundColor: 'white', // Selected item background color
+        color: 'black',           // Selected item text color
+      }
+    }}
+  >
+    {vendors.map((vendor) => (
+      <option key={vendor.vendor_id} value={vendor.vendor_id}>
+        {vendor.name}
+      </option>
+    ))}
+  </Select>
+</Flex>
+
+
 
         {/* Invoice Number Field */}
         <Flex direction="column" mb="16px">

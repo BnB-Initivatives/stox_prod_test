@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import {
   Box,
   Button,
@@ -14,31 +14,67 @@ import {
   Tr,
   IconButton,
   useToast,
-} from '@chakra-ui/react';
-import { FiX, FiCamera, FiMinus, FiPlus } from 'react-icons/fi';
-import { useHistory } from 'react-router-dom';
-import axios from 'axios';
+} from "@chakra-ui/react";
+import { FiX, FiCamera, FiMinus, FiPlus } from "react-icons/fi";
+import { useHistory, useLocation } from "react-router-dom";
+import axios from "axios";
+
+const APIEndpoint = process.env.REACT_APP_API_URL;
 
 function ProductPage() {
   const [products, setProducts] = useState([]);
   const [cart, setCart] = useState([]);
   const [currentPage, setCurrentPage] = useState(0);
+  const [employee, setEmployee] = useState(null); // Store employee data in state
   const productsPerPage = 8; // Show 8 products at a time
   const toast = useToast();
   const history = useHistory();
+
+  // Access data passed between components
+  const location = useLocation();
+  useEffect(() => {
+    if (location.state && location.state.employee) {
+      setEmployee(location.state.employee);
+      console.log(
+        "ProductCard: Access employee data from other component:",
+        location.state.employee
+      );
+    }
+  }, [location.state]);
+
+  useEffect(() => {
+    if (location.state && location.state.cart) {
+      setCart(location.state.cart);
+      console.log(
+        "ProductCard: Access cart data from other component:",
+        location.state.cart
+      );
+    }
+  }, [location.state]);
 
   // Fetch products from API
   useEffect(() => {
     async function fetchProducts() {
       try {
-        const response = await axios.get('http://localhost:8000/items/');
-        setProducts(response.data);
+        const response = await axios.get(`${APIEndpoint}/items/`);
+
+        if (response.status === 200) {
+          setProducts(response.data);
+        } else {
+          toast({
+            title: "Error",
+            description: "An error occurred while fetching items.",
+            status: "error",
+            duration: 3000,
+            isClosable: true,
+          });
+        }
       } catch (error) {
-        console.error('Error fetching products:', error);
+        console.error("Error fetching products:", error);
         toast({
-          title: 'Error',
-          description: 'Unable to fetch products.',
-          status: 'error',
+          title: "Error",
+          description: "Unable to fetch products.",
+          status: "error",
           duration: 3000,
           isClosable: true,
         });
@@ -49,7 +85,9 @@ function ProductPage() {
 
   // Handle adding a product to the cart
   const handleAddToCart = (product) => {
-    const existingProduct = cart.find((item) => item.item_id === product.item_id);
+    const existingProduct = cart.find(
+      (item) => item.item_id === product.item_id
+    );
 
     if (existingProduct) {
       const updatedCart = cart.map((item) =>
@@ -63,9 +101,11 @@ function ProductPage() {
     }
 
     toast({
-      title: 'Product Added',
-      description: `${product.title || product.name || 'Unnamed Product'} added to cart.`,
-      status: 'success',
+      title: "Product Added",
+      description: `${
+        product.title || product.name || "Unnamed Product"
+      } added to cart.`,
+      status: "success",
       duration: 3000,
       isClosable: true,
     });
@@ -84,9 +124,9 @@ function ProductPage() {
     );
 
     toast({
-      title: 'Cart Updated',
+      title: "Cart Updated",
       description: `Updated quantity for product ID: ${productId}.`,
-      status: 'info',
+      status: "info",
       duration: 3000,
       isClosable: true,
     });
@@ -94,11 +134,13 @@ function ProductPage() {
 
   // Handle removing a product from the cart
   const handleRemoveFromCart = (productId) => {
-    setCart((prevCart) => prevCart.filter((item) => item.item_id !== productId));
+    setCart((prevCart) =>
+      prevCart.filter((item) => item.item_id !== productId)
+    );
     toast({
-      title: 'Product Removed',
-      description: 'Item removed from cart.',
-      status: 'info',
+      title: "Product Removed",
+      description: "Item removed from cart.",
+      status: "info",
       duration: 3000,
       isClosable: true,
     });
@@ -107,61 +149,46 @@ function ProductPage() {
   // Handle checkout logic
   const handleCheckout = async () => {
     try {
-      // Fetch employee and department details
-      const response = await axios.get('http://localhost:8000/employee');
-      const { employee_id, department_id } = response.data;
-
-      if (!employee_id || !department_id) {
-        toast({
-          title: 'Error',
-          description: 'Employee or Department details are missing.',
-          status: 'error',
-          duration: 3000,
-          isClosable: true,
-        });
-        return;
-      }
-
       // Prepare checkout payload
       const checkoutPayload = {
-        employee_id,
-        department_id,
+        employee_id: employee.employee_id,
+        department_id: employee.department.department_id,
         total_items: cart.reduce((sum, item) => sum + item.quantity, 0),
         checkout_items: cart.map((item) => ({
           item_id: item.item_id,
           quantity: item.quantity,
-          category_id: item.category_id || 1,
-          unit_of_measure: item.unit_of_measure || 1,
         })),
       };
 
       // Send checkout data
-      const postResponse = await axios.post('http://localhost:8000/checkout', checkoutPayload);
-
-      if (postResponse.status === 200) {
+      const postResponse = await axios.post(
+        `${APIEndpoint}/transactions/`,
+        checkoutPayload
+      );
+      if (postResponse.status === 201) {
         toast({
-          title: 'Checkout Successful',
-          description: 'Your items have been checked out successfully.',
-          status: 'success',
+          title: "Checkout Successful",
+          description: "Your items have been checked out successfully.",
+          status: "success",
           duration: 3000,
           isClosable: true,
         });
         setCart([]); // Clear the cart after checkout
       } else {
         toast({
-          title: 'Checkout Failed',
-          description: 'An error occurred during checkout.',
-          status: 'error',
+          title: "Checkout Failed",
+          description: "An error occurred during checkout.",
+          status: "error",
           duration: 3000,
           isClosable: true,
         });
       }
     } catch (error) {
-      console.error('Checkout error:', error);
+      console.error("Checkout error:", error);
       toast({
-        title: 'Error',
-        description: 'An unexpected error occurred.',
-        status: 'error',
+        title: "Error",
+        description: "An unexpected error occurred.",
+        status: "error",
         duration: 3000,
         isClosable: true,
       });
@@ -189,16 +216,25 @@ function ProductPage() {
 
   // Navigate to Camera page
   const handleScanBarcode = () => {
-    history.push('./camera');
+    history.push("./camera", { cart, employee });
   };
 
   // Navigate back to Welcome page
   const handleGoBack = () => {
-    history.push('./WelcomeToStox');
+    history.push("./CheckoutMainPage", {
+      employee,
+    });
   };
 
   return (
-    <Flex direction="row" align="start" justify="space-between" w="100%" minH="100vh" p={5}>
+    <Flex
+      direction="row"
+      align="start"
+      justify="space-between"
+      w="100%"
+      minH="100vh"
+      p={5}
+    >
       <Button
         position="absolute"
         top="15px"
@@ -226,9 +262,18 @@ function ProductPage() {
               bg="white"
               w="22%"
             >
-              <Image src={product.image} alt={product.title || product.name || 'Unnamed Product'} mb={2} borderRadius="md" />
-              <Text fontSize="lg" fontWeight="bold">{product.title || product.name || 'Unnamed Product'}</Text>
-              <Text fontSize="sm" color="gray.500" mb={2}>{product.description}</Text>
+              <Image
+                src={product.image}
+                alt={product.title || product.name || "Unnamed Product"}
+                mb={2}
+                borderRadius="md"
+              />
+              <Text fontSize="lg" fontWeight="bold">
+                {product.title || product.name || "Unnamed Product"}
+              </Text>
+              <Text fontSize="sm" color="gray.500" mb={2}>
+                {product.description}
+              </Text>
               <Button
                 size="sm"
                 colorScheme="blue"
@@ -242,10 +287,19 @@ function ProductPage() {
         </Flex>
 
         <Flex justify="center" mt={4}>
-          <Button onClick={goToPreviousPage} isDisabled={currentPage === 0} mr={2} colorScheme="blue">
+          <Button
+            onClick={goToPreviousPage}
+            isDisabled={currentPage === 0}
+            mr={2}
+            colorScheme="blue"
+          >
             Previous
           </Button>
-          <Button onClick={goToNextPage} isDisabled={currentPage === totalPages - 1} colorScheme="blue">
+          <Button
+            onClick={goToNextPage}
+            isDisabled={currentPage === totalPages - 1}
+            colorScheme="blue"
+          >
             Next
           </Button>
         </Flex>
@@ -266,7 +320,7 @@ function ProductPage() {
           <Tbody>
             {cart.map((item) => (
               <Tr key={item.item_id}>
-                <Td>{item.title || item.name || 'Unnamed Product'}</Td>
+                <Td>{item.title || item.name || "Unnamed Product"}</Td>
                 <Td>
                   <Flex align="center" justify="center" gap={2}>
                     <IconButton
@@ -276,7 +330,9 @@ function ProductPage() {
                       aria-label="Decrease quantity"
                       onClick={() => handleChangeQuantity(item.item_id, -1)}
                     />
-                    <Box textAlign="center" w="30px">{item.quantity}</Box>
+                    <Box textAlign="center" w="30px">
+                      {item.quantity}
+                    </Box>
                     <IconButton
                       icon={<FiPlus />}
                       size="sm"

@@ -84,11 +84,11 @@ export const barChartOptionsDashboard = {
 
 export const lineChartDataDashboard = [
   {
-    name: "Mobile apps",
+    name: "Tim Hortons",
     data: [500, 250, 300, 220, 500, 250, 300, 230, 300, 350, 250, 400],
   },
   {
-    name: "Websites",
+    name: "Starbucks",
     data: [200, 230, 300, 350, 370, 420, 550, 350, 400, 500, 330, 550],
   },
 ];
@@ -171,8 +171,8 @@ export const lineChartOptionsDashboard = {
 
 export const lineChartDataProfile1 = [
   {
-    name: "Mobile apps",
-    data: [100, 250, 300, 220, 500, 250, 300, 230, 300, 350, 250, 400],
+    name: "Tim hortons",
+    data: [200, 250, 300, 220, 500, 250, 300, 230, 300, 350, 250, 400],
   },
 ];
 
@@ -260,8 +260,8 @@ export const lineChartOptionsProfile1 = {
 
 export const lineChartDataProfile2 = [
   {
-    name: "Mobile apps",
-    data: [100, 250, 300, 220, 500, 250, 300, 230, 300, 350, 250, 400],
+    name: "Tim Hortons",
+    data: [200, 250, 300, 220, 500, 250, 300, 230, 300, 350, 250, 400],
   },
 ];
 

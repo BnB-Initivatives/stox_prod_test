@@ -1,6 +1,6 @@
 import logging
 from typing import Annotated
-from fastapi import FastAPI, APIRouter, Depends, HTTPException, Form
+from fastapi import APIRouter, Depends, HTTPException, Form
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 from starlette import status
@@ -37,7 +37,11 @@ def get_access_token(
         - dict: A dictionary containing the access token and token type. Example:
         {
             "access_token": "eyJhbGckpXVCJ9.eyJzdWIiOiJ1c2VyM",
-            "token_type": "bearer"
+            "token_type": "bearer",
+            "user_id": 2,
+            "user_name": Manager,
+            "employee_id": 2,
+            "roles": [{"role_id": 1, "name": "Manager", "description": "Manager role"}],
         }
 
     Raises:
@@ -45,7 +49,7 @@ def get_access_token(
         - HTTPException: If the user cannot be authenticated, or if any database or unexpected errors occur.
     """
     try:
-        # print(form_data)
+        # print(form_data.username, form_data.password)
         # print(remember_me)
         user = authenticate_user(form_data.username, form_data.password, db)
         if not user:
@@ -55,7 +59,16 @@ def get_access_token(
             )
         token = create_access_token(user.user_name, user.user_id, remember_me=remember_me)  # type: ignore
 
-        return {"access_token": token, "token_type": settings.ACCESS_TOKEN_TYPE, "roles": user.roles}
+        return (
+            {
+                "access_token": token,
+                "token_type": settings.ACCESS_TOKEN_TYPE,
+                "user_id": user.user_id,
+                "user_name": user.user_name,
+                "employee_id": user.employee_id,
+                "roles": user.roles,
+            },
+        )
 
     except IntegrityError as e:
         logging.error(f"Integrity error occurred: {str(e)}")

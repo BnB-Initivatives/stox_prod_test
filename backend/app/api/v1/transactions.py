@@ -146,9 +146,9 @@ def process_checkout(
             )
             uom = db.execute(stmt).scalars().first()
             print(item.item_id, category, uom)
-            # Add retrieved category and unit of measure to the item
-            item.category_id = category
-            item.unit_of_measure = uom
+            # # Add retrieved category and unit of measure to the item
+            # item.category_id = category
+            # item.unit_of_measure = uom
             print("Item after adding category and uom ", item)
 
         # Create the checkout transaction
@@ -168,8 +168,8 @@ def process_checkout(
                 line_number=index + 1,
                 item_id=item.item_id,
                 quantity=item.quantity,
-                category_id=item.category_id,
-                unit_of_measure=item.unit_of_measure,
+                category_id=category,
+                unit_of_measure=uom,
             )
             db.add(checkout_item)
 

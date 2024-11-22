@@ -36,6 +36,7 @@ import {
 	Tbody,
 	Text,
 	Th,
+	Td,
 	Thead,
 	Tr
 } from '@chakra-ui/react';
@@ -76,11 +77,11 @@ export default function Dashboard() {
 						<Flex flexDirection='row' align='center' justify='center' w='100%'>
 							<Stat me='auto'>
 								<StatLabel fontSize='sm' color='gray.400' fontWeight='bold' pb='2px'>
-									Total Purchases
+									Total Vendors
 								</StatLabel>
 								<Flex>
 									<StatNumber fontSize='lg' color='#fff'>
-										$5,000
+										25
 									</StatNumber>
 									<StatHelpText
 										alignSelf='flex-end'
@@ -106,11 +107,11 @@ export default function Dashboard() {
 						<Flex flexDirection='row' align='center' justify='center' w='100%'>
 							<Stat me='auto'>
 								<StatLabel fontSize='sm' color='gray.400' fontWeight='bold' pb='2px'>
-									Total Sales
+									Total Employees
 								</StatLabel>
 								<Flex>
 									<StatNumber fontSize='lg' color='#fff' fontWeight='bold'>
-										$13,000
+										150
 									</StatNumber>
 									<StatHelpText
 										alignSelf='flex-end'
@@ -136,11 +137,11 @@ export default function Dashboard() {
 						<Flex flexDirection='row' align='center' justify='center' w='100%'>
 							<Stat me='auto'>
 								<StatLabel fontSize='sm' color='gray.400' fontWeight='bold' pb='2px'>
-									Total Inventory Value
+									Total Inventory Items
 								</StatLabel>
 								<Flex>
 									<StatNumber fontSize='lg' color='#fff'>
-										$31,100
+										300
 									</StatNumber>
 									<StatHelpText
 										alignSelf='flex-end'
@@ -166,11 +167,11 @@ export default function Dashboard() {
 						<Flex flexDirection='row' align='center' justify='center' w='100%'>
 							<Stat>
 								<StatLabel fontSize='sm' color='gray.400' fontWeight='bold' pb='2px'>
-									Pending Orders
+									ALL Departments
 								</StatLabel>
 								<Flex>
 									<StatNumber fontSize='lg' color='#fff'>
-										2
+										5
 									</StatNumber>
 									<StatHelpText
 										alignSelf='flex-end'
@@ -225,175 +226,98 @@ export default function Dashboard() {
 					<CardHeader mb='24px'>
 						<Flex direction='column'>
 							<Text color='#fff' fontSize='lg' fontWeight='bold' mb='4px'>
-								Customer Satisfaction Rate
-							</Text>
-							<Text color='gray.400' fontSize='sm'>
-								Based on reviews
+								Recent Checkouts
 							</Text>
 						</Flex>
 					</CardHeader>
-					<Flex direction='column' justify='center' align='center'>
-						<Box zIndex='-1'>
-							<CircularProgress
-								size={200}
-								value={80}
-								thickness={6}
-								color='#582CFF'
-								variant='vision'
-								rounded>
-								<CircularProgressLabel>
-									<IconBox mb='20px' mx='auto' bg='brand.200' borderRadius='50%' w='48px' h='48px'>
-										<Icon as={BiHappy} color='#fff' w='30px' h='30px' />
-									</IconBox>
-								</CircularProgressLabel>
-							</CircularProgress>
-						</Box>
-						<Stack
-							direction='row'
-							spacing={{ sm: '42px', md: '68px' }}
-							justify='center'
-							maxW={{ sm: '270px', md: '300px', lg: '100%' }}
-							mx={{ sm: 'auto', md: '0px' }}
-							p='18px 22px'
-							bg='linear-gradient(126.97deg, rgb(6, 11, 40) 28.26%, rgba(10, 14, 35) 91.2%)'
-							borderRadius='20px'
-							position='absolute'
-							bottom='5%'>
-							<Text fontSize='xs' color='gray.400'>
-								0%
-							</Text>
-							<Flex direction='column' align='center' minW='80px'>
-								<Text color='#fff' fontSize='28px' fontWeight='bold'>
-									95%
-								</Text>
-								<Text fontSize='xs' color='gray.400'>
-									Based on reviews
-								</Text>
-							</Flex>
-							<Text fontSize='xs' color='gray.400'>
-								100%
-							</Text>
-						</Stack>
-					</Flex>
 				</Card>
 				{/* Inter-Store transfers */}
 				<Card gridArea={{ md: '2 / 2 / 3 / 3', '2xl': 'auto' }}>
 					<Flex direction='column'>
 						<Flex justify='space-between' align='center' mb='40px'>
 							<Text color='#fff' fontSize='lg' fontWeight='bold'>
-							Inter-Store Transfers
-							</Text>
-							<Button borderRadius='12px' w='38px' h='38px' bg='#22234B' _hover='none' _active='none'>
-							<Icon as={IoEllipsisHorizontal} color='#7551FF' />
-							</Button>
+							Recent Invoices
+							</Text>	
+						</Flex>						
 						</Flex>
+				</Card>
+				
+				<Card gridArea={{ md: '3 / 1 / 4 / 2', '2xl': 'auto' }} p={6} boxShadow="md">
+					<CardHeader mb="24px">
+					<Flex direction="column">
+						<Text color="#fff" fontSize="lg" fontWeight="bold" mb="4px">
+						Department Specific Inventory
+						</Text>
+					</Flex>
+					</CardHeader>
+				</Card>
+				
+				<Card gridArea={{ md: '4 / 1 / 5 / 2', '2xl': 'auto' }} p={6} boxShadow="md">
+					<CardHeader mb="24px">
+					<Flex direction="column">
+						<Text color="#fff" fontSize="lg" fontWeight="bold" mb="4px">
+						Aging Inventory
+						</Text>
+						
+					</Flex>
+					</CardHeader>
+				</Card>
 
-						<Flex direction={{ sm: 'column', md: 'row' }}>
-							<Flex direction='column' me={{ md: '6px', lg: '52px' }} mb={{ sm: '16px', md: '0px' }}>
-							<Flex
-								direction='column'
-								p='22px'
-								pe={{ sm: '22e', md: '8px', lg: '22px' }}
-								minW={{ sm: '220px', md: '140px', lg: '220px' }}
-								bg='linear-gradient(126.97deg, #060C29 28.26%, rgba(4, 12, 48, 0.5) 91.2%)'
-								borderRadius='20px'
-								mb='20px'
-							>
-								<Text color='gray.400' fontSize='sm' mb='4px'>
-								Pending approval
-								</Text>
-								<Text color='#fff' fontSize='lg' fontWeight='bold'>
-								2
-								</Text>
-							</Flex>
-							<Flex
-								direction='column'
-								p='22px'
-								pe={{ sm: '22px', md: '8px', lg: '22px' }}
-								minW={{ sm: '170px', md: '140px', lg: '170px' }}
-								bg='linear-gradient(126.97deg, #060C29 28.26%, rgba(4, 12, 48, 0.5) 91.2%)'
-								borderRadius='20px'
-							>
-								<Text color='gray.400' fontSize='sm' mb='4px'>
-								Approved requests
-								</Text>
-								<Text color='#fff' fontSize='lg' fontWeight='bold'>
-								3
-								</Text>
-							</Flex>
-							</Flex>
+				{/* Additional Card 2 */}
+				<Card gridArea={{ md: '4 / 2 / 5 / 3', '2xl': 'auto' }} p={6} boxShadow="md">
+					<CardHeader mb="24px">
+					<Flex direction="column">
+						<Text color="#fff" fontSize="lg" fontWeight="bold" mb="4px">
+						Vendor Performance
+						</Text>
+						
+					</Flex>
+					</CardHeader>
+				</Card>
 
-							{/* Shifted to the right */}
-							<Flex direction='column' ml='auto' me={{ md: '6px', lg: '52px' }} mb={{ sm: '16px', md: '0px' }}>
-							<Flex
-								direction='column'
-								p='22px'
-								pe={{ sm: '22e', md: '8px', lg: '22px' }}
-								minW={{ sm: '220px', md: '140px', lg: '220px' }}
-								bg='linear-gradient(126.97deg, #060C29 28.26%, rgba(4, 12, 48, 0.5) 91.2%)'
-								borderRadius='20px'
-								mb='20px'
-							>
-								<Text color='gray.400' fontSize='sm' mb='4px'>
-								Total Requests
-								</Text>
-								<Text color='#fff' fontSize='lg' fontWeight='bold'>
-								5
-								</Text>
-							</Flex>
-
-							<Flex
-								direction='column'
-								p='22px'
-								pe={{ sm: '22px', md: '8px', lg: '22px' }}
-								minW={{ sm: '170px', md: '140px', lg: '170px' }}
-								bg='linear-gradient(126.97deg, #060C29 28.26%, rgba(4, 12, 48, 0.5) 91.2%)'
-								borderRadius='20px'
-							>
-								<Text color='gray.400' fontSize='sm' mb='4px'>
-								Total Value
-								</Text>
-								<Text color='#fff' fontSize='lg' fontWeight='bold'>
-								$1000
-								</Text>
-							</Flex>
-							</Flex>
-						</Flex>
-						</Flex>
-
+				{/* Inter-Store Transfers */}
+				<Card gridArea={{ md: '3 / 2 / 4 / 3', '2xl': 'auto' }} p={6} boxShadow="md">
+					<Flex direction="column">
+					<Flex justify="space-between" align="center" mb="40px">
+						<Text color="#fff" fontSize="lg" fontWeight="bold">
+						Low Stock Items
+						</Text>
+					</Flex>
+					</Flex>
 				</Card>
 			</Grid>
 			<Grid
-	templateColumns={{ sm: '1fr', lg: '2fr 1fr' }} // Adjusted to give the Sales Overview column more space
-	maxW={{ sm: '100%', md: '100%' }}
-	gap='24px'
-	mb='24px'
-	>
-	{/* Sales Overview */}
-	<Flex direction='column' gridColumn={{ lg: 'span 2' }} w='100%'> {/* Span both columns on large screens */}
-		<Card p='28px 0px 0px 0px' w='100%'>
-		<CardHeader mb='20px' ps='22px'>
-			<Flex direction='column' alignSelf='flex-start'>
-			<Text fontSize='lg' color='#fff' fontWeight='bold' mb='6px'>
-				Sales Overview
-			</Text>
-			<Text fontSize='md' fontWeight='medium' color='gray.400'>
-				<Text as='span' color='green.400' fontWeight='bold'>
-				(+5%) more
-				</Text>{' '}
-				in 2024
-			</Text>
-			</Flex>
-		</CardHeader>
-		<Box w='100%' minH={{ sm: '300px' }}>
-			<LineChart
-			lineChartData={lineChartDataDashboard}
-			lineChartOptions={lineChartOptionsDashboard}
-			/>
-		</Box>
-		</Card>
-	</Flex>
-	</Grid>
+			templateColumns={{ sm: '1fr', lg: '2fr 1fr' }} // Adjusted to give the Sales Overview column more space
+			maxW={{ sm: '100%', md: '100%' }}
+			gap='24px'
+			mb='24px'
+			>
+			{/* Sales Overview */}
+			<Flex direction='column' gridColumn={{ lg: 'span 2' }} w='100%'> {/* Span both columns on large screens */}
+				<Card p='28px 0px 0px 0px' w='100%'>
+				<CardHeader mb='20px' ps='22px'>
+					<Flex direction='column' alignSelf='flex-start'>
+					<Text fontSize='lg' color='#fff' fontWeight='bold' mb='6px'>
+						Inventory Overview
+					</Text>
+					<Text fontSize='md' fontWeight='medium' color='gray.400'>
+						<Text as='span' color='green.400' fontWeight='bold'>
+						(+5%) more
+						</Text>{' '}
+						in 2024
+					</Text>
+					</Flex>
+				</CardHeader>
+				<Box w='100%' minH={{ sm: '300px' }}>
+					<LineChart
+					lineChartData={lineChartDataDashboard}
+					lineChartOptions={lineChartOptionsDashboard}
+					/>
+				</Box>
+				</Card>
+			`</Flex>
+			
+			</Grid>
 		</Flex>
 	);
 }

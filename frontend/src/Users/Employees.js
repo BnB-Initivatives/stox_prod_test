@@ -32,6 +32,7 @@ const API_URL = process.env.REACT_APP_API_URL;
 function Employees() {
   const [employees, setEmployees] = useState([]); // Stores the list of employees
   const [loading, setLoading] = useState(true); // Loading state
+  const [searchTerm, setSearchTerm] = useState(''); // Stores the search term
   const { isOpen, onOpen, onClose } = useDisclosure(); // Modal controls for create/update
   const { isOpen: isDeleteOpen, onOpen: onDeleteOpen, onClose: onDeleteClose } = useDisclosure(); // Modal for delete
   const { isOpen: isCreateOpen, onOpen: onCreateOpen, onClose: onCreateClose } = useDisclosure(); // Modal for create new employee
@@ -160,6 +161,12 @@ function Employees() {
       });
   };
 
+  // Filter employees based on search term
+  const filteredEmployees = employees.filter((employee) => {
+    const fullName = `${employee.first_name} ${employee.last_name}`.toLowerCase();
+    return fullName.includes(searchTerm.toLowerCase());
+  });
+
   if (loading) {
     return (
       <Flex justifyContent="center" alignItems="center" height="100vh">
@@ -180,6 +187,21 @@ function Employees() {
         </Button>
       </Flex>
 
+      {/* Search Box */}
+      <Box mb={4} w="100%" maxW="500px" mx="auto">
+        <Input
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          placeholder="Search by name"
+          bg="white"
+          color="black"
+          top="-50px"
+          left="100px"
+          w="150"
+          mb={4}
+        />
+      </Box>
+
       <Table variant="simple">
         <Thead>
           <Tr color="white">
@@ -193,7 +215,7 @@ function Employees() {
           </Tr>
         </Thead>
         <Tbody>
-          {employees.map((employee) => (
+          {filteredEmployees.map((employee) => (
             <Tr key={employee.employee_id}>
               <Td>{employee.employee_id}</Td>
               <Td>{employee.employee_number}</Td>
@@ -267,8 +289,8 @@ function Employees() {
             />
           </ModalBody>
           <ModalFooter>
-            <Button colorScheme="teal" mr={3} onClick={handleEmployeeSubmit}>
-              Create
+            <Button colorScheme="blue" onClick={handleEmployeeSubmit}>
+              Submit
             </Button>
             <Button variant="ghost" onClick={onCreateClose}>
               Cancel
@@ -277,40 +299,46 @@ function Employees() {
         </ModalContent>
       </Modal>
 
-      {/* Update/Create Employee Modal */}
+      {/* Update Employee Modal */}
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>{selectedEmployee ? 'Update' : 'Create'} Employee</ModalHeader>
+          <ModalHeader>Edit Employee</ModalHeader>
           <ModalBody>
+            <Input
+              placeholder="Employee Number"
+              mb={4}
+              value={selectedEmployee?.employee_number}
+              onChange={(e) => setSelectedEmployee({ ...selectedEmployee, employee_number: e.target.value })}
+            />
             <Input
               placeholder="First Name"
               mb={4}
-              value={selectedEmployee?.first_name || ''}
+              value={selectedEmployee?.first_name}
               onChange={(e) => setSelectedEmployee({ ...selectedEmployee, first_name: e.target.value })}
-            />
-            <Input
-              placeholder="Last Name"
-              mb={4}
-              value={selectedEmployee?.last_name || ''}
-              onChange={(e) => setSelectedEmployee({ ...selectedEmployee, last_name: e.target.value })}
             />
             <Input
               placeholder="Middle Name"
               mb={4}
-              value={selectedEmployee?.middle_name || ''}
+              value={selectedEmployee?.middle_name}
               onChange={(e) => setSelectedEmployee({ ...selectedEmployee, middle_name: e.target.value })}
+            />
+            <Input
+              placeholder="Last Name"
+              mb={4}
+              value={selectedEmployee?.last_name}
+              onChange={(e) => setSelectedEmployee({ ...selectedEmployee, last_name: e.target.value })}
             />
             <Input
               placeholder="Department ID"
               mb={4}
-              value={selectedEmployee?.department_id || ''}
+              value={selectedEmployee?.department_id}
               onChange={(e) => setSelectedEmployee({ ...selectedEmployee, department_id: e.target.value })}
             />
           </ModalBody>
           <ModalFooter>
-            <Button colorScheme="teal" mr={3} onClick={handleEmployeeSubmit}>
-              {selectedEmployee ? 'Update' : 'Create'}
+            <Button colorScheme="blue" onClick={handleEmployeeSubmit}>
+              Submit
             </Button>
             <Button variant="ghost" onClick={onClose}>
               Cancel
@@ -323,10 +351,12 @@ function Employees() {
       <Modal isOpen={isDeleteOpen} onClose={onDeleteClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Confirm Deletion</ModalHeader>
-          <ModalBody>Are you sure you want to delete this employee?</ModalBody>
+          <ModalHeader>Delete Employee</ModalHeader>
+          <ModalBody>
+            <Text>Are you sure you want to delete this employee?</Text>
+          </ModalBody>
           <ModalFooter>
-            <Button colorScheme="red" mr={3} onClick={handleDeleteEmployee}>
+            <Button colorScheme="red" onClick={handleDeleteEmployee}>
               Delete
             </Button>
             <Button variant="ghost" onClick={onDeleteClose}>

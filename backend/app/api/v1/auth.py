@@ -59,16 +59,14 @@ def get_access_token(
             )
         token = create_access_token(user.user_name, user.user_id, remember_me=remember_me)  # type: ignore
 
-        return (
-            {
-                "access_token": token,
-                "token_type": settings.ACCESS_TOKEN_TYPE,
-                "user_id": user.user_id,
-                "user_name": user.user_name,
-                "employee_id": user.employee_id,
-                "roles": user.roles,
-            },
-        )
+        return {
+            "access_token": token,
+            "token_type": settings.ACCESS_TOKEN_TYPE,
+            "user_id": user.user_id,
+            "user_name": user.user_name,
+            "employee_id": user.employee_id,
+            "roles": user.roles,
+        }
 
     except IntegrityError as e:
         logging.error(f"Integrity error occurred: {str(e)}")

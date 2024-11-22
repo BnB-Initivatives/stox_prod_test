@@ -14,7 +14,7 @@ const Inventory = () => {
       setError(null);
       try {
         const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000';
-        const response = await axios.get(`${API_URL}/items`);
+        const response = await axios.get(`${API_URL}items`);
         if (Array.isArray(response.data)) {
           setInventory(response.data);
         } else {

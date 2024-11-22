@@ -162,3 +162,5 @@ networks: # Defines the Docker network for communication
   private: # Name of the custom network for the services
     driver: bridge # Uses the default bridge network driver
 
+env_file:
+  - .env

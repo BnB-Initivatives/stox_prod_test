@@ -91,7 +91,7 @@ services:
     # build:
     #   context: backend
     image: ghcr.io/bnb-initivatives/stox_prod_test-backend:latest
-    container_name: StoX_Backend # Optional name for the container
+    # container_name: StoX_Backend # Optional name for the container
     ports:
       - 8000:8000
     environment:

@@ -1,8 +1,8 @@
-"""Initial migration
+"""Initial Data Models Creation
 
-Revision ID: 979c9f6005f9
+Revision ID: 51495ee82278
 Revises: 
-Create Date: 2024-11-14 18:12:56.739774
+Create Date: 2024-11-22 12:40:19.000995
 
 """
 from typing import Sequence, Union
@@ -12,7 +12,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision: str = '979c9f6005f9'
+revision: str = '51495ee82278'
 down_revision: Union[str, None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -93,14 +93,14 @@ def upgrade() -> None:
     )
     op.create_table('items',
     sa.Column('item_id', sa.Integer(), autoincrement=True, nullable=False),
-    sa.Column('item_code', sa.String(length=100), nullable=False),
+    sa.Column('item_code', sa.String(length=20), nullable=False),
     sa.Column('name', sa.String(length=100), nullable=False),
     sa.Column('description', sa.String(length=255), nullable=True),
     sa.Column('category', sa.Integer(), nullable=False),
     sa.Column('vendor_id', sa.Integer(), nullable=True),
     sa.Column('owner_department', sa.Integer(), nullable=False),
     sa.Column('has_barcode', sa.Boolean(), nullable=True),
-    sa.Column('barcode', sa.String(length=12), nullable=True),
+    sa.Column('barcode', sa.String(length=13), nullable=True),
     sa.Column('image_path', sa.String(length=255), nullable=True),
     sa.Column('unit_of_measure', sa.Integer(), nullable=False),
     sa.Column('quantity', sa.Integer(), nullable=False),
@@ -182,7 +182,7 @@ def upgrade() -> None:
     sa.Column('scan_id', sa.Integer(), nullable=False),
     sa.Column('line_number', sa.Integer(), nullable=False),
     sa.Column('item_id', sa.Integer(), nullable=False),
-    sa.Column('item_code', sa.String(length=100), nullable=False),
+    sa.Column('item_code', sa.String(length=20), nullable=False),
     sa.Column('quantity', sa.Integer(), nullable=False),
     sa.Column('created_at', sa.DateTime(), server_default=sa.text('(CURRENT_TIMESTAMP)'), nullable=True),
     sa.Column('updated_at', sa.DateTime(), nullable=True),

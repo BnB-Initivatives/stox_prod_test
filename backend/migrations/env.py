@@ -19,6 +19,11 @@ from app.db.models import (
     vendor,
     department,
     item,
+    scanned_invoice,
+    scanned_invoice_item,
+    checkout_transaction,
+    checkout_item,
+    inventory_adjustment_log,
 )
 
 

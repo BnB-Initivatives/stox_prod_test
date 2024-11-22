@@ -90,7 +90,7 @@ export default function Dashboard() {
 					console.log('Extracted Vendor IDs:', vendorIds);  // Log the vendor_ids
 	
 					// Create a Set to get unique vendor_ids
-					const uniqueVendors = new Set(vendorIds);
+					const uniqueVendors = new Set(vendorIds); 
 	
 					// Check the size of the Set
 					console.log('Unique Vendor Count:', uniqueVendors.size);

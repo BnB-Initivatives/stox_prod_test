@@ -45,10 +45,11 @@ function Vendors() {
 
   const fetchVendors = () => {
     setLoading(true);
-    fetch(`${API_URL}/vendors/`)
+    fetch(`${API_URL}vendors/`)
       .then((response) => response.json())
       .then((data) => {
         setVendors(data);
+        console.log('Vendors data:', data);
         setLoading(false);
       })
       .catch((error) => {
@@ -72,8 +73,8 @@ function Vendors() {
 
     const method = selectedVendor.vendor_id ? 'PUT' : 'POST';
     const url = selectedVendor.vendor_id
-      ? `${API_URL}/vendors/${selectedVendor.vendor_id}`
-      : `${API_URL}/vendors/`;
+      ? `${API_URL}vendors/${selectedVendor.vendor_id}`
+      : `${API_URL}vendors/`;
 
     fetch(url, {
       method: method,
@@ -141,11 +142,19 @@ function Vendors() {
       });
   };
 
-  // Filter vendors based on search query
-  const filteredVendors = vendors.filter((vendor) =>
+// Filter vendors based on search query
+let filteredVendors = [];
+
+if (Array.isArray(vendors)) {
+  filteredVendors = vendors.filter((vendor) =>
     vendor.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
+} else {
+  console.error("vendors is not an array");
+}
 
+// Now you can use filteredVendors here
+console.log(filteredVendors);
   if (loading) {
     return (
       <Flex justifyContent="center" alignItems="center" height="100vh">

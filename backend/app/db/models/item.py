@@ -7,7 +7,7 @@ class Item(Base):
     __tablename__ = "items"
 
     item_id = Column(Integer, primary_key=True, autoincrement=True)
-    item_code = Column(String(100), index=True, nullable=False)
+    item_code = Column(String(20), index=True, nullable=False)
     name = Column(String(100), index=True, nullable=False)
     description = Column(String(255), index=True)
     category = Column(
@@ -20,7 +20,7 @@ class Item(Base):
     )
 
     has_barcode = Column(Boolean, default=False)
-    barcode = Column(String(12))
+    barcode = Column(String(13))
 
     image_path = Column(String(255))
 

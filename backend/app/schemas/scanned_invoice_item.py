@@ -8,7 +8,7 @@ from app.schemas.item import ItemReadRequest
 
 class ScannedInvoiceItemCreateRequest(BaseModel):
     item_code: str = Field(
-        ..., min_length=1, max_length=100
+        ..., min_length=1, max_length=20
     )  # item_code of the item matches the item code or product number in the invoice
     quantity: int = Field(..., gt=0)
     item_id: int = Field(None, gt=0)

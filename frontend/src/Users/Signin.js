@@ -37,6 +37,7 @@ function SignIn() {
     e.preventDefault();
     const APIEndpoint = process.env.REACT_APP_API_URL;
     // Create form data
+    // console.log("APIEndpoint:", APIEndpoint);
     const formData = new URLSearchParams();
     formData.append("remember_me", rememberMe);
     formData.append("grant_type", "password");
@@ -60,6 +61,7 @@ function SignIn() {
 
       const data = await response.json();
       // Assign the response data to variables
+      // console.log("Data:", data);
       const {
         access_token,
         employee_id,
@@ -67,7 +69,7 @@ function SignIn() {
         token_type,
         user_id,
         user_name,
-      } = data[0];
+      } = data;
 
       console.log("Authentication successful for user:", user_name);
 

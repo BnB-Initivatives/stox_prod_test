@@ -103,7 +103,7 @@ services:
     labels:
       - "traefik.enable=true" # Enables Traefik for this service
       # - "traefik.http.routers.backend.rule=(Host(`.stox.systems`) && PathPrefix(`/api`))" # Specifies the routing rule
-      # - "traefik.http.services.backend.loadbalancer.server.port=8000" # Specifies the service port
+      - "traefik.http.services.backend-secure.loadbalancer.server.port=8000" # Specifies the service port
       - "traefik.http.routers.backend-secure.entrypoints=websecure" # Specifies the secure entry point
       - "traefik.http.routers.backend-secure.rule=Host(`stox.systems`) && PathPrefix(`/api`)" # Specifies the secure routing rule
       # - "traefik.http.routers.backend-secure.tls.certresolver=myresolver" # Specifies the certificate resolver

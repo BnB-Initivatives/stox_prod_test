@@ -59,8 +59,8 @@ services:
     #   target: development
     image: ghcr.io/bnb-initivatives/stox_prod_test-frontend:latest
     container_name: StoX_Frontend
-    # environment:
-    #   - REACT_APP_API_URL=http://localhost:80
+    environment:
+      - REACT_APP_API_URL=http://localhost:80
     # ports:
     #   - 3001:3000
     volumes:
@@ -104,10 +104,10 @@ services:
       - "traefik.enable=true" # Enables Traefik for this service
       # - "traefik.http.routers.backend.rule=(Host(`.stox.systems`) && PathPrefix(`/api`))" # Specifies the routing rule
       # - "traefik.http.services.backend.loadbalancer.server.port=8000" # Specifies the service port
-      - "traefik.http.routers.backend-secure.entrypoints=websecure" # Specifies the secure entry point
-      - "traefik.http.routers.backend-secure.rule=Host(`stox.systems`) && PathPrefix(`/api`)" # Specifies the secure routing rule
-      - "traefik.http.routers.backend-secure.tls.certresolver=myresolver" # Specifies the certificate resolver
-      # - "com.centurylinklabs.watchtower.enable=true" # Enables Watchtower for this service
+      - "traefik.http.routers.frontend-secure.entrypoints=websecure" # Specifies the secure entry point
+      - "traefik.http.routers.frontend-secure.rule=Host(`stox.systems`) && PathPrefix(`/api`)" # Specifies the secure routing rule
+      # - "traefik.http.routers.backend-secure.tls.certresolver=myresolver" # Specifies the certificate resolver
+      - "com.centurylinklabs.watchtower.enable=true" # Enables Watchtower for this service
     networks:
       - public # Assigns this service to the shared network
       - private # Assigns this service to the shared network
@@ -158,11 +158,8 @@ services:
 secrets:
   db-password:
     file: secrets/db_password.txt
-  # cf_dns_api_token:
-  #   file: secrets/cf_dns_api_token.txt
 
 volumes: # Defines named volumes to persist data
-  # letsencrypt: # Name of the volume for Let's Encrypt certificates
   postgres_data: # Name of the volume for PostgreSQL data
   postgres_logs: # Name of the volume for PostgreSQL logs
 networks: # Defines the Docker network for communication

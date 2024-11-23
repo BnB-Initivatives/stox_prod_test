@@ -20,7 +20,7 @@ class ScannedInvoiceItem(Base):
         Integer, nullable=False
     )  # Line number of the item in the scan, unique within the scope of each scan
     item_id = Column(Integer, ForeignKey("items.item_id"), nullable=False)
-    item_code = Column(String(100), nullable=False)
+    item_code = Column(String(20), nullable=False)
     quantity = Column(
         Integer, nullable=False
     )  # Quantity is whole number, no need for decimal, the partiality should be expressed in the unit of measure

@@ -53,7 +53,7 @@ import IconBox from 'components/Icons/IconBox';
 import { CartIcon, DocumentIcon, GlobeIcon, RocketIcon, StatsIcon, WalletIcon } from 'components/Icons/Icons.js';
 import DashboardTableRow from 'components/Tables/DashboardTableRow';
 import TimelineRow from 'components/Tables/TimelineRow';
-import React from 'react';
+import React ,{useState, useEffect}from 'react';
 import { AiFillCheckCircle } from 'react-icons/ai';
 import { BiHappy } from 'react-icons/bi';
 import { BsArrowRight } from 'react-icons/bs';
@@ -66,8 +66,50 @@ import {
 	lineChartOptionsDashboard
 } from 'variables/charts';
 import { dashboardTableData, timelineData } from 'variables/general';
-
+import axios from 'axios';
+const API_URL = process.env.REACT_APP_API_URL;
 export default function Dashboard() {
+	const [vendorCount, setVendorCount] = useState(0); // Initialize state as an empty array
+	const [loading, setLoading] = useState(true);  // State to store the vendor count
+	
+	useEffect(() => {
+		// Fetch vendor data from the backend
+		const API_URL = process.env.REACT_APP_API_URL;
+		console.log(API_URL);
+		console.log(`${API_URL}/vendors/`);
+	
+		fetch(`${API_URL}/vendors/`)
+			.then(response => response.json())
+			.then(data => {
+				console.log('Fetched Data:', data);  // Log the fetched data
+	
+				// Check if the data is an array and if vendor_id is present
+				if (Array.isArray(data) && data.length > 0) {
+					// Extract vendor_ids from the data
+					const vendorIds = data.map(user => user.vendor_id);
+					console.log('Extracted Vendor IDs:', vendorIds);  // Log the vendor_ids
+	
+					// Create a Set to get unique vendor_ids
+					const uniqueVendors = new Set(vendorIds); 
+	
+					// Check the size of the Set
+					console.log('Unique Vendor Count:', uniqueVendors.size);
+	
+					// Set the unique vendor count
+					setVendorCount(uniqueVendors.size); // Use size of the Set for unique count
+				} else {
+					console.log('No vendors data or invalid format');
+					setVendorCount(0);
+				}
+			})
+			.catch(error => {
+				console.error('Error fetching vendors:', error);
+				setVendorCount(0); // Set to 0 in case of error
+			});
+	}, []);
+	
+	// const vendorCount = userData.length;
+	console.log(vendorCount);
 	return (
 		<Flex flexDirection='column' pt={{ base: '120px', md: '75px' }}>
 			<SimpleGrid columns={{ sm: 1, md: 2, xl: 4 }} spacing='24px'>
@@ -81,7 +123,7 @@ export default function Dashboard() {
 								</StatLabel>
 								<Flex>
 									<StatNumber fontSize='lg' color='#fff'>
-										25
+										{vendorCount}
 									</StatNumber>
 									<StatHelpText
 										alignSelf='flex-end'
@@ -91,7 +133,7 @@ export default function Dashboard() {
 										fontWeight='bold'
 										ps='3px'
 										fontSize='md'>
-										+5%
+									
 									</StatHelpText>
 								</Flex>
 							</Stat>

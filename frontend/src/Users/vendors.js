@@ -31,6 +31,7 @@ const API_URL = process.env.REACT_APP_API_URL;
 function Vendors() {
   const [vendors, setVendors] = useState([]); // Stores the list of vendors
   const [loading, setLoading] = useState(true); // Loading state
+  const [searchQuery, setSearchQuery] = useState(''); // Stores search query
   const { isOpen, onOpen, onClose } = useDisclosure(); // Modal controls for create/update
   const { isOpen: isDeleteOpen, onOpen: onDeleteOpen, onClose: onDeleteClose } = useDisclosure(); // Modal controls for delete confirmation
   const [selectedVendor, setSelectedVendor] = useState(null); // Stores selected vendor for update
@@ -44,10 +45,11 @@ function Vendors() {
 
   const fetchVendors = () => {
     setLoading(true);
-    fetch(`${API_URL}/vendors/`)
+    fetch(`${API_URL}vendors/`)
       .then((response) => response.json())
       .then((data) => {
         setVendors(data);
+        console.log('Vendors data:', data);
         setLoading(false);
       })
       .catch((error) => {
@@ -71,8 +73,8 @@ function Vendors() {
 
     const method = selectedVendor.vendor_id ? 'PUT' : 'POST';
     const url = selectedVendor.vendor_id
-      ? `${API_URL}/vendors/${selectedVendor.vendor_id}`
-      : `${API_URL}/vendors/`;
+      ? `${API_URL}vendors/${selectedVendor.vendor_id}`
+      : `${API_URL}vendors/`;
 
     fetch(url, {
       method: method,
@@ -140,6 +142,19 @@ function Vendors() {
       });
   };
 
+// Filter vendors based on search query
+let filteredVendors = [];
+
+if (Array.isArray(vendors)) {
+  filteredVendors = vendors.filter((vendor) =>
+    vendor.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+} else {
+  console.error("vendors is not an array");
+}
+
+// Now you can use filteredVendors here
+console.log(filteredVendors);
   if (loading) {
     return (
       <Flex justifyContent="center" alignItems="center" height="100vh">
@@ -160,6 +175,22 @@ function Vendors() {
         </Button>
       </Flex>
 
+      {/* Search Input */}
+      <Input
+        placeholder="Search vendors..."
+        value={searchQuery}
+        bgColor="white"
+        color="black"
+        size="md" // Adjust size (options: sm, md, lg, etc.)
+        position="relative" // Set the position as relative (you can adjust to absolute or fixed if needed)
+        top="-50px" // Adjust vertical position
+        left="600px" // Adjust horizontal position
+        onChange={(e) => setSearchQuery(e.target.value)}
+        mb={4}
+        w="250px"
+      />
+
+
       <Table variant="simple">
         <Thead>
           <Tr color="white">
@@ -170,7 +201,7 @@ function Vendors() {
           </Tr>
         </Thead>
         <Tbody>
-          {vendors.map((vendor) => (
+          {filteredVendors.map((vendor) => (
             <Tr key={vendor.vendor_id}>
               <Td>{vendor.vendor_id}</Td>
               <Td>{vendor.name}</Td>

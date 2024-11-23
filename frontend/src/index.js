@@ -27,18 +27,34 @@ import Manageruserlayout from "layouts/Manager";
 import Receiveruserlayout from "layouts/Receiver";
 import RetailCrewuserlayout from "layouts/Retailcrew";
 // import RTLLayout from "layouts/RTL.js";
+import RequireAuth from './RequireAuth';
 
 ReactDOM.render(
   <BrowserRouter>
     <Switch>
       <Route path={`/auth`} component={AuthLayout} />
       <Route path={`/admin`} component={AdminLayout} />
-      <Route path={`/Superuser`} component={SuperuserLayout} />
-      <Route path={`/manager`} component={Manageruserlayout} />
-      <Route path={`/Receiver`} component={Receiveruserlayout} />
-      <Route path={`/Retailcrew`} component={RetailCrewuserlayout} />
+      <Route path={`/superuser`} component={() => (
+        <RequireAuth roles={['SuperUser']}>
+          <SuperuserLayout />
+        </RequireAuth>
+      )} />
+      <Route path={`/manager`} component={() => (
+        <RequireAuth roles={['Manager']}>
+          <Manageruserlayout />
+        </RequireAuth>
+      )} />
+      <Route path={`/Receiver`} component={() => (
+        <RequireAuth roles={['Receiver']}>
+          <Receiveruserlayout />
+        </RequireAuth>
+      )} />
+      <Route path={`/Retailcrew`} component={() => (
+        <RequireAuth roles={['RetailStaff']}>
+          <RetailCrewuserlayout />
+        </RequireAuth>
+      )} />
 
-      {/* <Route path={`/rtl`} component={RTLLayout} /> */}
       <Redirect from={`/`} to="/auth/signin" />
     </Switch>
   </BrowserRouter>,

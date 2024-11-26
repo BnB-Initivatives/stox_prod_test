@@ -55,3 +55,4 @@ env.bak/
 venv.bak/
 
 backend/app.db
+node_modules

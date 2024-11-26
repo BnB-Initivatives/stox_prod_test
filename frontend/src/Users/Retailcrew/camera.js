@@ -15,6 +15,7 @@ import {
   Text,
   useToast,
   Table,
+  IconButton,
   Tbody,
   Tr,
   Td,
@@ -32,6 +33,10 @@ function CameraPage() {
   const [quantity, setQuantity] = useState(1);
   const [scannedBarcode, setScannedBarcode] = useState(null);
   const [cart, setCart] = useState([]);
+  const [products, setProducts] = useState([]);
+  const [currentProduct, setCurrentProduct] = useState(null);
+  const [showInfoModal, setShowInfoModal] = useState(false);
+  const [infoModalContent, setInfoModalContent] = useState("");
   const videoRef = useRef(null);
   const toast = useToast();
   const history = useHistory(); // For redirecting to the product card page
@@ -60,25 +65,57 @@ function CameraPage() {
     }
   }, [location.state]);
 
-  const handleQuantityChange = (e) => {
-    setQuantity(Number(e.target.value));
-  };
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        console.log("Fetching products from API:", `${APIEndpoint}/items/`);
+        const response = await axios.get(`${APIEndpoint}/items/`);
+        
+        if (response.status === 200) {
+          setProducts(response.data); // Set the fetched products in state
+          console.log("Products fetched successfully:", response.data);
+        } else {
+          console.error("Failed to fetch products, status code:", response.status);
+          toast({
+            title: "Error",
+            description: `Failed to fetch products. Status code: ${response.status}`,
+            status: "error",
+            duration: 3000,
+            isClosable: true,
+          });
+        }
+      } catch (error) {
+        console.error("Error fetching products:", error);
+        toast({
+          title: "Error",
+          description: "Failed to fetch products. Please try again later.",
+          status: "error",
+          duration: 3000,
+          isClosable: true,
+        });
+      }
+    };
+
+    fetchProducts();
+  }, []);
+
+  // const handleQuantityChange = (e) => {
+  //   setQuantity(Number(e.target.value));
+  // };
 
   const increaseQuantity = () => setQuantity((prev) => prev + 1);
   const decreaseQuantity = () =>
     setQuantity((prev) => (prev > 1 ? prev - 1 : 1));
 
   const handleAddToCart = () => {
-    if (!scannedBarcode) return;
-    const product = products.find((p) => p.barcode === scannedBarcode);
-    if (!product) return;
+    if (!currentProduct) return;
 
-    const newCart = [...cart, { ...product, quantity }];
+    const newCart = [...cart, { ...currentProduct, quantity }];
     setCart(newCart);
     localStorage.setItem("cart", JSON.stringify(newCart));
     toast({
       title: "Product Added",
-      description: `${quantity} x ${product.title} added to cart.`,
+      description: `${quantity} x ${currentProduct.name} added to cart.`,
       status: "success",
       duration: 3000,
       isClosable: true,
@@ -86,14 +123,36 @@ function CameraPage() {
     setShowModal(false);
     setQuantity(1); // Reset quantity after adding to cart
     setScannedBarcode(null); // Reset barcode after adding to cart
+    setCurrentProduct(null); // Reset current product after adding to cart
+  };
+  const handleChangeQuantity = (productId, delta) => {
+    setCart((prevCart) =>
+      prevCart
+        .map((item) =>
+          item.item_id === productId
+            ? { ...item, quantity: Math.max(1, item.quantity + delta) }
+            : item
+        )
+        .filter((item) => item.quantity > 0)
+    );
+
+    toast({
+      title: "Cart Updated",
+      description: `Updated quantity for product ID: ${productId}.`,
+      status: "info",
+      duration: 3000,
+      isClosable: true,
+    });
   };
 
-  const handleRemoveFromCart = (barcode) => {
-    const updatedCart = cart.filter((item) => item.barcode !== barcode);
-    setCart(updatedCart);
+  // Handle removing a product from the cart
+  const handleRemoveFromCart = (productId) => {
+    setCart((prevCart) =>
+      prevCart.filter((item) => item.item_id !== productId)
+    );
     toast({
       title: "Product Removed",
-      description: "Product removed from cart.",
+      description: "Item removed from cart.",
       status: "info",
       duration: 3000,
       isClosable: true,
@@ -149,6 +208,67 @@ function CameraPage() {
     }
   };
 
+  // const handleRemoveFromCart = (barcode) => {
+  //   const updatedCart = cart.filter((item) => item.barcode !== barcode);
+  //   setCart(updatedCart);
+  //   toast({
+  //     title: "Product Removed",
+  //     description: "Product removed from cart.",
+  //     status: "info",
+  //     duration: 3000,
+  //     isClosable: true,
+  //   });
+  // };
+
+  // Handle checkout logic
+  // const handleCheckout = async () => {
+  //   try {
+  //     // Prepare checkout payload
+  //     const checkoutPayload = {
+  //       employee_id: employee.employee_id,
+  //       department_id: employee.department.department_id,
+  //       total_items: cart.reduce((sum, item) => sum + item.quantity, 0),
+  //       checkout_items: cart.map((item) => ({
+  //         item_id: item.item_id,
+  //         quantity: item.quantity,
+  //       })),
+  //     };
+
+  //     // Send checkout data
+  //     const postResponse = await axios.post(
+  //       `${APIEndpoint}/transactions/`,
+  //       checkoutPayload
+  //     );
+  //     if (postResponse.status === 201) {
+  //       toast({
+  //         title: "Checkout Successful",
+  //         description: "Your items have been checked out successfully.",
+  //         status: "success",
+  //         duration: 3000,
+  //         isClosable: true,
+  //       });
+  //       setCart([]); // Clear the cart after checkout
+  //     } else {
+  //       toast({
+  //         title: "Checkout Failed",
+  //         description: "An error occurred during checkout.",
+  //         status: "error",
+  //         duration: 3000,
+  //         isClosable: true,
+  //       });
+  //     }
+  //   } catch (error) {
+  //     console.error("Checkout error:", error);
+  //     toast({
+  //       title: "Error",
+  //       description: "An unexpected error occurred.",
+  //       status: "error",
+  //       duration: 3000,
+  //       isClosable: true,
+  //     });
+  //   }
+  // };
+
   const startCamera = () => {
     if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
       navigator.mediaDevices
@@ -175,21 +295,38 @@ function CameraPage() {
             }
           );
 
-          Quagga.onDetected((data) => {
+          Quagga.onDetected(async (data) => {
             const barcode = data.codeResult.code;
+            console.log("Scanned Barcode:", barcode);
             setScannedBarcode(barcode);
 
-            // Check if the scanned barcode exists in the local product data
-            const product = products.find((p) => p.barcode === barcode);
-            if (product) {
-              // If product exists, show the modal
-              setShowModal(true);
-            } else {
-              // If no matching product, show a toast notification
+            // Fetch the product from the backend using the scanned barcode
+            try {
+              const response = await axios.get(
+                `${APIEndpoint}/items/barcode/${barcode}`
+              );
+              if (response.status === 200 && response.data) {
+                const product = response.data;
+                console.log("Fetched Product:", product);
+                console.log("Product Name:", product.name);
+
+                setCurrentProduct(product); // Store fetched product
+                setShowModal(true); // Open quantity modal
+              } else {
+                toast({
+                  title: "Product Not Found",
+                  description:
+                    "This barcode does not match any product in the database.",
+                  status: "error",
+                  duration: 3000,
+                  isClosable: true,
+                });
+              }
+            } catch (error) {
+              console.error("Error fetching product:", error);
               toast({
-                title: "Product Not Found",
-                description:
-                  "This barcode does not match any product in the database.",
+                title: "Error",
+                description: "Failed to fetch product information.",
                 status: "error",
                 duration: 3000,
                 isClosable: true,
@@ -224,6 +361,11 @@ function CameraPage() {
       clearInterval(scanLineInterval);
     };
   }, []);
+
+  const handleShowInfoModal = (content) => {
+    setInfoModalContent(content);
+    setShowInfoModal(true);
+  };
 
   return (
     <Box
@@ -288,16 +430,35 @@ function CameraPage() {
             {cart.map((item) => (
               <Tr key={item.barcode}>
                 <Td>{item.name}</Td>
-                <Td>{item.quantity}</Td>
-                <Td>
-                  <Button
-                    size="sm"
+                <Td pl={1}>
+                  <Flex align="center" justify="flex-start" gap={2}> {/* Changed to align left */}
+                    <IconButton
+                      icon={<FiMinus />}
+                      size="sm"
+                      colorScheme="red"
+                      aria-label="Decrease quantity"
+                      onClick={() => handleChangeQuantity(item.item_id, -1)}
+                    />
+                    <Box textAlign="center" w="30px">
+                      {item.quantity}
+                    </Box>
+                    <IconButton
+                      icon={<FiPlus />}
+                      size="sm"
+                      colorScheme="green"
+                      aria-label="Increase quantity"
+                      onClick={() => handleChangeQuantity(item.item_id, 1)}
+                    />
+                  </Flex>
+                </Td>
+                <Td textAlign="right">
+                  <IconButton
+                    icon={<FiX />}
                     colorScheme="red"
-                    onClick={() => handleRemoveFromCart(item.barcode)}
-                    leftIcon={<FiX />}
-                  >
-                    Remove
-                  </Button>
+                    size="sm"
+                    onClick={() => handleRemoveFromCart(item.item_id)}
+                    aria-label="Remove from cart"
+                  />
                 </Td>
               </Tr>
             ))}
@@ -317,9 +478,10 @@ function CameraPage() {
 
           <Button
             colorScheme="blue"
-            onClick={() =>
-              history.push("/Retailcrew/ProductCard", { cart, employee })
-            }
+            onClick={() => {
+              handleShowInfoModal("Redirecting to Product Card");
+              history.push("/Retailcrew/ProductCard", { cart, employee });
+            }}
             w="48%" // Ensures both buttons are of equal width
             size="lg" // Keeps button size consistent
           >
@@ -349,7 +511,7 @@ function CameraPage() {
               <Input
                 type="number"
                 value={quantity}
-                onChange={handleQuantityChange}
+                onChange={handleChangeQuantity}
                 min="1"
                 size="sm"
                 width="50px"
@@ -366,6 +528,28 @@ function CameraPage() {
             </Button>
             <Button colorScheme="blue" onClick={handleAddToCart}>
               Add to Cart
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+
+      {/* Info Modal */}
+      <Modal
+        isOpen={showInfoModal}
+        onClose={() => setShowInfoModal(false)}
+        size="md"
+        isCentered
+      >
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader textAlign="center">Information</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <Text>{infoModalContent}</Text>
+          </ModalBody>
+          <ModalFooter>
+            <Button variant="ghost" mr={3} onClick={() => setShowInfoModal(false)}>
+              Close
             </Button>
           </ModalFooter>
         </ModalContent>

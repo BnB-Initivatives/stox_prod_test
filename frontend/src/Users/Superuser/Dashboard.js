@@ -46,13 +46,10 @@ import medusa from 'assets/img/cardimgfree.png';
 import Card from 'components/Card/Card.js';
 import CardBody from 'components/Card/CardBody.js';
 import CardHeader from 'components/Card/CardHeader.js';
-import BarChart from 'components/Charts/BarChart';
 import LineChart from 'components/Charts/LineChart';
 import IconBox from 'components/Icons/IconBox';
 // Icons
 import { CartIcon, DocumentIcon, GlobeIcon, RocketIcon, StatsIcon, WalletIcon } from 'components/Icons/Icons.js';
-import DashboardTableRow from 'components/Tables/DashboardTableRow';
-import TimelineRow from 'components/Tables/TimelineRow';
 import React ,{useState, useEffect}from 'react';
 import { AiFillCheckCircle } from 'react-icons/ai';
 import { BiHappy } from 'react-icons/bi';
@@ -60,8 +57,6 @@ import { BsArrowRight } from 'react-icons/bs';
 import { IoCheckmarkDoneCircleSharp, IoEllipsisHorizontal } from 'react-icons/io5';
 // Data
 import {
-	barChartDataDashboard,
-	barChartOptionsDashboard,
 	lineChartDataDashboard,
 	lineChartOptionsDashboard
 } from 'variables/charts';
@@ -70,6 +65,9 @@ import axios from 'axios';
 const API_URL = process.env.REACT_APP_API_URL;
 export default function Dashboard() {
 	const [vendorCount, setVendorCount] = useState(0); // Initialize state as an empty array
+	const [employeeCount, setEmployeeCount] = useState(0);
+	const [itemCount, setItemCount] = useState(0);
+	const [departmentCount, setDepartmentCount] = useState(0);
 	const [loading, setLoading] = useState(true);  // State to store the vendor count
 	
 	useEffect(() => {
@@ -106,6 +104,48 @@ export default function Dashboard() {
 				console.error('Error fetching vendors:', error);
 				setVendorCount(0); // Set to 0 in case of error
 			});
+			
+			fetch(`${API_URL}/employees/`)
+			.then((response) => response.json())
+			.then((data) => {
+			  if (Array.isArray(data) && data.length > 0) {
+				setEmployeeCount(data.length);
+			  } else {
+				setEmployeeCount(0);
+			  }
+			})
+			.catch((error) => {
+			  console.error('Error fetching employees:', error);
+			  setEmployeeCount(0);
+			});
+			
+			fetch(`${API_URL}/items/`)
+			.then((response) => response.json())
+			.then((data) => {
+				if (Array.isArray(data)) {
+				setItemCount(data.length);
+				} else {
+				setItemCount(0);
+				}
+			})
+			.catch((error) => {
+				console.error('Error fetching items:', error);
+				setItemCount(0);
+			});
+
+			fetch(`${API_URL}/departments/`)
+				.then((response) => response.json())
+				.then((data) => {
+					if (Array.isArray(data)) {
+					setDepartmentCount(data.length); // Set department count
+					} else {
+					setDepartmentCount(0);
+					}
+				})
+				.catch((error) => {
+					console.error('Error fetching departments:', error);
+					setDepartmentCount(0);
+				});
 	}, []);
 	
 	// const vendorCount = userData.length;
@@ -146,33 +186,23 @@ export default function Dashboard() {
 				{/* MiniStatistics Card */}
 				<Card>
 					<CardBody>
-						<Flex flexDirection='row' align='center' justify='center' w='100%'>
-							<Stat me='auto'>
-								<StatLabel fontSize='sm' color='gray.400' fontWeight='bold' pb='2px'>
-									Total Employees
-								</StatLabel>
-								<Flex>
-									<StatNumber fontSize='lg' color='#fff' fontWeight='bold'>
-										150
-									</StatNumber>
-									<StatHelpText
-										alignSelf='flex-end'
-										justifySelf='flex-end'
-										m='0px'
-										color='green.400'
-										fontWeight='bold'
-										ps='3px'
-										fontSize='md'>
-										+8%
-									</StatHelpText>
-								</Flex>
-							</Stat>
-							<IconBox as='box' h={'45px'} w={'45px'} bg='brand.200'>
-								<CartIcon h={'24px'} w={'24px'} color='#fff' />
-							</IconBox>
+						<Flex flexDirection="row" align="center" justify="center" w="100%">
+						<Stat me="auto">
+							<StatLabel fontSize="sm" color="gray.400" fontWeight="bold" pb="2px">
+							Total Employees
+							</StatLabel>
+							<Flex>
+							<StatNumber fontSize="lg" color="#fff" fontWeight="bold">
+								{employeeCount} 
+							</StatNumber>
+							</Flex>
+						</Stat>
+						<IconBox as="box" h={'45px'} w={'45px'} bg="brand.200">
+							<CartIcon h={'24px'} w={'24px'} color="#fff" />
+						</IconBox>
 						</Flex>
 					</CardBody>
-				</Card>
+					</Card>
 				{/* MiniStatistics Card */}
 				<Card minH='83px'>
 					<CardBody>
@@ -183,18 +213,8 @@ export default function Dashboard() {
 								</StatLabel>
 								<Flex>
 									<StatNumber fontSize='lg' color='#fff'>
-										300
-									</StatNumber>
-									<StatHelpText
-										alignSelf='flex-end'
-										justifySelf='flex-end'
-										m='0px'
-										color='green.400'
-										fontWeight='bold'
-										ps='3px'
-										fontSize='md'>
-										+5%
-									</StatHelpText>
+										{itemCount}
+									</StatNumber>									
 								</Flex>
 							</Stat>
 							<IconBox as='box' h={'45px'} w={'45px'} bg='brand.200'>
@@ -208,23 +228,14 @@ export default function Dashboard() {
 					<CardBody>
 						<Flex flexDirection='row' align='center' justify='center' w='100%'>
 							<Stat>
-								<StatLabel fontSize='sm' color='gray.400' fontWeight='bold' pb='2px'>
+								<StatLabel fontSize='sm' color='gray.400' fontWeight='bold' pb='2px' whiteSpace="nowrap">
 									ALL Departments
 								</StatLabel>
 								<Flex>
 									<StatNumber fontSize='lg' color='#fff'>
-										5
+										{departmentCount}
 									</StatNumber>
-									<StatHelpText
-										alignSelf='flex-end'
-										justifySelf='flex-end'
-										m='0px'
-										color='red.500'
-										fontWeight='bold'
-										ps='3px'
-										fontSize='md'>
-										
-									</StatHelpText>
+									
 								</Flex>
 							</Stat>
 							<Spacer />

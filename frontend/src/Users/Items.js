@@ -34,6 +34,8 @@ const API_URL = process.env.REACT_APP_API_URL;
 function Items() {
   const [items, setItems] = useState([]); // Stores the list of items
   const [loading, setLoading] = useState(true); // Loading state
+  const [vendors, setVendors] = useState([]);
+  const [categories, setCategories] = useState([]); // Stores categories list
   const [searchTerm, setSearchTerm] = useState(''); // Stores the search term
   const { isOpen, onOpen, onClose } = useDisclosure(); // Modal controls for create/update
   const { isOpen: isDeleteOpen, onOpen: onDeleteOpen, onClose: onDeleteClose } = useDisclosure(); // Modal controls for delete confirmation
@@ -44,7 +46,39 @@ function Items() {
   // Fetch items list
   useEffect(() => {
     fetchItems();
+    fetchVendors();
+    fetchCategories();
   }, []);
+  
+  const fetchVendors = () => {
+    fetch(`${API_URL}/vendors/`)
+      .then((response) => response.json())
+      .then((data) => {
+        if (Array.isArray(data)) {
+          setVendors(data);
+        } else {
+          console.error('Expected an array for vendors, but got:', data);
+        }
+      })
+      .catch((error) => {
+        console.error('Error fetching vendors:', error);
+      });
+  };
+
+  const fetchCategories = () => {
+    fetch(`${API_URL}/item-categories/`)
+      .then((response) => response.json())
+      .then((data) => {
+        if (Array.isArray(data)) {
+          setCategories(data);
+        } else {
+          console.error('Expected an array for categories, but got:', data);
+        }
+      })
+      .catch((error) => {
+        console.error('Error fetching categories:', error);
+      });
+  };
 
   const fetchItems = () => {
     setLoading(true);
@@ -60,7 +94,6 @@ function Items() {
       });
   };
 
-  // Filter items based on the search term
   const filteredItems = items.filter(item => 
     item.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -123,7 +156,6 @@ function Items() {
       });
   };
 
-  // Handle Delete Item
   const handleDeleteItem = () => {
     fetch(`${API_URL}/items/${itemToDelete}`, {
       method: 'DELETE',
@@ -170,8 +202,6 @@ function Items() {
     <Box mt="50px" p={6} color="white">
       <Flex justify="space-between" align="center" mb={4}>
         <Heading size="lg">Items List</Heading>
-
-        {/* Search Box */}
         <Input
           placeholder="Search by Item Name"
           width="250px"
@@ -180,7 +210,6 @@ function Items() {
           bgColor="white" // Added white background color
           color="black"
         />
-
         <Button colorScheme="teal" onClick={() => { setSelectedItem({}); onOpen(); }}>
           Create New Item
         </Button>
@@ -189,13 +218,13 @@ function Items() {
       <Table variant="simple">
         <Thead>
           <Tr color="white">
-            <Th color="white">Item ID</Th>
+            <Th color="white">ID</Th>
             <Th color="white">Item Code</Th>
             <Th color="white">Name</Th>
             <Th color="white">Vendor</Th>
             <Th color="white">Quantity</Th>
-            <Th color="white">Threshold Value</Th>
-            <Th color="white">Has Barcode</Th>
+            <Th color="white">Threshold</Th>
+            <Th color="white">Barcode</Th>
             <Th color="white">Image</Th>
             <Th color="white">Actions</Th>
           </Tr>
@@ -207,8 +236,8 @@ function Items() {
               <Td>{item.item_code}</Td>
               <Td>{item.name}</Td>
               <Td>{item.vendor ? item.vendor.name : 'N/A'}</Td>
-              <Td>{item.quantity}</Td>
-              <Td>{item.low_stock_threshold}</Td>
+              <Td textAlign="center">{item.quantity}</Td>
+              <Td textAlign="center">{item.low_stock_threshold}</Td>
               <Td>{item.has_barcode ? 'Yes' : 'No'}</Td>
               <Td>
                 {item.image_path && (
@@ -216,27 +245,28 @@ function Items() {
                 )}
               </Td>
               <Td>
-                <IconButton
-                  icon={<FiEdit />}
-                  colorScheme="blue"
-                  size="sm"
-                  onClick={() => {
-                    setSelectedItem(item);
-                    onOpen(); // Open modal for editing
-                  }}
-                  aria-label="Edit Item"
-                  mr={4}
-                />
-                <IconButton
-                  icon={<FiTrash2 />}
-                  colorScheme="red"
-                  size="sm"
-                  onClick={() => {
-                    setItemToDelete(item.item_id); // Set item to be deleted
-                    onDeleteOpen(); // Open delete confirmation modal
-                  }}
-                  aria-label="Delete Item"
-                />
+                <Flex gap={4} justify="center">
+                  <IconButton
+                    icon={<FiEdit />}
+                    colorScheme="blue"
+                    size="sm"
+                    onClick={() => {
+                      setSelectedItem(item);
+                      onOpen(); // Open modal for editing
+                    }}
+                    aria-label="Edit Item"
+                  />
+                  <IconButton
+                    icon={<FiTrash2 />}
+                    colorScheme="red"
+                    size="sm"
+                    onClick={() => {
+                      setItemToDelete(item.item_id); // Set item to be deleted
+                      onDeleteOpen(); // Open delete confirmation modal
+                    }}
+                    aria-label="Delete Item"
+                  />
+                </Flex>
               </Td>
             </Tr>
           ))}
@@ -261,52 +291,87 @@ function Items() {
               value={selectedItem?.name || ''}
               onChange={(e) => setSelectedItem({ ...selectedItem, name: e.target.value })}
             />
-            <Input
-              placeholder="Item Description"
-              mb={4}
-              value={selectedItem?.description || ''}
-              onChange={(e) => setSelectedItem({ ...selectedItem, description: e.target.value })}
-            />
-            <Select
-              placeholder="Select Category"
-              mb={4}
-              value={selectedItem?.category || ''}
-              onChange={(e) => setSelectedItem({ ...selectedItem, category: e.target.value })}
-            >
-              <option value="1">Category 1</option>
-              <option value="2">Category 2</option>
-              <option value="3">Category 3</option>
-            </Select>
             <Select
               placeholder="Select Vendor"
-              mb={4}
               value={selectedItem?.vendor_id || ''}
-              onChange={(e) => setSelectedItem({ ...selectedItem, vendor_id: e.target.value })}
+              mb={4}
+              onChange={(e) =>
+                setSelectedItem({ ...selectedItem, vendor_id: e.target.value })
+              }
             >
-              <option value="1">Vendor 1</option>
-              <option value="2">Vendor 2</option>
-              <option value="3">Vendor 3</option>
+              {vendors.map((vendor) => (
+                <option key={vendor.vendor_id} value={vendor.vendor_id}>
+                  {vendor.name}
+                </option>
+              ))}
+            </Select>
+            <Select
+              placeholder="Select Category"
+              value={selectedItem?.category || ''}
+              mb={4}
+              onChange={(e) =>
+                setSelectedItem({ ...selectedItem, category: e.target.value })
+              }
+            >
+              {categories.map((category) => (
+                <option key={category.category_id} value={category.category_name}>
+                  {category.category_name}
+                </option>
+              ))}
             </Select>
             <Input
+              placeholder="Owner Department"
+              mb={4}
+              value={selectedItem?.owner_department || ''}
+              onChange={(e) =>
+                setSelectedItem({ ...selectedItem, owner_department: e.target.value })
+              }
+            />
+            <Input
               placeholder="Quantity"
+              type="number"
               mb={4}
               value={selectedItem?.quantity || ''}
-              onChange={(e) => setSelectedItem({ ...selectedItem, quantity: e.target.value })}
+              onChange={(e) =>
+                setSelectedItem({ ...selectedItem, quantity: e.target.value })
+              }
             />
             <Input
               placeholder="Low Stock Threshold"
+              type="number"
               mb={4}
               value={selectedItem?.low_stock_threshold || ''}
-              onChange={(e) => setSelectedItem({ ...selectedItem, low_stock_threshold: e.target.value })}
+              onChange={(e) =>
+                setSelectedItem({ ...selectedItem, low_stock_threshold: e.target.value })
+              }
             />
-            <Switch
-              isChecked={selectedItem?.has_barcode || false}
-              onChange={() => setSelectedItem({ ...selectedItem, has_barcode: !selectedItem?.has_barcode })}
-            >
-              Has Barcode
-            </Switch>
-          </ModalBody>
+            <Flex align="center" mb={4}>
+              <Text>Has Barcode </Text>
+              <Switch
+                isChecked={selectedItem?.has_barcode || false}
+                onChange={(e) =>
+                  setSelectedItem({
+                    ...selectedItem,
+                    has_barcode: e.target.checked,
+                  })
+                }
+              />
+            {/* </Flex> */}
+            {/* Conditionally show barcode input when 'has_barcode' is true */}
+             {/* <td></td> */}
 
+            {selectedItem?.has_barcode && (
+              <Input
+                mb={4}
+                width="250px"
+                value={selectedItem?.barcode || ''}
+                onChange={(e) =>
+                  setSelectedItem({ ...selectedItem, barcode: e.target.value })
+                }
+              />
+            )}
+            </Flex>
+          </ModalBody>
           <ModalFooter>
             <Button colorScheme="blue" onClick={handleItemSubmit}>
               {selectedItem?.item_id ? 'Update' : 'Create'} Item
@@ -324,7 +389,7 @@ function Items() {
         <ModalContent>
           <ModalHeader>Confirm Deletion</ModalHeader>
           <ModalBody>
-            Are you sure you want to delete this item?
+            <Text>Are you sure you want to delete this item?</Text>
           </ModalBody>
           <ModalFooter>
             <Button colorScheme="red" onClick={handleDeleteItem}>

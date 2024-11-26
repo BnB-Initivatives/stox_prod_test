@@ -287,7 +287,7 @@ def read_item_by_id(db: db_dependency, item_id: int = Path(gt=0)):
 )
 def read_item_by_barcode(
     db: db_dependency,
-    item_barcode: str = Path(..., min_length=1, max_length=12, regex=r"^\d+$"),
+    item_barcode: str = Path(..., min_length=1, max_length=13, regex=r"^\d+$"),
 ):
     """
     Fetch a item record by its ID.

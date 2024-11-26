@@ -27,7 +27,7 @@ import camera from "Users/Retailcrew/camera";
 import scanInvoice from "Users/Receiver/ScanInvoice";
 import Rprofile from "Users/Receiver/profile";
 import Tables from "views/Dashboard/Tables.js";
-import Billing from "Users/Inventory";
+// import Billing from "Users/Inventory";
 import SU_Dept from "Users/Departments";
 import SU_Emp from "Users/Employees";
 import SU_Vendors from "Users/vendors";
@@ -54,53 +54,6 @@ import {
 } from "components/Icons/Icons";
 import { VisuallyHidden } from "@chakra-ui/react";
 
-// const superuserRoutes = [
-//   { path: "/dashboard", name: "Dashboard", component: Dashboard },
-//   { path: "/inventory", name: "Inventory", component: Billing },
-//   { path: "/reports", name: "Reports", component: Tables }
-// ];
-
-// const managerRoutes = [
-//   { path: "/dashboard", name: "Dashboard", component: MDasboard },
-
-// ];
-
-// const retailCrewRoutes = [
-//   { path: "/dashboard", name: "Dashboard", component: RCDasboard }
-// ];
-
-// const receiverRoutes = [
-//   { path: "/dashboard", name: "Dashboard", component: RDasboard }
-
-// ];
-
-// const commonRoutes = [
-//   { path: "/signout", name: "Sign Out", component: SignIn },
-//   { path: "/profile", name: "Profile", component: Profile }
-// ];
-// // Export based on user role
-// const getRoutesByRole = (role) => {
-//   switch (role) {
-//     case "superuser":
-//       return [...superuserRoutes, ...commonRoutes];
-//     case "manager":
-//       // return managerRoutes;
-//       return [...managerRoutes, ...commonRoutes];
-
-//     case "retailcrew":
-//       // return retailCrewRoutes;
-//       return [...retailCrewRoutes, ...commonRoutes];
-
-//     case "receiver":
-//       // return receiverRoutes;
-//       return [...receiverRoutes, ...commonRoutes];
-
-//     default:
-//       return []; // Fallback if role doesn't match
-//   }
-// };
-
-// export default getRoutesByRole;
 var dashRoutes = [
   {
     path: "/dashboard",
@@ -156,13 +109,6 @@ var dashRoutes = [
     name: "ItemsCategories",
     icon: <HomeIcon color='inherit' />,
     component: SU_ItemsCategories,
-    layout: "/Superuser",
-  },
-  {
-    path: "/inventory",
-    name: "Inventory",
-    icon: <CreditIcon color="inherit" />,
-    component: Billing,
     layout: "/Superuser",
   },
   {
@@ -232,14 +178,6 @@ var dashRoutes = [
     component: Profile,
     layout: "/Superuser",
   },
-
-  {
-    path: "/billing",
-    name: "Inventory",
-    icon: <CreditIcon color="inherit" />,
-    component: Billing,
-    layout: "/Superuser",
-  },
   {
     path: "/tables",
     name: "Reports",
@@ -257,95 +195,3 @@ var dashRoutes = [
   },
 ];
 export default dashRoutes;
-
-// Import necessary components
-// import SuperUserDashboard from "Users/Superuser/Dashboard";
-// import ManagerDashboard from "Users/Manager/Dashboard";
-// import Profile from "views/Dashboard/Profile.js";
-// import Billing from "views/Dashboard/Billing.js";
-// import Tables from "views/Dashboard/Tables.js";
-
-// import {
-//   HomeIcon,
-//   StatsIcon,
-//   CreditIcon,
-//   PersonIcon,
-// } from "components/Icons/Icons";
-
-// // Define routes for superuser
-// const superUserRoutes = [
-//   {
-//     path: "/superuser/dashboard",
-//     name: "Dashboard",
-//     icon: <HomeIcon color='inherit' />,
-//     component: SuperUserDashboard,
-//     layout: "/superuser",
-//   },
-//   {
-//     path: "/superuser/profile",
-//     name: "Profile",
-//     icon: <PersonIcon color='inherit' />,
-//     component: Profile,
-//     layout: "/superuser",
-//   },
-//   {
-//     path: "/superuser/billing",
-//     name: "Billing",
-//     icon: <CreditIcon color='inherit' />,
-//     component: Billing,
-//     layout: "/superuser",
-//   },
-//   {
-//     path: "/superuser/tables",
-//     name: "Tables",
-//     icon: <StatsIcon color='inherit' />,
-//     component: Tables,
-//     layout: "/superuser",
-//   },
-// ];
-
-// // Define routes for manager
-// const managerRoutes = [
-//   {
-//     path: "/manager/dashboard",
-//     name: "Dashboard",
-//     icon: <HomeIcon color='inherit' />,
-//     component: ManagerDashboard,
-//     layout: "/manager",
-//   },
-//   {
-//     path: "/manager/profile",
-//     name: "Profile",
-//     icon: <PersonIcon color='inherit' />,
-//     component: Profile,
-//     layout: "/manager",
-//   },
-//   {
-//     path: "/manager/billing",
-//     name: "Billing",
-//     icon: <CreditIcon color='inherit' />,
-//     component: Billing,
-//     layout: "/manager",
-//   },
-//   {
-//     path: "/manager/tables",
-//     name: "Tables",
-//     icon: <StatsIcon color='inherit' />,
-//     component: Tables,
-//     layout: "/manager",
-//   },
-// ];
-
-// // Export routes based on role
-// export function getRoutesForRole(role) {
-//   switch (role) {
-//     case "superuser":
-//       return superUserRoutes;
-//     case "manager":
-//       return managerRoutes;
-//     default:
-//       return [];
-//   }
-// }
-
-// export default getRoutesForRole;

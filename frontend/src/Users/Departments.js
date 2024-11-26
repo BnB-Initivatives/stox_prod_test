@@ -260,7 +260,7 @@ function Dashboard() {
           value={searchQuery}
           onChange={handleSearchChange}
           w="25%" // Adjust the width of the search box
-          top="-50px"
+          top="-55px"
           bgColor="white"
           color="black"
         />
@@ -347,12 +347,19 @@ function Dashboard() {
       {/* Delete Confirmation Modal */}
       <Modal isOpen={isDeleteOpen} onClose={onDeleteClose}>
         <ModalOverlay />
-        <ModalContent>
+        <ModalContent maxW="500px">
           <ModalHeader>Confirm Deletion</ModalHeader>
           <ModalBody>
-            Are you sure you want to delete this department?
+            {/* Find the department name based on the deleteId */}
+            {departments
+              .filter((dept) => dept.department_id === deleteId) // Find the department using deleteId
+              .map((dept) => (
+                <Text key={dept.department_id}>
+                  Are you sure you want to delete <strong>" {dept.name} "</strong> department?
+                </Text>
+              ))}
           </ModalBody>
-          <ModalFooter>
+          <ModalFooter justifyContent="left">
             <Button colorScheme="red" onClick={handleDeleteDepartment}>
               Delete
             </Button>

@@ -45,7 +45,7 @@ function Vendors() {
 
   const fetchVendors = () => {
     setLoading(true);
-    fetch(`${API_URL}vendors/`)
+    fetch(`${API_URL}/vendors/`)
       .then((response) => response.json())
       .then((data) => {
         setVendors(data);

@@ -96,8 +96,8 @@ function Transactions() {
               <Td>{transaction.employee.first_name} {transaction.employee.last_name}</Td>
               <Td>{transaction.department.name}</Td>
               <Td>{transaction.total_items}</Td>
-              <Td>{new Date(transaction.created_at).toLocaleString()}</Td>
-              <Td>{new Date(transaction.updated_at).toLocaleString()}</Td>
+              <Td>{new Date(Date.now()).toLocaleString("en-US", { timeZone: "America/New_York" })}</Td>
+              <Td>{new Date(Date.now()).toLocaleString("en-US", { timeZone: "America/New_York" })}</Td>
             </Tr>
           ))}
         </Tbody>

@@ -1,84 +1,276 @@
-# DOCKER NOTES:
+# [Vision UI Free Chakra](https://demos.creative-tim.com/vision-ui-dashboard-chakra) [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social&logo=twitter)](https://twitter.com/intent/tweet?url=https://www.creative-tim.com/product/vision-ui-dashboard-chakra&text=Check%20Vision%20UI%20Dashboard%20made%20by%20@simmmple_web%20and%20@CreativeTim%20#webdesign%20#dashboard%20#react)
 
-## Building and running your application
+![version](https://img.shields.io/badge/version-1.0.0-blue.svg) [![GitHub issues open](https://img.shields.io/github/issues/creativetimofficial/vision-ui-dashboard-chakra.svg?maxAge=2592000)](https://github.com/creativetimofficial/vision-ui-dashboard-chakra/issues?q=is%3Aopen+is%3Aissue) [![GitHub issues closed](https://img.shields.io/github/issues-closed-raw/creativetimofficial/vision-ui-dashboard-chakra.svg?maxAge=2592000)](https://github.com/creativetimofficial/vision-ui-dashboard-chakra/issues?q=is%3Aissue+is%3Aclosed)
 
-When you're ready, start your application by running:
-`docker compose up --build`
+![Product Gif](https://i.ibb.co/x8GDNYV/vision-ui-free-chakra.png)
 
-The build of docker containers is based on `docker-compose.yml`, hence, this will create 3 containers for 3 services of our web app
+Most trendiest, complex and innovative Free Chakra UI Dashboard Made by [Simmmple](https://simmmple.com?ref=readme-vudchakra) & [Creative Tim](https://creative-tim.com/?ref=readme-vudchakra). Check our latest Free Chakra UI Dashboard.
 
-- stoX-frontend
-- stoX-backend
-- stoX-database
+Start your Development with an Innovative Admin Template for Chakra UI and React. If you like the look & feel of the hottest design trend right now, Vision UI, you will fall in love with this dashboard! It features a huge number of components built to fit together and look amazing.
 
-If you want to delete the existing images
-`docker-compose down -v `
+**Fully Coded Elements**
 
-Check out stoX-backend at http://localhost:8000/docs and stoX-frontend at http://localhost:3000 (If the React page loads with a message like **REACT TEST BACKEND CONNECTION: Healthy** then frontend and backend is connected successfully).
+Vision UI Dashboard Free Chakra UI is built with over 70+ frontend individual elements, like buttons, inputs, navbars, nav tabs, cards, or alerts, giving you the freedom of choosing and combining. All components can take variations in color, which you can easily modify using JSS files and classes. You will save a lot of time going from prototyping to full-functional code because all elements are implemented. This Premium Chakra UI Dashboard is coming with prebuilt design blocks, so the development process is seamless, switching from our pages to the real website is very easy to be done.
 
-## Deploying your application to the cloud
+Check all components <a href="https://demos.creative-tim.com/docs-vision-ui-dashboard-chakra?ref=readme-vudchakra" target="_blank">here</a>.
 
-First, build your image, e.g.: `docker build -t myapp .`.
-If your cloud uses a different CPU architecture than your development
-machine (e.g., you are on a Mac M1 and your cloud provider is amd64),
-you'll want to build the image for that platform, e.g.:
-`docker build --platform=linux/amd64 -t myapp .`.
+**Documentation built by Developers**
 
-Then, push it to your registry, e.g. `docker push myregistry.com/myapp`.
+Each element is well presented in a very complex documentation.
+You can read more about the <a href="https://demos.creative-tim.com/docs-vision-ui-dashboard-chakra?ref=readme-vudchakra" target="_blank">documentation here</a>.
 
-Consult Docker's [getting started](https://docs.docker.com/go/get-started-sharing/)
-docs for more detail on building and pushing.
+**Example Pages**
 
-# TODO:
+If you want to get inspiration or just show something directly to your clients, you can jump-start your development with our pre-built example pages. Every page is spaced well, with attractive layouts and pleasing shapes. From specially designed dashboards for smart homes, virtual reality, and automotives to CRM admins, Vision UI Dashboard Free Chakra UI has everything you need to quickly set up an amazing project.
 
-### React Frontend
+View <a href="https://demos.creative-tim.com/vision-ui-dashboard-chakra?ref=readme-vudchakra" target="_blank">example pages here</a>.
 
-- [ ]
-- [ ]
+**HELPFUL LINKS**
 
-### FastAPI Backend
+- View <a href="https://github.com/creativetimofficial/vision-ui-dashboard-chakra" target="_blank">Github Repository</a>
 
-- [x] Configure FastAPI project
-- [x] Set up database models for RBAC
-- [x] Implement CRUD operations, routers for RBAC
-- [x] Integrate authentication and authorization (JWT)
-- [x] Integrate authorization (RBAC)
-- [ ] Check how to update password for user: should have a specific route for just updating password
-- [x] Create data models for master data: department, employee, item category, item, unit of measure, vendor
-- [x] Design API routes for master data: department, employee, item category, item, unit of measure, vendor
-- [x] Create data models for scanning activities: invoice template, checkout transactions and items, inventory adjustment logs
-- [x] Design API routes for scanning activities: invoice template, checkout transactions and items, inventory adjustment logs
-- [ ] Write unit tests for endpoints
-- [x] Set up database connection
+- Check <a href="https://www.creative-tim.com/knowledge-center?ref=readme-vudchakra" target="_blank">FAQ Page</a>
 
-### Deployment
+#### Special thanks
 
-- [x] Set up repository structure
-- [x] Set up Docker files and connection between 3 containers (backend, frontend, database)
-- [ ] Set up VPS
-- [ ] Set up HTTPS
-- [ ] Set up SSH hardning
-- [ ] Set up traefick
-- [ ] Set up CI/CD
-- [ ] Set up watchtower
-- [ ] Configure production environment
-- [ ] Test deployment process
+During the development of this dashboard, we have used many existing resources from awesome developers. We want to thank them for providing their tools open source:
 
----
+- [Chakra UI](https://chakra-ui.com/?ref=creative-tim) - Modern Open source framework
+- [ApexCharts.js](https://apexcharts.com?ref=creative-tim) - Modern & Interactive Open-source charts
+- [Quill Editor](https://www.npmjs.com/package/react-quill?ref=creative-tim) - ReactJS Text Editor provided by Quill
+- [React Table](https://react-table.tanstack.com/docs/overview?ref=creative-tim) - Collection of hooks for building powerful ReactJD tables
+- [ReactJS](https://reactjs.org?ref=creative-tim) - A popular JavaScript library for building user interfaces
 
-### Additional Notes
+Let us know your thoughts below. And good luck with development!
 
-- [ ] Review and refine project documentation.
+## Table of Contents
 
-## RBAC IDEAS
+- [Vision UI Dashboard Free Chakra] (https://demos.creative-tim.com/vision-ui-dashboard-chakra/?ref=readme-vudchakra)
+- [Table of Contents](#table-of-contents)
+- [Versions](#versions)
+- [Demo](#demo)
+- [Quick start](#quick-start)
+- [Deploy](#deploy)
+- [Documentation](#documentation)
+- [File Structure](#file-structure)
+- [Browser Support](#browser-support)
+- [Resources](#resources)
+- [Reporting Issues](#reporting-issues)
+- [Licensing](#licensing)
+- [Useful Links](#useful-links)
+- [Social Media](#social-media)
 
-1. User Router: Manages user-related operations, such as creating, reading, updating, and deleting users, as well as assigning roles and permissions to users.
-   1. Note: if changing user name, the token validation will become invalidated. Require to sign in again. 
-2. Role Router: Handles CRUD operations for roles, allowing you to create, view, update, and delete roles within the system.
-3. Permission Router: Manages CRUD operations for permissions, enabling the creation, reading, updating, and deletion of permissions associated with various roles.
-4. Role-Permission Router: Manages the relationships between roles and permissions, allowing you to assign and revoke permissions from roles.
-5. User-Role Router: Manages the relationships between users and roles, enabling you to assign or remove roles from users.
-6. Authentication Router: Handles user authentication tasks, such as logging in and logging out, and managing authentication tokens (e.g., JWT).
-7. Authorization Router: Manages checks and validations to ensure users have the necessary permissions to perform certain actions or access specific resources.
-8. Audit Router: Tracks and logs user activities related to RBAC, allowing you to monitor changes made to users, roles, and permissions.
-9.  Settings Router: Manages global settings for the RBAC system, such as default roles and permissions, password policies, and user account settings.
+## Versions
+
+[<img src="https://github.com/creativetimofficial/public-assets/blob/master/logos/react-logo.jpg?raw=true" width="60" height="60" />](https://www.creative-tim.com/product/vision-ui-dashboard-react?ref=readme-vudchakra)[<img src="https://github.com/creativetimofficial/public-assets/blob/master/logos/chakra-logo.jpg?raw=true" width="60" height="60" />](https://www.creative-tim.com/product/vision-ui-dashboard-chakra?ref=readme-vudchakra)
+
+| React | Chakra |
+| ]------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [![Vision UI Dashboard Free React] (https://i.ibb.co/RYKtQ4M/vision-ui-free-react-ct.png)](https://www.creative-tim.com/product/vision-ui-dashboard-react?ref=readme-vudchakra) | [![Vision UI Dashboard Free Chakra] (https://i.ibb.co/kg5mNxm/vision-ui-free-chakra-ct.png)](https://www.creative-tim.com/product/vision-ui-dashboard-chakra?ref=readme-vudchakra) |
+
+## Demo
+
+[View all Pages](https://demos.creative-tim.com/vision-ui-dashboard-chakra?ref=readme-vudchakra).
+
+# Quick start
+
+Quick start options:
+
+- Buy from [Creative Tim](https://www.creative-tim.com/product/vision-ui-dashboard-chakra?ref=readme-vudchakra).
+
+## Deploy
+
+:rocket: You can deploy your own version of the template to Genezio with one click:
+
+[![Deploy to Genezio](https://raw.githubusercontent.com/Genez-io/graphics/main/svg/deploy-button.svg)](https://app.genez.io/start/deploy?repository=https://github.com/creativetimofficial/vision-ui-dashboard-chakra&utm_source=github&utm_medium=referral&utm_campaign=github-creativetim&utm_term=deploy-project&utm_content=button-head)
+
+## Terminal Commands
+
+1. Download and Install NodeJs LTS version from [NodeJs Official Page](https://nodejs.org/en/download/).
+2. Navigate to the root / directory and run yarn install/npm install to install our local dependencies.
+
+## Documentation
+
+The documentation for the Vision UI Dashboard Free is hosted at our [website](https://demos.creative-tim.com/docs-vision-ui-dashboard-chakra?ref=readme-vudchakra).
+
+## File Structure
+
+Within the download you'll find the following directories and files:
+
+```
+vision-dashboard-chakra-free/
+├── .gitattributes
+├── .gitigonore
+├── CHANGELOG.md
+├── commit.sh
+├── gulpfile.js
+├── ISSUE_TEMPLATE.md
+├── jsconfig.json
+├── package.json
+├── README.md
+├── public
+│   ├── favicon.png
+│   ├── index.html
+│   ├── apple-icon.png
+│   ├── robots.txt
+│   └── manifest.json
+└── src
+    ├── assets
+    │   ├── img
+    │   └── svg
+    ├── components
+    │   ├── Card
+    │   │   ├── Card.js
+    │   │   ├── CardBody.js
+    │   │   └── CardHeader.js
+    │   ├── Charts
+    │   │   ├── BarChart.js
+    │   │   └── LineChart.js
+    │   ├── Configurator
+    │   │   └── Configurator.js
+    │   ├── FixedPlugin
+    │   │   └── FixedPlugin.js
+    │   ├── Footer
+    │   │   └── Footer.js
+    │   ├── GradientBorder
+    │   │   └── GradientBorder.js
+    │   ├── Icons
+    │   │   ├── IconBox.js
+    │   │   └── Icons.js
+    │   ├── Layout
+    │   │   ├── MainPanel.js
+    │   │   ├── PanelContainer.js
+    │   │   └── PanelContent.js
+    │   ├── Menu
+    │   │   └── ItemContent.js
+    │   ├── Navbars
+    │   │   ├── Searchbar
+    │   │   │   └── SearchBar.js
+    │   │   ├── AdminNavbar.js
+    │   │   ├── AdminNavbarLinks.js
+    │   │   └── AuthNavbar.js
+    │   ├── Other
+    │   │   ├── BillingRow.js
+    │   │   ├── InvoicesRow.js
+    │   │   └── TransactionRow.js
+    │   ├── Separator
+    │   │   └── Separator.js
+    │   ├── Sidebar
+    │   │   ├── Sidebar.js
+    │   │   └── SidebarHelp.js
+    │   └── Tables
+    │       ├── BillingRow.js
+    │       ├── DashboardTableRow.js
+    │       ├── InvoicesRow.js
+    │       ├── TablesProjectRow.js
+    │       ├── TablesTableRow.js
+    │       ├── TimelineRow.js
+    │       └── TransactionRow.js
+    ├── layouts
+    │   ├── Admin.js
+    │   ├── Auth.js
+    │   └── RTL.js
+    ├── theme
+    │   ├── additions
+    │   │   ├── card
+    │   │   │   ├── Card.js
+    │   │   │   ├── CardBody.js
+    │   │   │   └── CardHeader.js
+    │   │   ├── layout
+    │   │   │   ├── MainPanel.js
+    │   │   │   ├── PanelContainer.js
+    │   │   │   └── PanelContent.js
+    │   ├── components
+    │   │   ├── badge.js
+    │   │   ├── button.js
+    │   │   ├── link.js
+    │   │   └── drawer.js
+    │   ├── foundations
+    │   │   └── breakpoints.js
+    │   ├── bgAdmin.js
+    │   ├── bgAuth.js
+    │   ├── styles.js
+    │   ├── themeAdmin.js
+    │   └── themeAuth.js
+    ├── variables
+    │   ├── charts.js
+    │   └── general.js
+    ├── views
+    │   ├── Dashboard
+    │   │   ├── Billing.js
+    │   │   ├── Dashboard.js
+    │   │   ├── Profile.js
+    │   │   └── Tables.js
+    │   ├── Pages
+    │       ├── SignIn.js
+    │       └── SignUp.js
+    │   └── RTL
+    │       └── RTLPage.js
+    ├── index.js
+    └── routes.js
+```
+
+## Browser Support
+
+At present, we officially aim to support the last two versions of the following browsers:
+
+<img src="https://github.com/creativetimofficial/public-assets/blob/master/logos/chrome-logo.png?raw=true" width="64" height="64"> <img src="https://raw.githubusercontent.com/creativetimofficial/public-assets/master/logos/firefox-logo.png" width="64" height="64"> <img src="https://raw.githubusercontent.com/creativetimofficial/public-assets/master/logos/edge-logo.png" width="64" height="64"> <img src="https://raw.githubusercontent.com/creativetimofficial/public-assets/master/logos/safari-logo.png" width="64" height="64"> <img src="https://raw.githubusercontent.com/creativetimofficial/public-assets/master/logos/opera-logo.png" width="64" height="64">
+
+## Resources
+
+- [Live Preview](https://demos.creative-tim.com/vision-ui-dashboard-chakra?ref=readme-vudchakra)
+- [Buy Page](https://www.creative-tim.com/product/vision-ui-dashboard-chakra?ref=readme-vudchakra)
+- License Agreement: <https://www.creative-tim.com/license?ref=readme-vudchakra>
+- Documentation is [here](https://demos.creative-tim.com/docs-vision-ui-dashboard-chakra?ref=readme-vudchakra)
+- [Support](https://www.creative-tim.com/contact-us?ref=readme-vudchakra)
+- Issues: [Github Issues Page](https://github.com/creativetimofficial/vision-ui-dashboard-chakra/issues)
+
+## Reporting Issues
+
+We use GitHub Issues as the official bug tracker for the Vision UI Dashboard. Here are some advices for our users that want to report an issue:
+
+1. Make sure that you are using the latest version of the Vision UI Dashboard. Check the CHANGELOG from your dashboard on our [CHANGE LOG File](https://github.com/creativetimofficial/vision-ui-dashboard-chakra/blob/main/CHANGELOG.md?ref=readme-vudchakra).
+2. Providing us reproducible steps for the issue will shorten the time it takes for it to be fixed.
+3. Some issues may be browser specific, so specifying in what browser you encountered the issue might help.
+
+## Technical Support or Questions
+
+If you have questions or need help integrating the product please [contact us](https://www.creative-tim.com/contact-us?ref=readme-vudchakra) instead of opening an issue.
+
+## Licensing
+
+- Copyright 2022 [Creative Tim](https://www.creative-tim.com?ref=readme-vudchakra)
+
+- Creative Tim [License](https://www.creative-tim.com/license?ref=readme-vudchakra)
+
+## Useful Links
+
+- [More products](https://www.creative-tim.com/templates?ref=readme-vudchakra) from Creative Tim
+
+- [Tutorials](https://www.youtube.com/channel/UCVyTG4sCw-rOvB9oHkzZD1w)
+
+- [Freebies](https://www.creative-tim.com/bootstrap-themes/free?ref=readme-vudchakra) from Creative Tim
+
+- [Affiliate Program](https://www.creative-tim.com/affiliates/new?ref=readme-vudchakra) (earn money)
+
+- [More products](https://simmmple.com/?ref=readme-vudchakra) from Simmmple
+
+### Social Media - Creative Tim
+
+Twitter: <https://twitter.com/CreativeTim>
+
+Facebook: <https://www.facebook.com/CreativeTim>
+
+Dribbble: <https://dribbble.com/creativetim>
+
+Instagram: <https://www.instagram.com/CreativeTimOfficial>
+
+### Social Media - Simmmple
+
+Twitter: <https://twitter.com/simmmple_web>
+
+Facebook: <https://www.facebook.com/simmmple.web>
+
+Dribbble: <https://dribbble.com/simmmple>
+
+Instagram: <https://www.instagram.com/simmmple.web>

@@ -204,7 +204,7 @@ const ScanInvoice = () => {
       const date = new Date();
       const payload = {
         invoice_number: `INV_${date.getTime()}`,
-        vendor_name: 'Vendor 1', // Replace with actual vendor name
+        vendor_name: 'Tim Hortons Vendor', // Replace with actual vendor name
         scanned_by: 1, // Replace with actual scanned by user ID
         scanned_invoice_items: editedData.map((item) => ({
           item_code: item.id,

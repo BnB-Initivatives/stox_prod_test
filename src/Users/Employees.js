@@ -224,7 +224,7 @@ function Employees() {
               <Td>{employee.first_name}</Td>
               <Td>{employee.middle_name || 'N/A'}</Td>
               <Td>{employee.last_name}</Td>
-              <Td>{employee.department?.department_id || 'N/A'}</Td> {/* Department ID */}
+              {/* <Td>{employee.department?.department_id || 'N/A'}</Td> Department ID */}
               <Td>{employee.department?.name || 'N/A'}</Td> {/* Department Name */}
               <Td>
                 <IconButton

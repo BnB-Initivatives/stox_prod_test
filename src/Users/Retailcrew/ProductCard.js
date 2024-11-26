@@ -18,6 +18,7 @@ import {
 import { FiX, FiCamera, FiMinus, FiPlus } from "react-icons/fi";
 import { useHistory, useLocation } from "react-router-dom";
 import axios from "axios";
+import { Separator } from "components/Separator/Separator";
 
 const APIEndpoint = process.env.REACT_APP_API_URL;
 
@@ -263,17 +264,22 @@ function ProductPage() {
               w="22%"
             >
               <Image
-                src={product.image}
+                src={product.image_path}
                 alt={product.title || product.name || "Unnamed Product"}
                 mb={2}
                 borderRadius="md"
+                boxSize="150px"
+                align="center"
               />
+              <Separator/> 
+
               <Text fontSize="lg" fontWeight="bold">
                 {product.title || product.name || "Unnamed Product"}
               </Text>
               <Text fontSize="sm" color="gray.500" mb={2}>
                 {product.description}
               </Text>
+            
               <Button
                 size="sm"
                 colorScheme="blue"
@@ -305,15 +311,32 @@ function ProductPage() {
         </Flex>
       </Box>
 
-      <Box w="35%" p={4} border="1px solid gray" borderRadius="md" bg="white">
+      <Box
+        w="35%" // Width of the Box
+        p={5} // Padding
+        border="1px solid gray" // Border styling
+        borderRadius="md" // Border radius
+        bg="white" // Background color
+        position="relative" // Specifies that the box is positioned relative to its normal position
+        top={{ base: "0", md: "50" }} // Vertical position from the top for different screen sizes
+        right={{ base: "0", md: "auto" }} // Horizontal position from the right for different screen sizes
+        left={{ base: "auto", md: "auto" }} // Optional: horizontal position from the left
+        bottom={{ base: "auto", md: "auto" }} // Optional: vertical position from the bottom
+        zIndex={1}
+        display="flex" // To use Flexbox for alignment
+        flexDirection="column" // Stack content vertically
+        alignItems="center" // Center the items horizontally within the Box
+        justifyContent="flex-start" // Align items at the top of the container
+      >
         <Heading size="md" mb={4} textAlign="center">
           Cart
         </Heading>
-        <Table size="sm">
+
+        <Table size="sm" w="100%">
           <Thead>
             <Tr>
               <Th>Product</Th>
-              <Th textAlign="center">Quantity</Th>
+              <Th textAlign="left" pl={2}>Quantity</Th> {/* Changed to left alignment */}
               <Th textAlign="right">Remove</Th>
             </Tr>
           </Thead>
@@ -321,8 +344,8 @@ function ProductPage() {
             {cart.map((item) => (
               <Tr key={item.item_id}>
                 <Td>{item.title || item.name || "Unnamed Product"}</Td>
-                <Td>
-                  <Flex align="center" justify="center" gap={2}>
+                <Td pl={1}>
+                  <Flex align="center" justify="flex-start" gap={2}> {/* Changed to align left */}
                     <IconButton
                       icon={<FiMinus />}
                       size="sm"
@@ -356,25 +379,25 @@ function ProductPage() {
           </Tbody>
         </Table>
 
-        <Button
-          colorScheme="teal"
-          w="48%"
-          size="lg"
-          onClick={handleCheckout}
-          mt={4}
-          isDisabled={cart.length === 0}
-        >
-          Checkout
-        </Button>
-        <Button
-          colorScheme="blue"
-          w="48%"
-          size="lg"
-          onClick={handleScanBarcode}
-          mt={4}
-        >
-          Scan Barcode
-        </Button>
+        <Flex justify="space-between" w="100%" mt={4}>
+          <Button
+            colorScheme="teal"
+            w="48%" // Makes the button 48% of the width, creating space between them
+            size="lg"
+            onClick={handleCheckout}
+            isDisabled={cart.length === 0}
+          >
+            Checkout
+          </Button>
+          <Button
+            colorScheme="blue"
+            w="48%" // Ensures both buttons have the same width
+            size="lg"
+            onClick={handleScanBarcode}
+          >
+            Scan Barcode
+          </Button>
+        </Flex>
       </Box>
     </Flex>
   );
